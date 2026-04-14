@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import styles from "./Login.module.css";
+import userIcon from "../assets/icons/user.svg";
+import userSenha from "../assets/icons/lock.svg";
 
 function Login() {
     // useState pra armazenar e escrever os campos de usuario e login
@@ -19,24 +21,30 @@ function Login() {
             <div className={styles.right}>
                 <h2 className="task-title">LOGIN</h2>
                 {/* campo de usuário */}
-                <input
-                    type='text'
-                    placeholder='Nome de usuário *'
-                    onChange={(e) => setUsuario(e.target.value)}
-                />
+                <div className={styles.taskInput}>
+                    <img className={styles.taskIcon} src={userIcon} alt="usuário" />
+                    <input
+                        type='text'
+                        placeholder='Nome de usuário *'
+                        onChange={(e) => setUsuario(e.target.value)}
+                    />
+                </div>
                 {/* campo de senha */}
-                <input 
-                    type='password'
-                    placeholder='Senha *'
-                    onChange={(e) => setSenha(e.target.value)} 
-                />
+                <div className={styles.taskInput}>
+                    <img src={userSenha} alt="senha" />
+                    <input 
+                        type='password'
+                        placeholder='Senha *'
+                        onChange={(e) => setSenha(e.target.value)} 
+                    />
+                </div>
 
-                <a href="#">Esqueceu a senha?</a>
+                <a href="">Esqueceu a senha?</a>
 
                 {/* botão de entrar */}
                 <button onClick={handleLogin}>Entrar</button>
 
-                <a href="#">Não tem uma conta? <span>Criar Conta</span></a>
+                <a href="">Não tem uma conta? <span>Criar Conta</span></a>
             </div>
         </div>
     );
