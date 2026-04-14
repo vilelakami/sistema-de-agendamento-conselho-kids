@@ -1,0 +1,28 @@
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+    font-family: 'Montserrat' sans-serif;
+    overflow: hidden;
+}
+
+:root {
+    /* colors */
+    --background-primary-color: #F0F0F3;
+    --background-surface-color: #FFFFFF;
+    --background-linear-gradient: linear-gradient(85deg, #1E88E5 0%, #3D579C 36%, #1D2B50 100%);
+
+    /* espaçamentos */
+    --spacing-xs: 4px;      
+    --spacing-sm: 8px;      
+    --spacing-md: 16px;     
+    --spacing-lg: 24px;    
+    --spacing-xl: 32px;     
+    --spacing-2xl: 48px;    
+    --spacing-3xl: 64px;    
+
+    /* borders */
+    --border-radius-default: 32px;
+}
