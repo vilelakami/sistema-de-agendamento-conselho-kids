@@ -1,3 +1,4 @@
+/* ============== ESTILIZAÇÃO =============== */
 .container {
     display: flex;
     flex-wrap: wrap;    
@@ -8,7 +9,6 @@
     min-height: 600px;  
     max-height: 800px;  
     height: 95vh;
-    overflow: hidden;
 }
 
 .left {
@@ -22,16 +22,25 @@
 
 .right {
     flex: 1;
+    flex-basis: 320px;
     display: flex;
     flex-direction: column;
-    gap: 36px;
     justify-content: center;
     align-items: center;
     padding: var(--spacing-md);
-    flex-basis: 320px;
     min-height: fit-content;
+
+    gap: 36px;
     background-color: var(--background-surface-color);
     border-radius: var(--border-radius-default);
+    overflow-y: auto;
+}
+
+.right h2{
+    font-family: var(--font-family);
+    font-size: 40px;
+    color: var(--font-color-additional);
+    margin-bottom: 0px;
 }
 
 .taskInput {
@@ -41,14 +50,67 @@
     align-items: center;
     padding: var(--spacing-md);
     gap: 8px;
-    box-sizing: border-box; 
+
     background-color: var(--background-primary-color);
     border-radius: var(--border-radius-default);
 }
+
+.taskIcon{padding-left: 3px;}
 
 input {
     width: 100%; 
     background-color: transparent;
     border: none;
-    outline: none; /* Remove aquela borda azul chata ao clicar */
+    outline: none;
+}
+
+a{
+    text-decoration: none;
+    color: var(--font-primary-color);
+}
+
+.taskLinkSenha {color: #1E88E5}
+.taskLinkSenha:hover{text-decoration: underline;}
+
+button{
+    width: 100%;
+    max-width: 400px;
+    padding: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    background-color: var(--background-additional-btn);
+    border-radius: 32px;
+    gap: 10px;
+    font-size: 17px;
+    color: var(--font-secondary-color);
+}
+
+/* ================= MEDIA QUERYS ================== */
+@media (max-width: 768px) {
+    .left {
+        display: none; 
+    }
+
+    .container {
+        max-height: none; 
+        height: auto;
+        padding: var(--spacing-md);
+    }
+
+    .right {
+        border-radius: var(--border-radius-default); 
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .right h2 {
+        font-size: 28px; 
+    }
+    .taskInput, button {
+        max-width: 100%;
+    }
 }

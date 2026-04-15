@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import styles from "./Login.module.css";
 import userIcon from "../assets/icons/user.svg";
-import userSenha from "../assets/icons/lock.svg";
+import sehnaIcon from "../assets/icons/lock.svg";
+import enterIcon from "../assets/icons/enter.svg"
 
 function Login() {
     // useState pra armazenar e escrever os campos de usuario e login
@@ -23,7 +24,7 @@ function Login() {
                     <h2 className="task-title">LOGIN</h2>
                     {/* campo de usuário */}
                     <div className={styles.taskInput}>
-                        <img className={styles.taskIcon} src={userIcon} alt="usuário" />
+                        <img src={userIcon} alt="usuário" />
                         <input
                             type='text'
                             placeholder='Nome de usuário *'
@@ -32,7 +33,7 @@ function Login() {
                     </div>
                     {/* campo de senha */}
                     <div className={styles.taskInput}>
-                        <img src={userSenha} alt="senha" />
+                        <img className={styles.taskIcon} src={sehnaIcon} alt="senha" />
                         <input 
                             type='password'
                             placeholder='Senha *'
@@ -40,12 +41,15 @@ function Login() {
                         />
                     </div>
 
-                    <a href="">Esqueceu a senha?</a>
+                    <a className={styles.taskLinkSenha} href="">Esqueceu a senha?</a>
 
                     {/* botão de entrar */}
-                    <button onClick={handleLogin}>Entrar</button>
+                    <button onClick={handleLogin}>
+                        <img src={enterIcon} alt="entrar" />
+                        Entrar
+                    </button>
 
-                    <a href="">Não tem uma conta? <span>Criar Conta</span></a>
+                    <a className="task-conta" href="">Não tem uma conta? <span>Criar Conta</span></a>
                 </div>
             </div>
         </div>
