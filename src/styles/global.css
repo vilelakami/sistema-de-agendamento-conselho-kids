@@ -1,13 +1,31 @@
+*{
+    box-sizing: border-box;
+}
+
 html, body {
     margin: 0;
     padding: 0;
     width: 100%;
     min-height: 100vh; 
+    background-color: var(--background-primary-color);
+    
     overflow-x: hidden; 
-    overflow-y: auto;   
-    box-sizing: border-box;
-    text-decoration: none;
-    list-style: none;
+    overflow-y: auto; 
+}
+
+.page-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ocupa a tela toda para centralizar o que está dentro */
+    min-height: 100vh;
+    padding: var(--spacing-md);
+}
+
+@media (max-height: 600px), (max-width: 800px) {
+    .page-wrapper {
+        align-items: flex-start; 
+    }
 }
 
 :root {

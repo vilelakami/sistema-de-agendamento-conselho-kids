@@ -16,35 +16,37 @@ function Login() {
 
     return (
         // tela do login
-        <div className={styles.container}>
-            <div className={styles.left}></div>
-            <div className={styles.right}>
-                <h2 className="task-title">LOGIN</h2>
-                {/* campo de usuário */}
-                <div className={styles.taskInput}>
-                    <img className={styles.taskIcon} src={userIcon} alt="usuário" />
-                    <input
-                        type='text'
-                        placeholder='Nome de usuário *'
-                        onChange={(e) => setUsuario(e.target.value)}
-                    />
+        <div className="page-wrapper">
+            <div className={styles.container}>
+                <div className={styles.left}></div>
+                <div className={styles.right}>
+                    <h2 className="task-title">LOGIN</h2>
+                    {/* campo de usuário */}
+                    <div className={styles.taskInput}>
+                        <img className={styles.taskIcon} src={userIcon} alt="usuário" />
+                        <input
+                            type='text'
+                            placeholder='Nome de usuário *'
+                            onChange={(e) => setUsuario(e.target.value)}
+                        />
+                    </div>
+                    {/* campo de senha */}
+                    <div className={styles.taskInput}>
+                        <img src={userSenha} alt="senha" />
+                        <input 
+                            type='password'
+                            placeholder='Senha *'
+                            onChange={(e) => setSenha(e.target.value)} 
+                        />
+                    </div>
+
+                    <a href="">Esqueceu a senha?</a>
+
+                    {/* botão de entrar */}
+                    <button onClick={handleLogin}>Entrar</button>
+
+                    <a href="">Não tem uma conta? <span>Criar Conta</span></a>
                 </div>
-                {/* campo de senha */}
-                <div className={styles.taskInput}>
-                    <img src={userSenha} alt="senha" />
-                    <input 
-                        type='password'
-                        placeholder='Senha *'
-                        onChange={(e) => setSenha(e.target.value)} 
-                    />
-                </div>
-
-                <a href="">Esqueceu a senha?</a>
-
-                {/* botão de entrar */}
-                <button onClick={handleLogin}>Entrar</button>
-
-                <a href="">Não tem uma conta? <span>Criar Conta</span></a>
             </div>
         </div>
     );
