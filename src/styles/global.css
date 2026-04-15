@@ -55,5 +55,5 @@ html, body {
     --border-radius-default: 32px;
 }
 
-.task-conta span{color: #FFBB2C}
-.task-conta span:hover{text-decoration: underline;}
+.task-conta{color: #FFBB2C}
+.task-conta:hover{text-decoration: underline;}

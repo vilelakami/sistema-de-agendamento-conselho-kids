@@ -3,6 +3,7 @@ import styles from "./Login.module.css";
 import userIcon from "../assets/icons/user.svg";
 import sehnaIcon from "../assets/icons/lock.svg";
 import enterIcon from "../assets/icons/enter.svg"
+import { Link } from 'react-router-dom';
 
 function Login() {
     // useState pra armazenar e escrever os campos de usuario e login
@@ -49,7 +50,7 @@ function Login() {
                         Entrar
                     </button>
 
-                    <a className="task-conta" href="">Não tem uma conta? <span>Criar Conta</span></a>
+                    <Link to="/Cadastro" className={styles.taskConta}>Não tem uma conta? <span className='task-conta'>Criar Conta</span></Link>
                 </div>
             </div>
         </div>

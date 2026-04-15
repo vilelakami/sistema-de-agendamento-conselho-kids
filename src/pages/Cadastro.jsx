@@ -4,6 +4,7 @@ import userIcon from "../assets/icons/user.svg";
 import sehnaIcon from "../assets/icons/lock.svg";
 import criarContaIcon from "../assets/icons/addConta.svg"
 import emailIcon from "../assets/icons/email.svg"
+import { Link } from 'react-router-dom';
 
 function Cadastro(){
     // useState pra armazenar e escrever os campos de nome, email, usuario, senha e confir de senha
@@ -78,7 +79,7 @@ function Cadastro(){
                         Criar Conta
                     </button>
 
-                    <a className="task-conta" href="">Já tem uma conta? <span>Faça Login</span></a>
+                    <Link to="/Login" className={styles.taskConta}>Já tem uma conta? <span className='task-conta'>Faça Login</span></Link>
                 </div>
             </div>
         </div>
