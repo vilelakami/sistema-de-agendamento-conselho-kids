@@ -1,14 +1,17 @@
 import { useState } from 'react';
-import styles from "./Login.module.css";
-import userIcon from "../assets/icons/user.svg";
-import sehnaIcon from "../assets/icons/lock.svg";
-import enterIcon from "../assets/icons/enter.svg"
+import styles from "../css/Login.module.css";
+import userIcon from "../../assets/icons/user.svg";
+import sehnaIcon from "../../assets/icons/lock.svg";
+import enterIcon from "../../assets/icons/enter.svg"
 import { Link } from 'react-router-dom';
+import Esqueci_Senha from "../auth/ModalSenha";
 
 function Login() {
     // useState pra armazenar e escrever os campos de usuario e login
     const [usuario, setUsuario] = useState("");
     const [senha, setSenha] = useState("");
+    //pro modal de esqueci senha
+    const [modalAberto, setModalAberto] = useState(false);
 
     // função pra verificar condições
     function handleLogin() {
@@ -42,7 +45,7 @@ function Login() {
                         />
                     </div>
 
-                    <a className={styles.taskLinkSenha} href="">Esqueceu a senha?</a>
+                    <a className={styles.taskLinkSenha} onClick={() => setModalAberto(true)}>Esqueceu a senha?</a>
 
                     {/* botão de entrar */}
                     <button onClick={handleLogin}>
@@ -52,6 +55,12 @@ function Login() {
 
                     <Link to="/Cadastro" className={styles.taskConta}>Não tem uma conta? <span className='task-conta'>Criar Conta</span></Link>
                 </div>
+
+                {/* //mandando os parâmetros pro modal de esqueci_senha */}
+                <Esqueci_Senha
+                    isOpen={modalAberto}
+                    onClose={() => setModalAberto(false)}
+                />
             </div>
         </div>
     );

@@ -64,7 +64,12 @@ input {
     outline: none;
 }
 
-.taskLinkSenha {color: #1E88E5; text-decoration: none;}
+.taskLinkSenha {
+    color: #1E88E5; 
+    text-decoration: none;
+    cursor: pointer;
+}
+
 .taskLinkSenha:hover{text-decoration: underline;}
 
 .taskConta{color: var(--font-primary-color); text-decoration: none;}

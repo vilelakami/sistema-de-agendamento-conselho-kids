@@ -1,0 +1,63 @@
+/* ================ ESTILIZAÇÃO MODAL =================== */
+.overlay{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 450px;
+    padding: var(--spacing-xl);
+
+    background-color: var(--background-surface-color);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border-radius: var(--border-radius-default);
+}
+
+.taskTitle{
+    margin-bottom: 0;
+    color: var(--font-color-additional);
+}
+
+.taskInput{
+    width: 100%;
+    max-width: 400px; 
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-md);
+    gap: 8px;
+
+    background-color: var(--background-primary-color);
+    border-radius: var(--border-radius-default);
+}
+
+.btn{
+    padding: var(--spacing-md);
+}
+
+/* ============ MEDIA QUERY ============ */
+
+@media (max-width: 768px) {
+    .modalContent {
+        width: 90%;          
+        padding: 24px;       
+        gap: 16px;           
+    }
+
+    .modalContent h2 {
+        font-size: 24px;    
+        text-align: center;
+    }
+}
