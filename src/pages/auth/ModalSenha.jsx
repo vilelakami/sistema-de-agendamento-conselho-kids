@@ -9,12 +9,21 @@ function Esqueci_Senha({ isOpen, onClose }) {
     // Se o modal não estiver aberto, não renderiza 
     if (!isOpen) return null;
 
-    function handleEsqueciSenha() {
-        //se não escrever o email, não prossegue e emite um alert
+    function handleEsqueciSenha(e) {
+        //previne que a página seja recarregada
+        if(e) e.preventDefault();
+        //se não escrever o email, emite um alert
+
         if (!email) {
             alert("Por favor, digite seu e-mail.");
             return;
         }
+
+        if(!email.includes("@") || !email.includes(".") || email.includes(" ")){
+            alert("Por favor, insira um email válido (exemplo@gmail.com)");
+            return;
+        }
+        //preciso implementar o envio de emails para confirmação
         //caso contrário feche o modal
         alert("Se o e-mail estiver cadastrado, você receberá um link em breve!");
         onClose(); // Fecha o modal após enviar
