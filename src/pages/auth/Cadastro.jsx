@@ -15,10 +15,45 @@ function Cadastro(){
     const [confirmarSenha, setConfirmarSenha] = useState("");
 
     // função pra verificar condições
-    function handleCadastro() {
-        console.log("Usuario: ", usuario);
-        console.log("Senha", senha);
+    function handleCadastro(e) {
+        //previne de não recarregar a página
+        if (e) e.preventDefault();
+
+        if(nomeCompleto === "" || email === "" || usuario === "" || senha === "" || confirmarSenha === ""){
+            alert("Preencha todos os campos obrigatórios.");
+            return;
+        }
+
+        if(email.includes(" ") || usuario.includes(" ") || senha.includes(" ") || confirmarSenha.includes(" ")){
+            alert("Não é permitido o uso de espaços nestes campos.");
+            return;
+        }
+
+        if(senha !== confirmarSenha){
+            alert("As senhas não coincidem.");
+            return;
+        }
+
+        if(!email.includes("@") || !email.includes(".")){
+            alert("Por favor, insira um email válido (exemplo@gmail.com)");
+            return;
+        }
+
+        if(!isNaN(usuario)){
+            alert("O nome de usuário não pode conter apenas números.");
+            return;
+        }
+
+        console.log("Conta criada: ", nomeCompleto);
+
+        setNomeCompleto("");
+        setEmail("");
+        setUsuario("");
+        setSenha("");
+        setConfirmarSenha("");
+
     }
+
 
     return(
         <div className="page-wrapper">
@@ -32,6 +67,7 @@ function Cadastro(){
                         <input
                             type='text'
                             placeholder='Nome completo *'
+                            value={nomeCompleto}
                             onChange={(e) => setNomeCompleto(e.target.value)}
                         />
                     </div>
@@ -41,6 +77,7 @@ function Cadastro(){
                         <input 
                             type='text'
                             placeholder='Email *'
+                            value={email}
                             onChange={(e) => setEmail(e.target.value)} 
                         />
                     </div>
@@ -50,6 +87,7 @@ function Cadastro(){
                         <input 
                             type='text'
                             placeholder='Nome de usuário *'
+                            value={usuario}
                             onChange={(e) => setUsuario(e.target.value)} 
                         />
                     </div>
@@ -59,6 +97,7 @@ function Cadastro(){
                         <input 
                             type='password'
                             placeholder='Senha *'
+                            value={senha}
                             onChange={(e) => setSenha(e.target.value)} 
                         />
                     </div>
@@ -68,6 +107,7 @@ function Cadastro(){
                         <input 
                             type='password'
                             placeholder='Confirmar senha *'
+                            value={confirmarSenha}
                             onChange={(e) => setConfirmarSenha(e.target.value)} 
                         />
                     </div>

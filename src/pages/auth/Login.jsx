@@ -14,9 +14,21 @@ function Login() {
     const [modalAberto, setModalAberto] = useState(false);
 
     // função pra verificar condições
-    function handleLogin() {
-        console.log("Usuario: ", usuario);
-        console.log("Senha", senha);
+    function handleLogin(e) {
+        //nao deixa o navegador recarregar a pagina
+        if (e) e.preventDefault();
+
+        //fazendo a verificação e tirando espaços
+        if(usuario.trim() === "" || senha.trim() === ""){
+            alert("Preencha todos os campos para continuar.");
+            return;
+        }
+
+        //se der certo, imprime no console e limpa os inputs
+        console.log("Logado com: ", usuario);
+
+        setUsuario("");
+        setSenha("");
     }
 
     return (
@@ -32,6 +44,7 @@ function Login() {
                         <input
                             type='text'
                             placeholder='Nome de usuário *'
+                            value={usuario}
                             onChange={(e) => setUsuario(e.target.value)}
                         />
                     </div>
@@ -41,6 +54,7 @@ function Login() {
                         <input 
                             type='password'
                             placeholder='Senha *'
+                            value={senha}
                             onChange={(e) => setSenha(e.target.value)} 
                         />
                     </div>
