@@ -3,10 +3,12 @@ import styles from "../css/Login.module.css";
 import userIcon from "../../assets/icons/user.svg";
 import sehnaIcon from "../../assets/icons/lock.svg";
 import enterIcon from "../../assets/icons/enter.svg"
-import { Link } from 'react-router-dom';
 import Esqueci_Senha from "../auth/ModalSenha";
+import { Link, useNavigate } from 'react-router-dom'; 
+import Dashboard from "../Dashboard";
 
 function Login() {
+    const navigate = useNavigate();
     // useState pra armazenar e escrever os campos de usuario e login
     const [usuario, setUsuario] = useState("");
     const [senha, setSenha] = useState("");
@@ -29,6 +31,8 @@ function Login() {
 
         setUsuario("");
         setSenha("");
+
+        navigate("/Dashboard");
     }
 
     return (

@@ -57,3 +57,6 @@ html, body {
 
 .task-conta{color: #FFBB2C}
 .task-conta:hover{text-decoration: underline;}
+
+button{transition: all 0.1s ease;}
+button:active{transform: scale(0.95);}
