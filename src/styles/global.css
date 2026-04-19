@@ -36,6 +36,10 @@ html, body {
     --background-linear-gradient: linear-gradient(85deg, #1E88E5 0%, #3D579C 36%, #1D2B50 100%);
     --background-additional-btn: #1E88E5;
 
+    --status-color-finished: rgba(29,188,8,0.59);
+    --status-color-pendente: #F6FF00;
+    --status-color-agendado: rgba(255,147,44,0.69);
+
     --font-family: "Luckiest Guy", cursive;
     --font-primary-color: #000000;
     --font-secondary-color: #FFFFFF;
