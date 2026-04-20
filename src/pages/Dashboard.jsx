@@ -1,10 +1,10 @@
 import React, { useState } from "react"; 
 import styles from "./css/Dashboard.module.css";
+import { Link } from 'react-router-dom'; 
+import ModalDashboard from "./ModalDashboard";
 // importando botão reutilizável da pasta dos components
 import Button from "../components/Button/Button";
 import CalendarIcon from "../assets/icons/calendar.svg";
-import { Link } from 'react-router-dom'; 
-import ModalDashboard from "./ModalDashboard";
 
 function Dashboard() {
     // estados

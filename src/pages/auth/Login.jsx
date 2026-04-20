@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import styles from "../css/Login.module.css";
-import userIcon from "../../assets/icons/user.svg";
-import sehnaIcon from "../../assets/icons/lock.svg";
-import enterIcon from "../../assets/icons/enter.svg"
 import Esqueci_Senha from "../auth/ModalSenha";
 import { Link, useNavigate } from 'react-router-dom'; 
 import Dashboard from "../Dashboard";
+import userIcon from "../../assets/icons/user.svg";
+import sehnaIcon from "../../assets/icons/lock.svg";
+import enterIcon from "../../assets/icons/enter.svg"
 
 function Login() {
     const navigate = useNavigate();

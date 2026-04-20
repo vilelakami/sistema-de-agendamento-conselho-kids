@@ -14,6 +14,10 @@ html, body {
     overflow-y: auto; 
 }
 
+a{
+    text-decoration: none;
+}
+
 .page-wrapper {
     display: flex;
     justify-content: center;
@@ -23,11 +27,17 @@ html, body {
     padding: var(--spacing-md);
 }
 
-@media (max-height: 600px), (max-width: 800px) {
-    .page-wrapper {
-        align-items: flex-start; 
-    }
+.task-conta{color: #FFBB2C}
+.task-conta:hover{text-decoration: underline;}
+
+button{
+    transition: all 0.1s ease;
+    cursor: pointer;
+    border: none;
 }
+button:active{transform: scale(0.95);}
+
+input {outline: none; border: none;}
 
 :root {
     /* colors */
@@ -59,8 +69,8 @@ html, body {
     --border-radius-default: 32px;
 }
 
-.task-conta{color: #FFBB2C}
-.task-conta:hover{text-decoration: underline;}
-
-button{transition: all 0.1s ease;}
-button:active{transform: scale(0.95);}
+@media (max-height: 600px), (max-width: 800px) {
+    .page-wrapper {
+        align-items: flex-start; 
+    }
+}

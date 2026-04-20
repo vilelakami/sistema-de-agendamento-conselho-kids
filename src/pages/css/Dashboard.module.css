@@ -188,7 +188,6 @@
 }
 
 .nomeLink {
-    text-decoration: none;
     color: var(--font-primary-color);
     font-weight: 600;
 }

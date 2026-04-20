@@ -60,11 +60,10 @@
 input {
     width: 100%; 
     background-color: transparent;
-    border: none;
     outline: none;
 }
 
-.taskConta{color: var(--font-primary-color); text-decoration: none;}
+.taskConta{color: var(--font-primary-color);}
 
 button{
     width: 100%;
@@ -74,7 +73,6 @@ button{
     align-items: center;
     justify-content: center;
 
-    border: none;
     background-color: var(--background-additional-btn);
     border-radius: 32px;
     gap: 10px;

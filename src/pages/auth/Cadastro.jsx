@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import styles from "../css/Cadastro.module.css";
+import { Link } from 'react-router-dom';
 import userIcon from "../../assets/icons/user.svg";
 import sehnaIcon from "../../assets/icons/lock.svg";
 import criarContaIcon from "../../assets/icons/addConta.svg"
 import emailIcon from "../../assets/icons/email.svg"
-import { Link } from 'react-router-dom';
 
 function Cadastro(){
     // useState pra armazenar e escrever os campos de nome, email, usuario, senha e confir de senha

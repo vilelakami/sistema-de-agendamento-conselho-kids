@@ -60,19 +60,17 @@
 input {
     width: 100%; 
     background-color: transparent;
-    border: none;
     outline: none;
 }
 
 .taskLinkSenha {
     color: #1E88E5; 
-    text-decoration: none;
     cursor: pointer;
 }
 
 .taskLinkSenha:hover{text-decoration: underline;}
 
-.taskConta{color: var(--font-primary-color); text-decoration: none;}
+.taskConta{color: var(--font-primary-color);}
 
 
 button{
@@ -83,7 +81,6 @@ button{
     align-items: center;
     justify-content: center;
 
-    border: none;
     background-color: var(--background-additional-btn);
     border-radius: 32px;
     gap: 10px;
