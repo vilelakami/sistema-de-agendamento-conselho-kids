@@ -1,4 +1,4 @@
-/* estilizando container e conteúdo */
+/* estilizando dashboard */
 .tableWrapper {
     display: flex;
     justify-content: center;
@@ -8,6 +8,7 @@
     padding: var(--spacing-sm);
 }
 
+/* container */
 .container {
     width: 100%;
     max-width: 1440px;
@@ -17,42 +18,40 @@
     background-color: var(--background-surface-color);
 }
 
-.taskTable{
+/* tabela */
+.taskTable {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0;   
+    border-spacing: 0;
 }
 
-/* colunas */
-.taskTable thead tr th{
+.taskTable thead tr th {
     background-color: #1D2B50;
     color: var(--font-secondary-color);
     font-weight: 500;
     font-size: 16px;
-    gap: 45px;
     padding: var(--spacing-sm);
 }
 
-.taskTable tbody td{
+.taskTable tbody td {
     padding: var(--spacing-sm);
     text-align: center;
 }
 
-/* ícone de agendamento */
-.taskTable td:nth-child(9) img { 
+.taskTable td:nth-child(9) img {
     margin-top: 5px;
 }
 
-/* filtros: status e agendamento */
-.filterHeader{
+/* filtros */
+.filterHeader {
     cursor: pointer;
     position: relative;
 }
 
-.filter{
+.filter {
     position: absolute;
     top: 100%;
-    left: 10;
+    left: 0;
     min-width: 100px;
     padding: 15px;
     z-index: 100;
@@ -63,82 +62,95 @@
     background-color: #1D2B50;
 }
 
-.filterOption {
+.filterOption,
+.pendente,
+.agendado,
+.concluido {
     display: flex;
+    align-items: center;
     gap: 8px;
+}
+
+.filterOption {
     color: white;
     font-size: 13px;
 }
 
-.filterOption input {
+.filterOption input,
+.agendamentoVisual {
     cursor: pointer;
 }
 
 .filterOption input {
-    accent-color: var(--status-color-agendado); 
+    accent-color: var(--status-color-agendado);
 }
 
-.taskArrow{
+.taskArrow {
     font-size: 12px;
     font-weight: 600;
 }
 
-/* =====STATUS===== */
-/* linha verde concluída */
-.taskTable .rowConcluido td {
+/* status: linhas, pendente, agendado e concluido */
+.rowConcluido td, 
+.rowConcluido + .rowExpanded td {
     background-color: var(--status-color-finished) !important;
 }
-.taskTable .rowConcluido + .rowExpanded td {
-    background-color: var(--status-color-finished) !important; 
-    border-top: none; 
-}
 
-/* linha amarela pendente */
-.taskTable .rowPendente td {
+.rowPendente td, 
+.rowPendente + .rowExpanded td {
     background-color: var(--status-color-pendente) !important;
 }
-.taskTable .rowPendente + .rowExpanded td {
-    background-color: var(--status-color-pendente) !important; 
-    border-top: none; 
-}
 
-/* linha laranja agendado */
-.taskTable .rowAgendado td {
+.rowAgendado td, 
+.rowAgendado + .rowExpanded td {
     background-color: var(--status-color-agendado) !important;
 }
-.taskTable .rowAgendado + .rowExpanded td {
-    background-color: var(--status-color-agendado) !important; 
-    border-top: none; 
+
+.rowConcluido + .rowExpanded td,
+.rowPendente + .rowExpanded td,
+.rowAgendado + .rowExpanded td {
+    border-top: none;
 }
 
-/* adicionando borda clarinha a cada preenchimento */
+/* bordas claras para separar */
 .taskTable tbody tr:not(.rowExpanded) {
     border-bottom: 1px solid var(--background-primary-color);
 }
-.taskTable thead th:first-child {
-    border-right: 1px solid var(--background-primary-color); 
-}
+
+.taskTable thead th:first-child,
 .taskTable tbody td:first-child {
-    border-right: 1px solid var(--background-primary-color); 
+    border-right: 1px solid var(--background-primary-color);
 }
 
 .filhosLista {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: flex-start;
-    font-weight: 600; 
+    font-weight: 600;
     text-align: left;
     margin-left: 48px;
 }
 
-/* filtro do agendamento */
-.agendamentoContainer {
+.agendamentoContainer,
+.editAgendamento {
     display: flex;
-    flex-direction: column; 
-    align-items: center; 
-    gap: 2px; 
-    font-size: 15px; 
+    flex-direction: column;
+    align-items: center;
+}
+
+.agendamentoContainer {
+    gap: 2px;
+    font-size: 15px;
     font-weight: 600;
+}
+
+/* inputs e botões */
+.inputDate,
+.inputDatePequeno,
+.inputHora {
+    background-color: white !important;
+    color: #333;
+    outline: none;
 }
 
 .inputDate {
@@ -146,27 +158,20 @@
     border-radius: 5px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     width: 100%;
-    background-color: white;
-    color: #333; 
     font-size: 13px;
     margin: 10px 0;
-    outline: none;
 }
 
 .editAgendamento {
-    display: flex;
-    flex-direction: column;
     gap: 4px;
-    align-items: center;
 }
 
-.inputDatePequeno, .inputHora {
+.inputDatePequeno,
+.inputHora {
     width: 95px;
     padding: 4px;
     border-radius: 4px;
     border: 1px solid #ccc;
-    background-color: white !important; 
-    color: #333;
     font-size: 11px;
 }
 
@@ -182,12 +187,7 @@
     font-size: 14px;
 }
 
-.agendamentoVisual {
-    cursor: pointer;
-}
-
-/* ESTILIZANDO NOME-LINK DO MODAL */
-.nomeLink{
+.nomeLink {
     text-decoration: none;
     color: var(--font-primary-color);
     font-weight: 600;

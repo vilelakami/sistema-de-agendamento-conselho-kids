@@ -12,11 +12,13 @@ function ModalDashboard({isOpen, onClose, user, atualizarStatusGlobal}){
         }
     }, [user]);
 
+    // se o modal estiver diferente de aberto retorna null
     if (!isOpen || !user) return null;
     return(
             <div className={styles.overlay} onClick={onClose}>
                 <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                     <div className={styles.profile}>
+                        {/* contém as infos: nome e status */}
                         <div className={styles.taskPerfil}>
                             <img src={accountUpload} alt="upload de perfil" />
                             <h1>{user.responsavel}</h1>
@@ -24,6 +26,7 @@ function ModalDashboard({isOpen, onClose, user, atualizarStatusGlobal}){
                                 {user.status}
                             </span>
                         </div>
+                        {/* contém o restante das infos: cpf, cep, qtde de filhos */}
                         <div className={styles.taskInfo}>
                             <div className={styles.taskCpf}>
                                 <h1>CPF:</h1>
@@ -39,11 +42,13 @@ function ModalDashboard({isOpen, onClose, user, atualizarStatusGlobal}){
                             </div>
                         </div>
                     </div>
+                    {/* descrição, o campo de texto */}
                     <div className={styles.taskDescription}>
                         <div className={styles.textArea}>
                             <h2>Descrição</h2>
                             <textarea className={styles.taskTextArea}></textarea>
                         </div>
+                        {/* os status: permite que você mude o status como pendente, agendado e concluido */}
                         <div className={styles.taskStatus}>
                             <h1>Status</h1>
                             <div className={styles.inputStatus}>
@@ -79,8 +84,8 @@ function ModalDashboard({isOpen, onClose, user, atualizarStatusGlobal}){
                                 </div>
                             </div>
                         </div>
+                        {/* botão editar */}
                         <div className={styles.btnEdit}>
-                            
                             <button onClick={() => atualizarStatusGlobal(user.id, statusLocal)}><img src={editIcon} alt="editar" />Editar</button>
                         </div>
                     </div>
