@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styles from "./css/ModalDashboard.module.css";
-import accountUpload from "../assets/icons/upload.svg";
 import editIcon from "../assets/icons/edit_icon.svg"
 
 function ModalDashboard({isOpen, onClose, user, atualizarStatusGlobal}){
@@ -17,36 +16,30 @@ function ModalDashboard({isOpen, onClose, user, atualizarStatusGlobal}){
     return(
             <div className={styles.overlay} onClick={onClose}>
                 <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                    <div className={styles.profile}>
-                        {/* contém as infos: nome e status */}
-                        <div className={styles.taskPerfil}>
-                            <img src={accountUpload} alt="upload de perfil" />
-                            <h1>{user.responsavel}</h1>
-                            <span className={styles[`status${user.status.charAt(0).toUpperCase() + user.status.slice(1)}`]}>
-                                {user.status}
-                            </span>
-                        </div>
-                        {/* contém o restante das infos: cpf, cep, qtde de filhos */}
-                        <div className={styles.taskInfo}>
-                            <div className={styles.taskCpf}>
-                                <h1>CPF:</h1>
-                                <h2>{user.cpf}</h2>
+                    <div className={styles.taskHeader}>
+                        <div className={styles.profile}>
+                            {/* contém as infos: nome e status */}
+                            <div className={styles.taskPerfil}>
+                                <h1>{user.responsavel}</h1>
+                                <span className={styles[`status${user.status.charAt(0).toUpperCase() + user.status.slice(1)}`]}>
+                                    {user.status}
+                                </span>
                             </div>
-                            <div className={styles.taskCep}>
-                                <h1>CEP:</h1>
-                                <h2>{user.cep}</h2>
+                            {/* contém o restante das infos: cpf, cep, qtde de filhos */}
+                            <div className={styles.taskInfo}>
+                                <div className={styles.taskCpf}>
+                                    <h1>CPF:</h1>
+                                    <h2>{user.cpf}</h2>
+                                </div>
+                                <div className={styles.taskCep}>
+                                    <h1>CEP:</h1>
+                                    <h2>{user.cep}</h2>
+                                </div>
+                                <div className={styles.taskFilhos}>
+                                    <h1>Qtde. filhos:</h1>
+                                    <h2>{user.quantidadeFilhos}</h2>
+                                </div>
                             </div>
-                            <div className={styles.taskFilhos}>
-                                <h1>Qtde. filhos:</h1>
-                                <h2>{user.quantidadeFilhos}</h2>
-                            </div>
-                        </div>
-                    </div>
-                    {/* descrição, o campo de texto */}
-                    <div className={styles.taskDescription}>
-                        <div className={styles.textArea}>
-                            <h2>Descrição</h2>
-                            <textarea className={styles.taskTextArea}></textarea>
                         </div>
                         {/* os status: permite que você mude o status como pendente, agendado e concluido */}
                         <div className={styles.taskStatus}>
@@ -58,11 +51,11 @@ function ModalDashboard({isOpen, onClose, user, atualizarStatusGlobal}){
                                     id="pendente" 
                                     name="pendente" 
                                     value="pendente" 
-                                    checked={user.status === "pendente"} 
+                                    checked={statusLocal === "pendente"} 
                                     onChange={(e) => setStatusLocal(e.target.value)}/>
                                     <label htmlFor="pendente">Pendente</label>
                                 </div>
-                                <div className={styles.agendado}>
+                                 <div className={styles.agendado}>
                                     <input 
                                     type="radio" 
                                     id="agendado" 
@@ -83,6 +76,13 @@ function ModalDashboard({isOpen, onClose, user, atualizarStatusGlobal}){
                                     <label htmlFor="concluido">Concluído</label>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    {/* descrição, o campo de texto */}
+                    <div className={styles.taskDescription}>
+                        <div className={styles.textArea}>
+                            <h2>Descrição</h2>
+                            <textarea className={styles.taskTextArea}></textarea>
                         </div>
                         {/* botão editar */}
                         <div className={styles.btnEdit}>

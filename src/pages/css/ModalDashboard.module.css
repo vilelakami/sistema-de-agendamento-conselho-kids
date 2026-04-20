@@ -25,6 +25,12 @@
     overflow-y: auto;
 }
 
+.taskHeader{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 /* div perfil e descrição */
 .profile, 
 .taskDescription {
@@ -33,7 +39,8 @@
 }
 
 .profile {
-    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .taskDescription {
@@ -42,7 +49,6 @@
 }
 
 .taskPerfil, 
-.taskInfo, 
 .taskStatus, 
 .inputStatus {
     display: flex;
@@ -51,22 +57,39 @@
 
 .taskPerfil {
     align-items: center;
+    justify-content: center;
     font-size: 13px;
 }
 
-.taskInfo {
-    justify-content: center;
+.taskStatus{
+    margin-right: 20px;
+    background-color: #1E88E5;
+    padding: var(--spacing-sm);
+    border-radius: 12px;
+    align-items: center;
 }
 
+.taskInfo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.taskCpf, .taskCep, .taskFilhos{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 /* fontes */
 .taskCpf h1, .taskCep h1, .taskFilhos h1,
 .taskCpf h2, .taskCep h2, .taskFilhos h2,
 .textArea h2, .taskStatus h1 {
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .taskCpf h1, .taskCep h1, .taskFilhos h1 {
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .taskCpf h2, .taskCep h2, .taskFilhos h2 {

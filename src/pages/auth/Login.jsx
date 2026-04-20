@@ -26,6 +26,16 @@ function Login() {
             return;
         }
 
+        if(!isNaN(usuario)){
+            alert("O nome de usuário não deve conter apenas números!");
+            return;
+        }
+
+        if(usuario.includes(" ") || senha.includes(" ")){
+            alert("Os campos não devem ter espaços.");
+            return;
+        }
+
         //se der certo, imprime no console e limpa os inputs
         console.log("Logado com: ", usuario);
 
