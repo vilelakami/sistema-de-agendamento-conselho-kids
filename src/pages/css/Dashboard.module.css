@@ -177,7 +177,8 @@
 
 .editButtons {
     display: flex;
-    gap: 5px;
+    justify-content: center;
+    margin-left: -20px;
 }
 
 .editButtons button {
@@ -185,6 +186,8 @@
     border: none;
     cursor: pointer;
     font-size: 14px;
+    color: var(--font-primary-color);
+    margin-right: -20px;
 }
 
 .nomeLink {
