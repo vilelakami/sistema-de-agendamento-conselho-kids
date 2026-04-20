@@ -1,0 +1,121 @@
+.overlay{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modalContent{
+    background-color: var(--background-surface-color);
+    max-width: 800px;
+    width: 95%;
+    max-height: 95vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-md);
+    border-radius: 12px;
+}
+
+.profile{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.taskPerfil{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 13px;
+}
+
+.taskInfo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.taskCpf h1, .taskCep h1, .taskFilhos h1{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.taskCpf h2, .taskCep h2, .taskFilhos h2{
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.taskDescription{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.textArea h2{
+    font-size: 18px;
+}
+
+.textArea textarea{
+    min-height: 150px;
+    min-width: 250px;
+    width: 100%;
+}
+
+.textArea textarea:focus{
+    outline: none;
+}
+
+.taskStatus{
+    display: flex;
+    flex-direction: column;
+}
+
+.taskStatus h1{
+    font-size: 18px;
+}
+
+.inputStatus{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.pendente, .agendado, .concluido{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.statusPendente,
+.statusAgendado,
+.statusConcluido{
+    border-radius: var(--border-radius-default);
+    font-weight: 600;
+    padding: var(--spacing-sm);
+}
+
+.statusPendente{background-color: var(--status-color-pendente);}
+.statusAgendado{background-color: var(--status-color-agendado);}
+.statusConcluido{background-color: var(--status-color-finished);}
+
+
+.btnEdit{margin-top: 160px;}
+
+.btnEdit button{
+    background-color: #1D2B50;
+    padding: 10px 30px 10px 30px;
+    border-radius: 10px;
+}
+
+.btnEdit button:focus{
+    outline: none;
+}

@@ -185,3 +185,10 @@
 .agendamentoVisual {
     cursor: pointer;
 }
+
+/* ESTILIZANDO NOME-LINK DO MODAL */
+.nomeLink{
+    text-decoration: none;
+    color: var(--font-primary-color);
+    font-weight: 600;
+}

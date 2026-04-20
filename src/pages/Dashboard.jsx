@@ -1,9 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react"; 
 import styles from "./css/Dashboard.module.css";
-import React from "react";
 // importando botão reutilizável da pasta dos components
 import Button from "../components/Button/Button";
 import CalendarIcon from "../assets/icons/calendar.svg";
+import { Link } from 'react-router-dom'; 
+import ModalDashboard from "./ModalDashboard";
 
 function Dashboard() {
     // estados
@@ -11,6 +12,8 @@ function Dashboard() {
     const [filtroStatus, setFiltroStatus] = useState("todos");
     const [menuStatusAberto, setMenuStatusAberto] = useState(false);
     const [menuDataAberto, setMenuDataAberto] = useState(false);
+    const [modalAberto, setModalAberto] = useState(false);
+    const [itemSelecionado, setItemSelecionado] = useState(null);
 
     // editando dt e hora do agendamento
     const [editandoId, setEditandoId] = useState(null);
@@ -111,6 +114,15 @@ function Dashboard() {
         setMenuStatusAberto(false);
     };
 
+    //função que salva novo status do responsavel (caso seja alterado no modal)
+    const atualizarStatusGlobal = (id, novoStatus) => {
+    const novaLista = agendamentos.map(item => 
+        item.id === id ? { ...item, status: novoStatus } : item
+    );
+    setAgendamentos(novaLista);
+    setModalAberto(false); // Fecha o modal após salvar
+    };  
+
     //desenhando na tela
     return (
         <div className={styles.tableWrapper}>
@@ -171,7 +183,20 @@ function Dashboard() {
                                 <tr className={styles[`row${(item.status || "Pendente").charAt(0).toUpperCase() + (item.status || "Pendente").slice(1)}`]}>
                                     {/* trazendo as linhas do banco */}
                                     <td>{item.id}</td>
-                                    <td>{item.responsavel}</td>
+                                    <td>
+                                        <a 
+                                            href="#" 
+                                            className={styles.nomeLink} 
+                                            onClick={(e) => {
+                                                e.preventDefault(); 
+                                                e.stopPropagation(); 
+                                                setItemSelecionado(item);
+                                                setModalAberto(true); 
+                                            }}
+                                        >
+                                            {item.responsavel}
+                                        </a>
+                                    </td>
                                     <td>{item.cpf}</td>
                                     <td>{item.cep}</td>
                                     <td>{item.comoConheceu}</td>
@@ -244,6 +269,12 @@ function Dashboard() {
                     </tbody>
                 </table>
             </div>
+            <ModalDashboard
+                isOpen={modalAberto}
+                onClose={() => setModalAberto(false)}
+                user={itemSelecionado}
+                atualizarStatusGlobal={atualizarStatusGlobal}
+            />
         </div>
     );
 }
