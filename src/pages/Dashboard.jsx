@@ -150,6 +150,7 @@ function Dashboard() {
     // função que atualiza a linha e exibe ela
     const atualizarLinha = (campo, valor) =>{
         const novaLista = agendamentos.map(item => {
+            if(!item) return false;
             if(item.id === "TEMP"){
                 return {...item, [campo]:valor};
             }
