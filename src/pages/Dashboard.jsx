@@ -196,6 +196,25 @@ function Dashboard() {
         return `${nums.slice(0,5)}-${nums.slice(5,8)}`;
     };
 
+    //fazendo o sort para exibir primeiro os pendentes, dps agendados, dps concluídos
+    const pesos = {
+        pendente: 1,
+        agendado: 2,
+        concluido: 3
+    };
+
+    // .sort
+    const listaOrganizada = [...agendamentosFiltrados].sort((a,b) => {
+
+        if(a.id === "TEMP") return -1;
+        if(b.id === "TEMP") return 1;
+
+        const pesoA = pesos[a.status] || 4;
+        const pesoB = pesos[b.status] || 4;
+
+        return pesoA - pesoB;
+    });
+
     //desenhando na tela
     return (
         <div className={styles.tableWrapper}>
@@ -257,7 +276,7 @@ function Dashboard() {
                     
                     <tbody>
                         {/* mapeio os status */}
-                        {agendamentosFiltrados.map((item) => (
+                        {listaOrganizada.map((item) => (
                             // passo o id dos tatus pra key
                             <React.Fragment key={item.id}>
                                 {/* aqui estou criando classes para os meus 3 tipos de status, estou juntando a palavra row+(pendente, agendado ou concluido) ao invés de criar 3 classes diferentes */}
