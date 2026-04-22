@@ -125,6 +125,64 @@ function Dashboard() {
     setModalAberto(false); // Fecha o modal após salvar
     };  
 
+    const adicionarLinha = () =>{
+        const novaLinha = {
+            id: "TEMP",
+            responsavel: "",
+            cpf: "",
+            cep: "",
+            comoConheceu: "",
+            dataCriacao: new Date().toLocaleDateString('pt-BR'),
+            quantidadeFilhos: 0,
+            status: "pendente",
+            dataAgendamento: null,
+            filhos: []
+        };
+
+        setAgendamentos([novaLinha, ...agendamentos]);
+    };
+
+    const atualizarLinha = (campo, valor) =>{
+        const novaLista = agendamentos.map(item => {
+            if(item.id === "TEMP"){
+                return {...item, [campo]:valor};
+            }
+            return item;
+        });
+        setAgendamentos(novaLista);
+    };
+
+    const confirmarLinha = () => {
+        const novaLista = agendamentos.map(item => {
+            if(item.id === "TEMP"){
+                if(item.responsavel === "" || item.cpf === "" || item.cep === "" || item.quantidadeFilhos === "" || item.status === ""){
+                    alert("Preencha todos os campos.");
+                    return;
+                }
+                return{
+                    ...item,
+                    id: agendamentos.length + 1
+                };
+            }
+            return item
+        });
+        setAgendamentos(novaLista);
+    };
+
+    const aplicarMascaraCPF = (valor) => {
+        const nums = valor.replace(/\D/g, ""); 
+        if (nums.length <= 3) return nums;
+        if (nums.length <= 6) return `${nums.slice(0, 3)}.${nums.slice(3)}`;
+        if (nums.length <= 9) return `${nums.slice(0, 3)}.${nums.slice(3, 6)}.${nums.slice(6)}`;
+        return `${nums.slice(0, 3)}.${nums.slice(3, 6)}.${nums.slice(6, 9)}-${nums.slice(9, 11)}`;
+    };
+
+    const aplicarMascaraCEP = (valor) => {
+        const nums = valor.replace(/\D/g, "");
+        if(nums.length <= 5) return nums;
+        return `${nums.slice(0,5)}-${nums.slice(5,8)}`;
+    };
+
     //desenhando na tela
     return (
         <div className={styles.tableWrapper}>
@@ -173,7 +231,7 @@ function Dashboard() {
                                 )}
                             </th>
                             <th className={styles.taskBtnAtividade}>
-                                <button>
+                                <button onClick={adicionarLinha}>
                                     <img src={novoContatoIcon} alt="novo contato" />
                                 </button>
                                 <button>
@@ -192,9 +250,17 @@ function Dashboard() {
                                 {/* aqui estou criando classes para os meus 3 tipos de status, estou juntando a palavra row+(pendente, agendado ou concluido) ao invés de criar 3 classes diferentes */}
                                 <tr className={styles[`row${(item.status || "Pendente").charAt(0).toUpperCase() + (item.status || "Pendente").slice(1)}`]}>
                                     {/* trazendo as linhas do banco */}
+
                                     <td>{item.id}</td>
                                     <td>
-                                        <a 
+                                        {item.id === "TEMP" ? (
+                                            <input type="text"
+                                            className={styles.inputTable}
+                                            placeholder="Nome"
+                                            onChange={(e) => atualizarLinha("responsavel", e.target.value)}
+                                             />
+                                        ):(
+                                            <a 
                                             href="#" 
                                             className={styles.nomeLink} 
                                             onClick={(e) => {
@@ -206,12 +272,54 @@ function Dashboard() {
                                         >
                                             {item.responsavel}
                                         </a>
+                                        )}
                                     </td>
-                                    <td>{item.cpf}</td>
-                                    <td>{item.cep}</td>
-                                    <td>{item.comoConheceu}</td>
+                                    <td>{item.id === "TEMP" ? (
+                                        <input type="text"
+                                        className={styles.inputTable}
+                                        placeholder="CPF" 
+                                        value={item.cpf}
+                                        onChange={(e) => {
+                                            const formatado = aplicarMascaraCPF(e.target.value);
+                                            atualizarLinha("cpf", formatado)}}
+                                        />
+                                    ): (
+                                        item.cpf
+                                    )}
+                                    </td>
+                                    <td>{item.id === "TEMP" ? (
+                                        <input type="text"
+                                        className={styles.inputTable}
+                                        placeholder="CEP"
+                                        value={item.cep}
+                                        onChange={(e) => {
+                                            const formatado = aplicarMascaraCEP(e.target.value);
+                                            atualizarLinha("cep", formatado)} }
+                                        />
+                                    ) : (
+                                        item.cep
+                                    )}
+                                    </td>
+                                    <td>{item.id === "TEMP" ? (
+                                        <input type="text"
+                                        className={styles.inputTable}
+                                        placeholder="Como Conheceu?"
+                                        onChange={(e) => atualizarLinha("comoConheceu", e.target.value)}
+                                         />
+                                    ) : (
+                                        item.comoConheceu
+                                    )}
+                                    </td>
                                     <td>{item.dataCriacao}</td>
-                                    <td>{item.quantidadeFilhos}</td>
+                                    <td>{item.id === "TEMP" ? (
+                                        <input type="number"
+                                        className={styles.inputTable}
+                                        placeholder="Qtde. filhos"
+                                        onChange={(e) => atualizarLinha("quantidadeFilhos", e.target.value)} 
+                                        />
+                                    ) : (
+                                        item.quantidadeFilhos
+                                    )}</td>
                                     <td>{item.status}</td>
                                     {/* lógica do agendamento */}
                                     <td className={styles.colAgendamento}>
@@ -255,9 +363,15 @@ function Dashboard() {
                                     </td>
                                     {/* função que eu criei em /components do botão */}
                                     <td>
+                                        {item.id === "TEMP" ? (
+                                            <button onClick={confirmarLinha}>
+                                                Salvar
+                                            </button>
+                                        ) : (
                                         <Button onClick={() => toggleLinha(item.id)} className={styles.btnAlunos}>
-                                            Alunos {">"}
+                                            Crianças {">"}
                                         </Button>
+                                        )}
                                     </td>
                                     <td></td>
                                 </tr>
