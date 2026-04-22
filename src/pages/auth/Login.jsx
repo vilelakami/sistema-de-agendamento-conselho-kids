@@ -6,6 +6,7 @@ import Dashboard from "../Dashboard";
 import userIcon from "../../assets/icons/user.svg";
 import sehnaIcon from "../../assets/icons/lock.svg";
 import enterIcon from "../../assets/icons/enter.svg"
+import logotipoIcon from  "../../assets/icons/logotipo.svg";
 
 function Login() {
     const navigate = useNavigate();
@@ -49,9 +50,12 @@ function Login() {
         // tela do login
         <div className="page-wrapper">
             <div className={styles.container}>
-                <div className={styles.left}></div>
+                <div className={styles.left}>
+                    <h1>Agenda<br></br>Next</h1>
+                    <img src={logotipoIcon} alt="logotipo NextPoint" />
+                </div>
                 <div className={styles.right}>
-                    <h2 className="task-title">LOGIN</h2>
+                    <h2 className="task-title">Login</h2>
                     {/* campo de usuário */}
                     <div className={styles.taskInput}>
                         <img src={userIcon} alt="usuário" />
@@ -65,7 +69,7 @@ function Login() {
                     {/* campo de senha */}
                     <div className={styles.taskInput}>
                         <img className={styles.taskIcon} src={sehnaIcon} alt="senha" />
-                        <input 
+                        <input className={styles.inputSenha}
                             type='password'
                             placeholder='Senha *'
                             value={senha}

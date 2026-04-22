@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import ModalDashboard from "./ModalDashboard";
 // importando botão reutilizável da pasta dos components
 import Button from "../components/Button/Button";
-import CalendarIcon from "../assets/icons/calendar.svg";
+import calendarIcon from "../assets/icons/calendar.svg";
+import historicoIcon from "../assets/icons/historico.svg";
+import novoContatoIcon from "../assets/icons/novoContato.svg";
 
 function Dashboard() {
     // estados
@@ -170,6 +172,16 @@ function Dashboard() {
                                     </div>
                                 )}
                             </th>
+                            <th>
+                                <button>
+                                    <img src={novoContatoIcon} alt="novo contato" />
+                                </button>
+                            </th>
+                            <th>
+                                <button>
+                                    <img src={historicoIcon} alt="novo contato" />
+                                </button>
+                            </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -238,7 +250,7 @@ function Dashboard() {
                                                         ))}
                                                     </div>
                                                 ) : (
-                                                    <img src={CalendarIcon} alt="calendário" className={styles.calendarIconCenter} />
+                                                    <img src={calendarIcon} alt="calendário" className={styles.calendarIconCenter} />
                                                 )}
                                             </div>
                                         )}

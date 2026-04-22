@@ -14,11 +14,28 @@
 .left {
     flex: 1;
     min-height: 300px; 
-    flex-basis: 320px; 
+    flex-basis: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
 
     background: var(--background-linear-gradient);
     border-radius: var(--border-radius-default);
 }
+
+.left h1{
+    font-size: 80px;
+    font-weight: 800;
+    color: white;
+    line-height: 80%;
+    margin-left: 20px;
+    text-shadow: 4px 1px 1px #1D2B50;
+}
+
+.left img{
+    width: 200px;
+}
+
 
 .right {
     flex: 1;
@@ -37,25 +54,28 @@
 }
 
 .right h2{
-    font-family: var(--font-family);
-    font-size: 40px;
+    font-family: "Inter" sans-serif;
+    font-size: 35px;
+    font-weight: 700;
+    letter-spacing: -4%;
     color: var(--font-color-additional);
     margin-bottom: 0px;
 }
 
 .taskInput {
     width: 100%;
-    max-width: 400px; 
+    max-width: 350px; 
     display: flex;
     align-items: center;
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm);
     gap: 8px;
 
     background-color: var(--background-primary-color);
     border-radius: var(--border-radius-default);
 }
 
-.taskIcon{padding-left: 3px;}
+.taskIcon{margin-left: 3px;}
+.inputSenha{margin-left: 2px;}
 
 input {
     width: 100%; 
@@ -63,20 +83,20 @@ input {
     outline: none;
 }
 
-.taskConta{color: var(--font-primary-color);}
+.taskConta{color: var(--font-primary-color); font-size: 14px;}
 
 button{
     width: 100%;
-    max-width: 400px;
-    padding: var(--spacing-md);
+    max-width: 350px;
+    padding: var(--spacing-sm);
     display: flex;
     align-items: center;
     justify-content: center;
 
     background-color: var(--background-additional-btn);
     border-radius: 32px;
-    gap: 10px;
-    font-size: 17px;
+    gap: 5px;
+    font-size: 16px;
     color: var(--font-secondary-color);
 }
 

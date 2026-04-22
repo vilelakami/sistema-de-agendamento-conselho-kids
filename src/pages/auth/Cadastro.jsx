@@ -3,8 +3,9 @@ import styles from "../css/Cadastro.module.css";
 import { Link } from 'react-router-dom';
 import userIcon from "../../assets/icons/user.svg";
 import sehnaIcon from "../../assets/icons/lock.svg";
-import criarContaIcon from "../../assets/icons/addConta.svg"
-import emailIcon from "../../assets/icons/email.svg"
+import criarContaIcon from "../../assets/icons/addConta.svg";
+import emailIcon from "../../assets/icons/email.svg";
+import logotipoIcon from "../../assets/icons/logotipo.svg"
 
 function Cadastro(){
     // useState pra armazenar e escrever os campos de nome, email, usuario, senha e confir de senha
@@ -58,9 +59,12 @@ function Cadastro(){
     return(
         <div className="page-wrapper">
             <div className={styles.container}>
-                <div className={styles.left}></div>
+                <div className={styles.left}>
+                    <h1>Agenda<br></br>Next</h1>
+                    <img src={logotipoIcon} alt="logotipo NextPoint" />
+                </div>
                 <div className={styles.right}>
-                    <h2 className="task-title">CADASTRO</h2>
+                    <h2 className="task-title">Cadastro</h2>
                     {/* campo de nome completo */}
                     <div className={styles.taskInput}>
                         <img src={userIcon} alt="usuario" />
@@ -94,7 +98,7 @@ function Cadastro(){
                     {/* campo de senha */}
                     <div className={styles.taskInput}>
                         <img className={styles.taskIcon} src={sehnaIcon} alt="senha" />
-                        <input 
+                        <input className={styles.inpuSenha}
                             type='password'
                             placeholder='Senha *'
                             value={senha}
