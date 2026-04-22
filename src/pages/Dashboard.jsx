@@ -172,12 +172,10 @@ function Dashboard() {
                                     </div>
                                 )}
                             </th>
-                            <th>
+                            <th className={styles.taskBtnAtividade}>
                                 <button>
                                     <img src={novoContatoIcon} alt="novo contato" />
                                 </button>
-                            </th>
-                            <th>
                                 <button>
                                     <img src={historicoIcon} alt="novo contato" />
                                 </button>
@@ -261,6 +259,7 @@ function Dashboard() {
                                             Alunos {">"}
                                         </Button>
                                     </td>
+                                    <td></td>
                                 </tr>
 
                                 {/* verifico se a linha que quero expandir é o id que eu cliquei */}
