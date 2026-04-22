@@ -51,6 +51,18 @@
     background-color: transparent;
 }
 
+.taskSelectTable{
+    width: 100%;
+    padding: 5px;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--background-surface-color);
+    cursor: pointer;
+    font-family: inherit; 
+}
+
+.taskSelectTable:focus{outline: none;}
+
 /* filtros */
 .filterHeader {
     cursor: pointer;

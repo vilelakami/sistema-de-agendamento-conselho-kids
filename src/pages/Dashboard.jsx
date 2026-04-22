@@ -25,7 +25,7 @@ function Dashboard() {
     // dados (exemplo)
     const [agendamentos, setAgendamentos] = useState([
         {
-            id: 8,
+            id: 1,
             responsavel: "Fernanda",
             cpf: "555.555.555-55",
             cep: "04444-044",
@@ -37,7 +37,7 @@ function Dashboard() {
             filhos: ["João - 10/09/2021", "Ana - 10/09/2021"]
         },
         {
-            id: 9,
+            id: 2,
             responsavel: "Marcos",
             cpf: "333.333.333-33",
             cep: "04865-050",
@@ -49,7 +49,7 @@ function Dashboard() {
             filhos: ["Lucas - 05/05/2020"]
         },
         {
-            id: 10,
+            id: 3,
             responsavel: "Carlos Oliveira",
             cpf: "111.111.111-11",
             cep: "05555-000",
@@ -98,6 +98,9 @@ function Dashboard() {
     //lógica dos filtros
     //criando uma lista temporária para verificar os status
     const agendamentosFiltrados = agendamentos.filter(item => {
+        if(!item){
+            return false;
+        }
         //verificando todos da lista, se o filtro for "todos" retorna todos
         if (filtroStatus === "todos") return true;
         // caso contrário ele verifica se a lista tem o status que eu cliquei e verifica
@@ -125,6 +128,7 @@ function Dashboard() {
     setModalAberto(false); // Fecha o modal após salvar
     };  
 
+    // função do botão novo contato (digitar manualmente as informações)
     const adicionarLinha = () =>{
         const novaLinha = {
             id: "TEMP",
@@ -139,9 +143,11 @@ function Dashboard() {
             filhos: []
         };
 
+        // passando pra agendamentos a nova linha
         setAgendamentos([novaLinha, ...agendamentos]);
     };
 
+    // função que atualiza a linha e exibe ela
     const atualizarLinha = (campo, valor) =>{
         const novaLista = agendamentos.map(item => {
             if(item.id === "TEMP"){
@@ -152,16 +158,20 @@ function Dashboard() {
         setAgendamentos(novaLista);
     };
 
+    //função do botão salvar dados
     const confirmarLinha = () => {
         const novaLista = agendamentos.map(item => {
+            if(!item) return false;
+            const maiorID = agendamentos.filter(item => item !== undefined && item!== null).reduce((max, item) => (item.id > max ? item.id : max), 0);
             if(item.id === "TEMP"){
                 if(item.responsavel === "" || item.cpf === "" || item.cep === "" || item.quantidadeFilhos === "" || item.status === ""){
                     alert("Preencha todos os campos.");
                     return;
                 }
                 return{
+                    // retornando um novo id
                     ...item,
-                    id: agendamentos.length + 1
+                    id: maiorID + 1
                 };
             }
             return item
@@ -169,6 +179,7 @@ function Dashboard() {
         setAgendamentos(novaLista);
     };
 
+    // função pra colocar os pontos e o traço no cpf
     const aplicarMascaraCPF = (valor) => {
         const nums = valor.replace(/\D/g, ""); 
         if (nums.length <= 3) return nums;
@@ -177,6 +188,7 @@ function Dashboard() {
         return `${nums.slice(0, 3)}.${nums.slice(3, 6)}.${nums.slice(6, 9)}-${nums.slice(9, 11)}`;
     };
 
+    // função que aplica o traço no cep
     const aplicarMascaraCEP = (valor) => {
         const nums = valor.replace(/\D/g, "");
         if(nums.length <= 5) return nums;
@@ -270,7 +282,7 @@ function Dashboard() {
                                                 setModalAberto(true); 
                                             }}
                                         >
-                                            {item.responsavel}
+                                            {item?.responsavel}
                                         </a>
                                         )}
                                     </td>
@@ -284,7 +296,7 @@ function Dashboard() {
                                             atualizarLinha("cpf", formatado)}}
                                         />
                                     ): (
-                                        item.cpf
+                                        item?.cpf
                                     )}
                                     </td>
                                     <td>{item.id === "TEMP" ? (
@@ -297,19 +309,24 @@ function Dashboard() {
                                             atualizarLinha("cep", formatado)} }
                                         />
                                     ) : (
-                                        item.cep
+                                        item?.cep
                                     )}
                                     </td>
                                     <td>{item.id === "TEMP" ? (
-                                        <input type="text"
-                                        className={styles.inputTable}
-                                        placeholder="Como Conheceu?"
-                                        onChange={(e) => atualizarLinha("comoConheceu", e.target.value)}
-                                         />
+                                        <select
+                                            className={styles.taskSelectTable} 
+                                            value={item.comoConheceu}
+                                            onChange={(e) => atualizarLinha("comoConheceu", e.target.value)}
+                                        >
+                                            <option value="">Selecione...</option>
+                                            <option value="google">Google</option>
+                                            <option value="instagram">Instagram</option>
+                                            <option value="indicacao">Indicação</option>
+                                            <option value="outros">Outros</option>
+                                        </select>
                                     ) : (
-                                        item.comoConheceu
-                                    )}
-                                    </td>
+                                        item?.comoConheceu
+                                    )}</td>
                                     <td>{item.dataCriacao}</td>
                                     <td>{item.id === "TEMP" ? (
                                         <input type="number"
@@ -318,9 +335,24 @@ function Dashboard() {
                                         onChange={(e) => atualizarLinha("quantidadeFilhos", e.target.value)} 
                                         />
                                     ) : (
-                                        item.quantidadeFilhos
+                                        item?.quantidadeFilhos
                                     )}</td>
-                                    <td>{item.status}</td>
+                                    <td>{item.id === "TEMP" ?(
+                                        <select
+                                            className={styles.taskSelectTable}
+                                            value={item.status}
+                                            onChange={(e) => atualizarLinha("status", e.target.value)}
+                                        >
+                                            <option value="">Selecione...</option>
+                                            <option value="pendente">pendente</option>
+                                            <option value="agendado">agendado</option>
+                                            <option value="concluido">concluído</option>
+
+                                        </select>
+                                    ) : ( item?.status
+
+                                    )}
+                                    </td>
                                     {/* lógica do agendamento */}
                                     <td className={styles.colAgendamento}>
                                         {/* o id dessa linha é o mesmo q cliquei pra editar? */}
