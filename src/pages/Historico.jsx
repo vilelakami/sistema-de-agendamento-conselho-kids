@@ -3,6 +3,7 @@ import styles from "./css/Historico.module.css";
 // uselocation para trazer dados de onde veio
 import { useNavigate, useLocation } from 'react-router-dom';
 import Button from "../components/Button/Button";
+import voltarIcon from "../assets/icons/back.svg";
 
 function Historico() {
     const [linhaExpandida, setLinhaExpandida] = useState(null);
@@ -52,10 +53,9 @@ function Historico() {
 
     return (
         <div className={styles.tableWrapper}>
+            <p className={styles.TaskTitlePage}>Histórico de Agendamento (+30 dias)</p>
             {/* o conteúdo da minha tabela */}
             <div className={styles.container}>
-                <h2>Histórico de Agendamentos (30+ dias)</h2>
-
                 {/* verificando se ha agendamentos */}
                 {agendamentosHistorico.length === 0 ? (
                     <p className={styles.mensagemVazia}>Nenhum agendamento no histórico ainda.</p>
@@ -76,7 +76,7 @@ function Historico() {
                                 <th></th>
                                 <th className={styles.taskBtnAtividade}>
                                     <button onClick={() => navigate('/Dashboard')} title="Voltar ao Dashboard">
-                                        Voltar
+                                        <img src={voltarIcon} alt="voltar ao dashboard" />
                                     </button>
                                 </th>
                                 <th></th>

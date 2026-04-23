@@ -1,11 +1,20 @@
 /* estilizando histórico */
 .tableWrapper {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     min-height: 100vh;
     margin: 0 auto;
     padding: var(--spacing-sm);
+}
+
+.TaskTitlePage {
+    font-size: 48px;
+    font-weight: 700;
+    margin-block: 10px;
+    color: var(--font-color-additional);
+    text-shadow: 2px 1px 1px #000000;
 }
 
 /* container */
@@ -16,7 +25,6 @@
     overflow: auto;
     border-radius: 18px 18px 0 0;
     background-color: var(--background-surface-color);
-    padding: var(--spacing-md);
 }
 
 .container h2 {
@@ -27,10 +35,11 @@
 }
 
 .mensagemVazia {
-    text-align: center;
-    color: var(--font-secondary-color);
-    padding: var(--spacing-lg);
-    font-size: 16px;
+    font-size: 40px;
+    font-weight: 700;
+    margin-block: 10px;
+    color: var(--font-color-additional);
+    text-shadow: 2px 1px 1px #000000;
 }
 
 /* tabela */
@@ -51,10 +60,6 @@
 .taskTable tbody td {
     padding: var(--spacing-sm);
     text-align: center;
-}
-
-.taskTable td:nth-child(9) img {
-    margin-top: 5px;
 }
 
 .taskBtnAtividade {
@@ -130,20 +135,14 @@
 }
 
 .btnAlunos {
-    background-color: transparent;
-    border: 1px solid var(--font-primary-color);
+    width: 100%;
+    max-width: 300px;
+    padding: var(--spacing-sm);
+    border-radius: 32px;
+    background-color: #1DBC08;
     color: var(--font-primary-color);
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-.btnAlunos:hover {
-    background-color: var(--font-primary-color);
-    color: var(--background-surface-color);
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .rowExpanded {

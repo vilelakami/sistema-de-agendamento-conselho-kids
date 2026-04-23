@@ -251,6 +251,7 @@ function Dashboard() {
     //desenhando na tela
     return (
         <div className={styles.tableWrapper}>
+            <p className={styles.TaskTitlePage}>Dashboard</p>
             <div className={styles.container}>
                 <table className={styles.taskTable}>
                     <thead>
