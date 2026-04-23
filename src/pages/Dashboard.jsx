@@ -1,6 +1,6 @@
-import React, { useState } from "react"; 
+import React, { useState, useEffect } from "react";
 import styles from "./css/Dashboard.module.css";
-import { Link } from 'react-router-dom'; 
+import { Link, useNavigate } from 'react-router-dom';
 import ModalDashboard from "./ModalDashboard";
 // importando botão reutilizável da pasta dos components
 import Button from "../components/Button/Button";
@@ -16,11 +16,23 @@ function Dashboard() {
     const [menuDataAberto, setMenuDataAberto] = useState(false);
     const [modalAberto, setModalAberto] = useState(false);
     const [itemSelecionado, setItemSelecionado] = useState(null);
+    const navigate = useNavigate();
 
     // editando dt e hora do agendamento
     const [editandoId, setEditandoId] = useState(null);
     const [dataInput, setDataInput] = useState("");
     const [horaInput, setHoraInput] = useState("");
+
+    // Função para calcular dias desde a criação
+    const calcularDiasDesdesCriacao = (dataCriacaoStr) => {
+        // Converte "DD/MM/YYYY" para Date
+        const [dia, mes, ano] = dataCriacaoStr.split('/').map(Number);
+        const dataCriacao = new Date(ano, mes - 1, dia);
+        const hoje = new Date();
+        const diferenca = hoje - dataCriacao;
+        const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+        return dias;
+    };
 
     // dados (exemplo)
     const [agendamentos, setAgendamentos] = useState([
@@ -56,11 +68,16 @@ function Dashboard() {
             comoConheceu: "Indicação",
             dataCriacao: "15/04/2026",
             quantidadeFilhos: 1,
-            status: "pendente", 
-            dataAgendamento: null, 
+            status: "pendente",
+            dataAgendamento: null,
             filhos: ["Enzo - 12/02/2018"]
         }
     ]);
+
+    // Salvar agendamentos no localStorage sempre que mudam
+    useEffect(() => {
+        localStorage.setItem('agendamentos', JSON.stringify(agendamentos));
+    }, [agendamentos]);
 
     // função que salva a edição da data e hora
     const salvarEdicao = (id, novoStatus) => {
@@ -95,9 +112,25 @@ function Dashboard() {
         setHoraInput("");
     };
 
+    // Separar agendamentos: menos de 30 dias no Dashboard, 30+ no Histórico
+    const agendamentosAtivos = agendamentos.filter(item => {
+        if (!item) return false;
+        // Se for TEMP (novo contato), sempre mostra no Dashboard
+        if (item.id === "TEMP") return true;
+        // Senão, filtra apenas os com menos de 30 dias
+        const diasDesdesCriacao = calcularDiasDesdesCriacao(item.dataCriacao);
+        return diasDesdesCriacao < 30;
+    });
+
+    const agendamentosHistorico = agendamentos.filter(item => {
+        if (!item || item.id === "TEMP") return false;
+        const diasDesdesCriacao = calcularDiasDesdesCriacao(item.dataCriacao);
+        return diasDesdesCriacao >= 30;
+    });
+
     //lógica dos filtros
     //criando uma lista temporária para verificar os status
-    const agendamentosFiltrados = agendamentos.filter(item => {
+    const agendamentosFiltrados = agendamentosAtivos.filter(item => {
         if(!item){
             return false;
         }
@@ -266,8 +299,8 @@ function Dashboard() {
                                 <button onClick={adicionarLinha}>
                                     <img src={novoContatoIcon} alt="novo contato" />
                                 </button>
-                                <button>
-                                    <img src={historicoIcon} alt="novo contato" />
+                                <button onClick={() => navigate('/Historico', { state: { agendamentosHistorico } })}>
+                                    <img src={historicoIcon} alt="histórico" />
                                 </button>
                             </th>
                             <th></th>

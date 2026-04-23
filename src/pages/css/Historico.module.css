@@ -1,0 +1,156 @@
+/* estilizando histórico */
+.tableWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: var(--spacing-sm);
+}
+
+/* container */
+.container {
+    width: 100%;
+    max-width: 1440px;
+    min-height: 100vh;
+    overflow: auto;
+    border-radius: 18px 18px 0 0;
+    background-color: var(--background-surface-color);
+    padding: var(--spacing-md);
+}
+
+.container h2 {
+    color: var(--font-primary-color);
+    margin-bottom: var(--spacing-md);
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.mensagemVazia {
+    text-align: center;
+    color: var(--font-secondary-color);
+    padding: var(--spacing-lg);
+    font-size: 16px;
+}
+
+/* tabela */
+.taskTable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.taskTable thead tr th {
+    background-color: #1D2B50;
+    color: var(--font-secondary-color);
+    font-weight: 500;
+    font-size: 16px;
+    padding: var(--spacing-sm);
+}
+
+.taskTable tbody td {
+    padding: var(--spacing-sm);
+    text-align: center;
+}
+
+.taskTable td:nth-child(9) img {
+    margin-top: 5px;
+}
+
+.taskBtnAtividade {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.taskBtnAtividade button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.taskBtnAtividade button img {
+    width: 20px;
+    height: 20px;
+}
+
+/* status: linhas, pendente, agendado e concluido */
+.rowConcluido td,
+.rowConcluido + .rowExpanded td {
+    background-color: var(--status-color-finished) !important;
+}
+
+.rowPendente td,
+.rowPendente + .rowExpanded td {
+    background-color: var(--status-color-pendente) !important;
+}
+
+.rowAgendado td,
+.rowAgendado + .rowExpanded td {
+    background-color: var(--status-color-agendado) !important;
+}
+
+.rowConcluido + .rowExpanded td,
+.rowPendente + .rowExpanded td,
+.rowAgendado + .rowExpanded td {
+    border-top: none;
+}
+
+/* bordas claras para separar */
+.taskTable tbody tr:not(.rowExpanded) {
+    border-bottom: 1px solid var(--background-primary-color);
+}
+
+.taskTable thead th:first-child,
+.taskTable tbody td:first-child {
+    border-right: 1px solid var(--background-primary-color);
+}
+
+.filhosLista {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-weight: 600;
+    text-align: left;
+    margin-left: 48px;
+}
+
+.agendamentoContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.colAgendamento {
+    text-align: center;
+}
+
+.btnAlunos {
+    background-color: transparent;
+    border: 1px solid var(--font-primary-color);
+    color: var(--font-primary-color);
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btnAlunos:hover {
+    background-color: var(--font-primary-color);
+    color: var(--background-surface-color);
+}
+
+.rowExpanded {
+    display: table-row;
+}
+
+.rowExpanded td {
+    padding: 20px !important;
+    background-color: var(--background-primary-color) !important;
+}
