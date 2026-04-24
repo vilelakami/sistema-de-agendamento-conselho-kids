@@ -4,12 +4,26 @@ import editIcon from "../assets/icons/edit_icon.svg"
 
 function ModalDashboard({isOpen, onClose, user, atualizarStatusGlobal}){
     const [statusLocal, setStatusLocal] = useState(user?.status || "pendente");
+    const [descricao, setDescricao] = useState(user?.descricao || "");
+    const [editMode, setEditMode] = useState(false);
 
     useEffect(()=>{
         if(user){
             setStatusLocal(user.status);
+            setDescricao(user.descricao || "");
+            setEditMode(false);
         }
     }, [user]);
+
+    const handleEditarClick = () => {
+        if (!editMode) {
+            setEditMode(true);
+            return;
+        }
+
+        atualizarStatusGlobal(user.id, statusLocal);
+        setEditMode(false);
+    };
 
     // se o modal estiver diferente de aberto retorna null
     if (!isOpen || !user) return null;
@@ -49,8 +63,9 @@ function ModalDashboard({isOpen, onClose, user, atualizarStatusGlobal}){
                                     <input 
                                     type="radio" 
                                     id="pendente" 
-                                    name="pendente" 
+                                    name="status" 
                                     value="pendente" 
+                                    disabled={!editMode}
                                     checked={statusLocal === "pendente"} 
                                     onChange={(e) => setStatusLocal(e.target.value)}/>
                                     <label htmlFor="pendente">Pendente</label>
@@ -59,9 +74,10 @@ function ModalDashboard({isOpen, onClose, user, atualizarStatusGlobal}){
                                     <input 
                                     type="radio" 
                                     id="agendado" 
-                                    name="agendado" 
+                                    name="status" 
                                     value="agendado" 
-                                    checked={user.status === "agendado"}
+                                    disabled={!editMode}
+                                    checked={statusLocal === "agendado"}
                                     onChange={(e) => setStatusLocal(e.target.value)}/>
                                     <label htmlFor="agendado">Agendado</label>
                                 </div>
@@ -69,9 +85,10 @@ function ModalDashboard({isOpen, onClose, user, atualizarStatusGlobal}){
                                     <input 
                                     type="radio" 
                                     id="concluido" 
-                                    name="concluido" 
+                                    name="status" 
                                     value="concluido" 
-                                    checked={user.status === "concluido"}
+                                    disabled={!editMode}
+                                    checked={statusLocal === "concluido"}
                                     onChange={(e) => setStatusLocal(e.target.value)}/>
                                     <label htmlFor="concluido">Concluído</label>
                                 </div>
@@ -82,11 +99,19 @@ function ModalDashboard({isOpen, onClose, user, atualizarStatusGlobal}){
                     <div className={styles.taskDescription}>
                         <div className={styles.textArea}>
                             <h2>Descrição</h2>
-                            <textarea className={styles.taskTextArea}></textarea>
+                            <textarea
+                                className={styles.taskTextArea}
+                                disabled={!editMode}
+                                value={descricao}
+                                onChange={(e) => setDescricao(e.target.value)}
+                            ></textarea>
                         </div>
                         {/* botão editar */}
                         <div className={styles.btnEdit}>
-                            <button onClick={() => atualizarStatusGlobal(user.id, statusLocal)}><img src={editIcon} alt="editar" />Editar</button>
+                            <button onClick={handleEditarClick}>
+                                <img src={editIcon} alt="editar" />
+                                {editMode ? "Salvar" : "Editar"}
+                            </button>
                         </div>
                     </div>
                 </div>

@@ -102,6 +102,12 @@
     min-height: 150px;
 }
 
+.textArea textarea:disabled {
+    background-color: #f6f6f6;
+    color: #666;
+    cursor: not-allowed;
+}
+
 .inputStatus {
     align-items: flex-start;
     gap: 8px;
