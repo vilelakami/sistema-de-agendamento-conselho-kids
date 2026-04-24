@@ -1,0 +1,90 @@
+.container{
+    max-width: 250px;
+    width: 100%;
+    height: 100vh;
+    background-color: #1D2B50;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    max-height: 300px;
+    height: 100%;
+}
+
+.taskHeader{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
+    color: var(--font-secondary-color);
+    font-weight: 300;
+    margin-top: 15px;
+}
+
+.taskContent p,
+.taskUsuario p{
+    color: var(--font-color-additional2);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.taskUsuario li{
+    margin-left: -3px;
+}
+.taskIcon{
+    width: 18px;
+}
+
+.taskContent,
+.taskUsuario{
+    display: flex;
+    flex-direction: column;    
+}
+
+.taskContent nav ul,
+.taskUsuario ul{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0;
+    gap: 10px;
+}
+
+.taskContent nav ul li,
+.taskUsuario ul li{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.taskUsuario ul li{
+    gap: 18px;
+}
+
+.taskContent nav ul li a,
+.taskUsuario ul li a{
+    color: var(--font-secondary-color);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.taskLogout{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.taskLogout a{
+    color: var(--font-secondary-color);
+    font-size: 12px;
+}

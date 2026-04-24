@@ -7,6 +7,8 @@ import Button from "../components/Button/Button";
 import calendarIcon from "../assets/icons/calendar.svg";
 import historicoIcon from "../assets/icons/historico.svg";
 import novoContatoIcon from "../assets/icons/novoContato.svg";
+import Sidebar from "../components/sidebar/Sidebar";
+
 
 function Dashboard() {
     // estados
@@ -250,242 +252,244 @@ function Dashboard() {
 
     //desenhando na tela
     return (
-        <div className={styles.tableWrapper}>
-            <p className={styles.TaskTitlePage}>Dashboard</p>
-            <div className={styles.container}>
-                <table className={styles.taskTable}>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Responsável</th>
-                            <th>CPF</th>
-                            <th>CEP</th>
-                            <th>Como Conheceu:</th>
-                            <th>Dt. de Criação:</th>
-                            <th>Qtde. Filhos</th>
-                            {/* meus filtros status e agendamento */}
-                            {/* onclick: responsável por "apagar" ou "ascender" a combobox */}
-                            <th className={styles.filterHeader} onClick={() => setMenuStatusAberto(!menuStatusAberto)}>
-                                Status <span className={styles.taskArrow}>v</span>
-                                {/* se menustatus é verdadeiro ele executa os () */}
-                                {menuStatusAberto && (
-                                    // não deixa o onclick se propagar pro > statyus v
-                                    <div className={styles.filter} onClick={(e) => e.stopPropagation()}>
-                                        {/* mapeando todos os estados */}
-                                        {["todos", "pendente", "agendado", "concluido"].map((st) => (
-                                            // passando cada estado pra key e aplicando a class e o onclick
-                                            <div key={st} className={styles.filterOption} onClick={() => handleFiltroStatus(st)}>
-                                                {/* e aqui os inputs que sao os "radios" que checam se o que eu cliquei é um st da lista mapeanda */}
-                                                <input type="radio" name="status" checked={filtroStatus === st} readOnly />
-                                                <label>{st.charAt(0).toUpperCase() + st.slice(1)}</label>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </th>
-                            {/* mesma lógica dos status */}
-                            <th className={styles.filterHeader} onClick={() => setMenuDataAberto(!menuDataAberto)}>
-                                Agendamento <span className={styles.taskArrow}>v</span>
-                                {menuDataAberto && (
-                                    <div className={styles.filter} onClick={(e) => e.stopPropagation()}>
-                                        <span style={{color: 'white', fontSize: '12px'}}>Data específica:</span>
-                                        {/* abrindo o input de data */}
-                                        <input type="date" className={styles.inputDate} />
-                                        {/* botão de aplicar */}
-                                        <Button className={styles.btnFiltrar} onClick={() => setMenuDataAberto(false)}>Aplicar</Button>
-                                    </div>
-                                )}
-                            </th>
-                            <th className={styles.taskBtnAtividade}>
-                                <button onClick={adicionarLinha}>
-                                    <img src={novoContatoIcon} alt="novo contato" />
-                                </button>
-                                <button onClick={() => navigate('/Historico', { state: { agendamentosHistorico } })}>
-                                    <img src={historicoIcon} alt="histórico" />
-                                </button>
-                            </th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    
-                    <tbody>
-                        {/* mapeio os status */}
-                        {listaOrganizada.map((item) => (
-                            // passo o id dos tatus pra key
-                            <React.Fragment key={item.id}>
-                                {/* aqui estou criando classes para os meus 3 tipos de status, estou juntando a palavra row+(pendente, agendado ou concluido) ao invés de criar 3 classes diferentes */}
-                                <tr className={styles[`row${(item.status || "Pendente").charAt(0).toUpperCase() + (item.status || "Pendente").slice(1)}`]}>
-                                    {/* trazendo as linhas do banco */}
+        <div className={styles.layout}>
+            <Sidebar />
+            <div className={styles.tableWrapper}>
+                <div className={styles.container}>
+                    <table className={styles.taskTable}>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Responsável</th>
+                                <th>CPF</th>
+                                <th>CEP</th>
+                                <th>Como Conheceu:</th>
+                                <th>Dt. de Criação:</th>
+                                <th>Qtde. Filhos</th>
+                                {/* meus filtros status e agendamento */}
+                                {/* onclick: responsável por "apagar" ou "ascender" a combobox */}
+                                <th className={styles.filterHeader} onClick={() => setMenuStatusAberto(!menuStatusAberto)}>
+                                    Status <span className={styles.taskArrow}>v</span>
+                                    {/* se menustatus é verdadeiro ele executa os () */}
+                                    {menuStatusAberto && (
+                                        // não deixa o onclick se propagar pro > statyus v
+                                        <div className={styles.filter} onClick={(e) => e.stopPropagation()}>
+                                            {/* mapeando todos os estados */}
+                                            {["todos", "pendente", "agendado", "concluido"].map((st) => (
+                                                // passando cada estado pra key e aplicando a class e o onclick
+                                                <div key={st} className={styles.filterOption} onClick={() => handleFiltroStatus(st)}>
+                                                    {/* e aqui os inputs que sao os "radios" que checam se o que eu cliquei é um st da lista mapeanda */}
+                                                    <input type="radio" name="status" checked={filtroStatus === st} readOnly />
+                                                    <label>{st.charAt(0).toUpperCase() + st.slice(1)}</label>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </th>
+                                {/* mesma lógica dos status */}
+                                <th className={styles.filterHeader} onClick={() => setMenuDataAberto(!menuDataAberto)}>
+                                    Agendamento <span className={styles.taskArrow}>v</span>
+                                    {menuDataAberto && (
+                                        <div className={styles.filter} onClick={(e) => e.stopPropagation()}>
+                                            <span style={{color: 'white', fontSize: '12px'}}>Data específica:</span>
+                                            {/* abrindo o input de data */}
+                                            <input type="date" className={styles.inputDate} />
+                                            {/* botão de aplicar */}
+                                            <Button className={styles.btnFiltrar} onClick={() => setMenuDataAberto(false)}>Aplicar</Button>
+                                        </div>
+                                    )}
+                                </th>
+                                <th className={styles.taskBtnAtividade}>
+                                    <button onClick={adicionarLinha}>
+                                        <img src={novoContatoIcon} alt="novo contato" />
+                                    </button>
+                                    <button onClick={() => navigate('/Historico', { state: { agendamentosHistorico } })}>
+                                        <img src={historicoIcon} alt="histórico" />
+                                    </button>
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            {/* mapeio os status */}
+                            {listaOrganizada.map((item) => (
+                                // passo o id dos tatus pra key
+                                <React.Fragment key={item.id}>
+                                    {/* aqui estou criando classes para os meus 3 tipos de status, estou juntando a palavra row+(pendente, agendado ou concluido) ao invés de criar 3 classes diferentes */}
+                                    <tr className={styles[`row${(item.status || "Pendente").charAt(0).toUpperCase() + (item.status || "Pendente").slice(1)}`]}>
+                                        {/* trazendo as linhas do banco */}
 
-                                    <td>{item.id}</td>
-                                    <td>
-                                        {item.id === "TEMP" ? (
+                                        <td>{item.id}</td>
+                                        <td>
+                                            {item.id === "TEMP" ? (
+                                                <input type="text"
+                                                className={styles.inputTable}
+                                                placeholder="Nome"
+                                                onChange={(e) => atualizarLinha("responsavel", e.target.value)}
+                                                />
+                                            ):(
+                                                <a 
+                                                href="#" 
+                                                className={styles.nomeLink} 
+                                                onClick={(e) => {
+                                                    e.preventDefault(); 
+                                                    e.stopPropagation(); 
+                                                    setItemSelecionado(item);
+                                                    setModalAberto(true); 
+                                                }}
+                                            >
+                                                {item?.responsavel}
+                                            </a>
+                                            )}
+                                        </td>
+                                        <td>{item.id === "TEMP" ? (
                                             <input type="text"
                                             className={styles.inputTable}
-                                            placeholder="Nome"
-                                            onChange={(e) => atualizarLinha("responsavel", e.target.value)}
-                                             />
-                                        ):(
-                                            <a 
-                                            href="#" 
-                                            className={styles.nomeLink} 
-                                            onClick={(e) => {
-                                                e.preventDefault(); 
-                                                e.stopPropagation(); 
-                                                setItemSelecionado(item);
-                                                setModalAberto(true); 
-                                            }}
-                                        >
-                                            {item?.responsavel}
-                                        </a>
+                                            placeholder="CPF" 
+                                            value={item.cpf}
+                                            onChange={(e) => {
+                                                const formatado = aplicarMascaraCPF(e.target.value);
+                                                atualizarLinha("cpf", formatado)}}
+                                            />
+                                        ): (
+                                            item?.cpf
                                         )}
-                                    </td>
-                                    <td>{item.id === "TEMP" ? (
-                                        <input type="text"
-                                        className={styles.inputTable}
-                                        placeholder="CPF" 
-                                        value={item.cpf}
-                                        onChange={(e) => {
-                                            const formatado = aplicarMascaraCPF(e.target.value);
-                                            atualizarLinha("cpf", formatado)}}
-                                        />
-                                    ): (
-                                        item?.cpf
-                                    )}
-                                    </td>
-                                    <td>{item.id === "TEMP" ? (
-                                        <input type="text"
-                                        className={styles.inputTable}
-                                        placeholder="CEP"
-                                        value={item.cep}
-                                        onChange={(e) => {
-                                            const formatado = aplicarMascaraCEP(e.target.value);
-                                            atualizarLinha("cep", formatado)} }
-                                        />
-                                    ) : (
-                                        item?.cep
-                                    )}
-                                    </td>
-                                    <td>{item.id === "TEMP" ? (
-                                        <select
-                                            className={styles.taskSelectTable} 
-                                            value={item.comoConheceu}
-                                            onChange={(e) => atualizarLinha("comoConheceu", e.target.value)}
-                                        >
-                                            <option value="">Selecione...</option>
-                                            <option value="google">Google</option>
-                                            <option value="instagram">Instagram</option>
-                                            <option value="indicacao">Indicação</option>
-                                            <option value="outros">Outros</option>
-                                        </select>
-                                    ) : (
-                                        item?.comoConheceu
-                                    )}</td>
-                                    <td>{item.dataCriacao}</td>
-                                    <td>{item.id === "TEMP" ? (
-                                        <input type="number"
-                                        className={styles.inputTable}
-                                        placeholder="Qtde. filhos"
-                                        onChange={(e) => atualizarLinha("quantidadeFilhos", e.target.value)} 
-                                        />
-                                    ) : (
-                                        item?.quantidadeFilhos
-                                    )}</td>
-                                    <td>{item.id === "TEMP" ?(
-                                        <select
-                                            className={styles.taskSelectTable}
-                                            value={item.status}
-                                            onChange={(e) => atualizarLinha("status", e.target.value)}
-                                        >
-                                            <option value="">Selecione...</option>
-                                            <option value="pendente">pendente</option>
-                                            <option value="agendado">agendado</option>
-                                            <option value="concluido">concluído</option>
-
-                                        </select>
-                                    ) : ( item?.status
-
-                                    )}
-                                    </td>
-                                    {/* lógica do agendamento */}
-                                    <td className={styles.colAgendamento}>
-                                        {/* o id dessa linha é o mesmo q cliquei pra editar? */}
-                                        {editandoId === item.id ? (
-                                            // se sim vem pra cá: nao deixo que o clique do input se propague pro pai
-                                            <div className={styles.editAgendamento} onClick={(e) => e.stopPropagation()}>
-                                                {/* abre a janela pr escolher a data e salvo com onchange */}
-                                                <input 
-                                                    type="date" 
-                                                    className={styles.inputDatePequeno}
-                                                    onChange={(e) => setDataInput(e.target.value)}
-                                                />
-                                                {/* faço o mesmo com a hora */}
-                                                <input 
-                                                    type="text" 
-                                                    placeholder="00:00h"
-                                                    className={styles.inputHora}
-                                                    onChange={(e) => setHoraInput(e.target.value)}
-                                                />
-                                                {/* botoes pra salvar ou cancelar edição */}
-                                                <div className={styles.editButtons}>
-                                                    <button onClick={() => salvarEdicao(item.id, "agendado")}>✓</button>
-                                                    <button onClick={() => setEditandoId(null)}>✗</button>
-                                                    <button onClick={() => salvarEdicao(item.id, "concluido")}>Done</button>
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <div className={styles.agendamentoVisual} onClick={() => setEditandoId(item.id)}>
-                                                {item.dataAgendamento ? (
-                                                    <div className={styles.agendamentoContainer}>
-                                                        {item.dataAgendamento.split(' ').map((texto, index) => (
-                                                            <span key={index}>{texto}</span>
-                                                        ))}
-                                                    </div>
-                                                ) : (
-                                                    <img src={calendarIcon} alt="calendário" className={styles.calendarIconCenter} />
-                                                )}
-                                            </div>
-                                        )}
-                                    </td>
-                                    {/* função que eu criei em /components do botão */}
-                                    <td>
-                                        {item.id === "TEMP" ? (
-                                            <button onClick={confirmarLinha}>
-                                                Salvar
-                                            </button>
-                                        ) : (
-                                        <Button onClick={() => toggleLinha(item.id)} className={styles.btnAlunos}>
-                                            Crianças {">"}
-                                        </Button>
-                                        )}
-                                    </td>
-                                    <td></td>
-                                </tr>
-
-                                {/* verifico se a linha que quero expandir é o id que eu cliquei */}
-                                {linhaExpandida === item.id && (
-                                    <tr className={styles.rowExpanded}>
-                                        <td colSpan="10">
-                                            <div className={styles.filhosLista}>
-                                                {/* mapeando a lista de filhos para cada id encontrado */}
-                                                {item.filhos.map((filho, index) => (
-                                                    <p key={index}>• {filho}</p>
-                                                ))}
-                                            </div>
                                         </td>
+                                        <td>{item.id === "TEMP" ? (
+                                            <input type="text"
+                                            className={styles.inputTable}
+                                            placeholder="CEP"
+                                            value={item.cep}
+                                            onChange={(e) => {
+                                                const formatado = aplicarMascaraCEP(e.target.value);
+                                                atualizarLinha("cep", formatado)} }
+                                            />
+                                        ) : (
+                                            item?.cep
+                                        )}
+                                        </td>
+                                        <td>{item.id === "TEMP" ? (
+                                            <select
+                                                className={styles.taskSelectTable} 
+                                                value={item.comoConheceu}
+                                                onChange={(e) => atualizarLinha("comoConheceu", e.target.value)}
+                                            >
+                                                <option value="">Selecione...</option>
+                                                <option value="google">Google</option>
+                                                <option value="instagram">Instagram</option>
+                                                <option value="indicacao">Indicação</option>
+                                                <option value="outros">Outros</option>
+                                            </select>
+                                        ) : (
+                                            item?.comoConheceu
+                                        )}</td>
+                                        <td>{item.dataCriacao}</td>
+                                        <td>{item.id === "TEMP" ? (
+                                            <input type="number"
+                                            className={styles.inputTable}
+                                            placeholder="Qtde. filhos"
+                                            onChange={(e) => atualizarLinha("quantidadeFilhos", e.target.value)} 
+                                            />
+                                        ) : (
+                                            item?.quantidadeFilhos
+                                        )}</td>
+                                        <td>{item.id === "TEMP" ?(
+                                            <select
+                                                className={styles.taskSelectTable}
+                                                value={item.status}
+                                                onChange={(e) => atualizarLinha("status", e.target.value)}
+                                            >
+                                                <option value="">Selecione...</option>
+                                                <option value="pendente">pendente</option>
+                                                <option value="agendado">agendado</option>
+                                                <option value="concluido">concluído</option>
+
+                                            </select>
+                                        ) : ( item?.status
+
+                                        )}
+                                        </td>
+                                        {/* lógica do agendamento */}
+                                        <td className={styles.colAgendamento}>
+                                            {/* o id dessa linha é o mesmo q cliquei pra editar? */}
+                                            {editandoId === item.id ? (
+                                                // se sim vem pra cá: nao deixo que o clique do input se propague pro pai
+                                                <div className={styles.editAgendamento} onClick={(e) => e.stopPropagation()}>
+                                                    {/* abre a janela pr escolher a data e salvo com onchange */}
+                                                    <input 
+                                                        type="date" 
+                                                        className={styles.inputDatePequeno}
+                                                        onChange={(e) => setDataInput(e.target.value)}
+                                                    />
+                                                    {/* faço o mesmo com a hora */}
+                                                    <input 
+                                                        type="text" 
+                                                        placeholder="00:00h"
+                                                        className={styles.inputHora}
+                                                        onChange={(e) => setHoraInput(e.target.value)}
+                                                    />
+                                                    {/* botoes pra salvar ou cancelar edição */}
+                                                    <div className={styles.editButtons}>
+                                                        <button onClick={() => salvarEdicao(item.id, "agendado")}>✓</button>
+                                                        <button onClick={() => setEditandoId(null)}>✗</button>
+                                                        <button onClick={() => salvarEdicao(item.id, "concluido")}>Done</button>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div className={styles.agendamentoVisual} onClick={() => setEditandoId(item.id)}>
+                                                    {item.dataAgendamento ? (
+                                                        <div className={styles.agendamentoContainer}>
+                                                            {item.dataAgendamento.split(' ').map((texto, index) => (
+                                                                <span key={index}>{texto}</span>
+                                                            ))}
+                                                        </div>
+                                                    ) : (
+                                                        <img src={calendarIcon} alt="calendário" className={styles.calendarIconCenter} />
+                                                    )}
+                                                </div>
+                                            )}
+                                        </td>
+                                        {/* função que eu criei em /components do botão */}
+                                        <td>
+                                            {item.id === "TEMP" ? (
+                                                <button onClick={confirmarLinha}>
+                                                    Salvar
+                                                </button>
+                                            ) : (
+                                            <Button onClick={() => toggleLinha(item.id)} className={styles.btnAlunos}>
+                                                Crianças {">"}
+                                            </Button>
+                                            )}
+                                        </td>
+                                        <td></td>
                                     </tr>
-                                )}
-                            </React.Fragment>
-                        ))}
-                    </tbody>
-                </table>
+
+                                    {/* verifico se a linha que quero expandir é o id que eu cliquei */}
+                                    {linhaExpandida === item.id && (
+                                        <tr className={styles.rowExpanded}>
+                                            <td colSpan="10">
+                                                <div className={styles.filhosLista}>
+                                                    {/* mapeando a lista de filhos para cada id encontrado */}
+                                                    {item.filhos.map((filho, index) => (
+                                                        <p key={index}>• {filho}</p>
+                                                    ))}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+                                </React.Fragment>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <ModalDashboard
+                    isOpen={modalAberto}
+                    onClose={() => setModalAberto(false)}
+                    user={itemSelecionado}
+                    atualizarStatusGlobal={atualizarStatusGlobal}
+                />
             </div>
-            <ModalDashboard
-                isOpen={modalAberto}
-                onClose={() => setModalAberto(false)}
-                user={itemSelecionado}
-                atualizarStatusGlobal={atualizarStatusGlobal}
-            />
         </div>
     );
 }

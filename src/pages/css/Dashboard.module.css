@@ -1,7 +1,10 @@
 /* estilizando dashboard */
+.layout{
+    display: flex;
+}
+
 .tableWrapper {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     min-height: 100vh;
@@ -21,8 +24,9 @@
 .container {
     width: 100%;
     max-width: 1440px;
-    min-height: 100vh;
+    min-height: auto;
     overflow: auto;
+    margin: auto;
     border-radius: 18px 18px 0 0;
     background-color: var(--background-surface-color);
 }

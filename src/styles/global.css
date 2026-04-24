@@ -18,6 +18,10 @@ a{
     text-decoration: none;
 }
 
+li{
+    list-style: none;
+}
+
 .page-wrapper {
     display: flex;
     justify-content: center;
@@ -54,6 +58,7 @@ input {outline: none; border: none;}
     --font-primary-color: #000000;
     --font-secondary-color: #FFFFFF;
     --font-color-additional: #1D2B50;
+    --font-color-additional2: #d9d9d954;
 
 
     /* espaçamentos */
