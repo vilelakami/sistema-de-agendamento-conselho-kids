@@ -80,25 +80,31 @@
     height: 20px;
 }
 
-/* status: linhas, pendente, agendado e concluido */
-.rowConcluido td,
-.rowConcluido + .rowExpanded td {
-    background-color: var(--status-color-finished) !important;
-}
-
-.rowPendente td,
-.rowPendente + .rowExpanded td {
+/* status: linhas, aguardando resposta, visita agendada, visita cancelada e processo concluido */
+.rowAguardandoResposta td,
+.rowAguardandoResposta + .rowExpanded td {
     background-color: var(--status-color-pendente) !important;
 }
 
-.rowAgendado td,
-.rowAgendado + .rowExpanded td {
+.rowVisitaAgendada td,
+.rowVisitaAgendada + .rowExpanded td {
     background-color: var(--status-color-agendado) !important;
 }
 
-.rowConcluido + .rowExpanded td,
-.rowPendente + .rowExpanded td,
-.rowAgendado + .rowExpanded td {
+.rowVisitaCancelada td,
+.rowVisitaCancelada + .rowExpanded td {
+    background-color: var(--status-color-cancelado) !important;
+}
+
+.rowProcessoConcluido td,
+.rowProcessoConcluido + .rowExpanded td {
+    background-color: var(--status-color-finished) !important;
+}
+
+.rowAguardandoResposta + .rowExpanded td,
+.rowVisitaAgendada + .rowExpanded td,
+.rowVisitaCancelada + .rowExpanded td,
+.rowProcessoConcluido + .rowExpanded td {
     border-top: none;
 }
 

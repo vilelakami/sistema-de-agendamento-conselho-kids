@@ -1,121 +1,150 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styles from "./css/ModalDashboard.module.css";
-import editIcon from "../assets/icons/edit_icon.svg"
+import addFilhoIcon from "../assets/icons/addConta.svg";
+import { data } from "react-router-dom";
 
-function ModalDashboard({isOpen, onClose, user, atualizarStatusGlobal}){
-    const [statusLocal, setStatusLocal] = useState(user?.status || "pendente");
-    const [descricao, setDescricao] = useState(user?.descricao || "");
-    const [editMode, setEditMode] = useState(false);
+function ModalDashboard({ fecharModal, aoSalvar }){
+    const [filhos, setFilhos] = React.useState([]);
+    const [dados, setDados] = React.useState({
+        responsavel: "",
+        cpf: "",
+        cep: "",
+        comoConheceu: "",
+        status: "aguardando_resposta",
+        agendamento: "",
+        dataCriacao: "",
+        qtdeFilhos: ""
+    });
 
-    useEffect(()=>{
-        if(user){
-            setStatusLocal(user.status);
-            setDescricao(user.descricao || "");
-            setEditMode(false);
-        }
-    }, [user]);
-
-    const handleEditarClick = () => {
-        if (!editMode) {
-            setEditMode(true);
-            return;
-        }
-
-        atualizarStatusGlobal(user.id, statusLocal);
-        setEditMode(false);
+    const adicionarFilho = () => {
+        setFilhos([
+            ...filhos, 
+            { nome: "", idade: "" }
+        ]);
     };
 
-    // se o modal estiver diferente de aberto retorna null
-    if (!isOpen || !user) return null;
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setDados({
+            ...dados,
+            [name]: value
+        });
+    };
+
+    const handleSalvar = (e) => {
+        e.preventDefault();
+        const cadastroFinal = {
+            ...dados,
+            filhos: filhos,
+            quantidadeFilhos: filhos.length,
+            dataCriacao: new Date().toLocaleDateString('pt-BR'),
+            dataAgendamento: dados.agendamento || null
+        };
+        aoSalvar(cadastroFinal);
+        fecharModal();
+    };
+
     return(
-            <div className={styles.overlay} onClick={onClose}>
-                <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                    <div className={styles.taskHeader}>
-                        <div className={styles.profile}>
-                            {/* contém as infos: nome e status */}
-                            <div className={styles.taskPerfil}>
-                                <h1>{user.responsavel}</h1>
-                                <span className={styles[`status${user.status.charAt(0).toUpperCase() + user.status.slice(1)}`]}>
-                                    {user.status}
-                                </span>
-                            </div>
-                            {/* contém o restante das infos: cpf, cep, qtde de filhos */}
-                            <div className={styles.taskInfo}>
-                                <div className={styles.taskCpf}>
-                                    <h1>CPF:</h1>
-                                    <h2>{user.cpf}</h2>
-                                </div>
-                                <div className={styles.taskCep}>
-                                    <h1>CEP:</h1>
-                                    <h2>{user.cep}</h2>
-                                </div>
-                                <div className={styles.taskFilhos}>
-                                    <h1>Qtde. filhos:</h1>
-                                    <h2>{user.quantidadeFilhos}</h2>
-                                </div>
-                            </div>
+        <div className={styles.modalOverlay}>
+            <div className={styles.modalContainer}>
+                <p>Adicionar Responsável</p>
+                <div className={styles.taskDados}>
+                    <div className={styles.taskNome}>
+                        <label>Nome do Responsável</label>
+                        <input type="text"
+                        name="responsavel"
+                        placeholder="Nome completo *"
+                        value={dados.responsavel}
+                        onChange={handleInputChange}
+                        />
+                    </div>
+                    <div className={styles.taskDemaisInfo}>
+                        <div className={styles.taskCPF}>
+                            <label>CPF do Responsável</label>
+                            <input type="text"
+                            name="cpf"
+                            placeholder="CPF *"
+                            value={dados.cpf}
+                            onChange={handleInputChange}
+                            />
                         </div>
-                        {/* os status: permite que você mude o status como pendente, agendado e concluido */}
+                        <div className={styles.taskCEP}>
+                            <label>CEP do Responsável</label>
+                            <input type="text"
+                            name="cep"
+                            placeholder="CEP *"
+                            value={dados.cep}
+                            onChange={handleInputChange}
+                                />
+                        </div>
+                    </div>
+                    <div className={styles.taskDemaisInfo}>
+                        <div className={styles.taskComoConheceu}>
+                            <label>Como conheceu?</label>
+                            <select
+                            name="comoConheceu"
+                            value={dados.comoConheceu}
+                            onChange={handleInputChange}
+                            >
+                                <option value="">Selecione...</option>
+                                <option value="google">Google</option>
+                                <option value="instagram">Instagram</option>
+                                <option value="indicacao">Indicação</option>
+                                <option value="outros">Outros</option>
+                            </select>
+                        </div>
+                        <div className={styles.taskDataCriacao}>
+                            <label>Data de Criação</label>
+                            <input className={styles.taskInput} type="date" name="dataCriacao" value={dados.dataCriacao} onChange={handleInputChange} />
+                        </div>
+                        <div className={styles.taskQtdeFilhos}>
+                            <label>Qtde. filhos:</label>
+                            <input className={styles.taskInput} type="number" name="qtdeFilhos" value={dados.qtdeFilhos} onChange={handleInputChange} />
+                        </div>
+                    </div>
+                    <div className={styles.taskDemaisInfo}>
                         <div className={styles.taskStatus}>
-                            <h1>Status</h1>
-                            <div className={styles.inputStatus}>
-                                <div className={styles.pendente}>
-                                    <input 
-                                    type="radio" 
-                                    id="pendente" 
-                                    name="status" 
-                                    value="pendente" 
-                                    disabled={!editMode}
-                                    checked={statusLocal === "pendente"} 
-                                    onChange={(e) => setStatusLocal(e.target.value)}/>
-                                    <label htmlFor="pendente">Pendente</label>
+                            <label>Status</label>
+                            <select
+                                name="status"
+                                value={dados.status}
+                                onChange={handleInputChange}
+                            >
+                                <option value="">Selecione...</option>
+                                <option value="visita_agendada">Visita Agendada</option>
+                                <option value="aguardando_resposta">Aguardando Resposta</option>
+                                <option value="processo_concluido">Processo Concluído</option>
+                                <option value="visita_cancelada">Visita Cancelada</option>
+                            </select>
+                        </div>
+                        <div className={styles.taskAgendamento}>
+                            <label>Agendamento</label>
+                            <input type="datetime-local"
+                            name="agendamento"
+                            value={dados.agendamento}
+                            onChange={handleInputChange} /> 
+                        </div>
+                    </div>
+                    {filhos.map((filho,index)=> (                      
+                            <div key={index} className={styles.linhaFilho}>
+                                <div className={styles.taskNomeFilho}>
+                                    <label>Nome da Criança</label>
+                                    <input type="text"
+                                    placeholder="Nome Completo *" />
                                 </div>
-                                 <div className={styles.agendado}>
-                                    <input 
-                                    type="radio" 
-                                    id="agendado" 
-                                    name="status" 
-                                    value="agendado" 
-                                    disabled={!editMode}
-                                    checked={statusLocal === "agendado"}
-                                    onChange={(e) => setStatusLocal(e.target.value)}/>
-                                    <label htmlFor="agendado">Agendado</label>
-                                </div>
-                                <div className={styles.concluido}>
-                                    <input 
-                                    type="radio" 
-                                    id="concluido" 
-                                    name="status" 
-                                    value="concluido" 
-                                    disabled={!editMode}
-                                    checked={statusLocal === "concluido"}
-                                    onChange={(e) => setStatusLocal(e.target.value)}/>
-                                    <label htmlFor="concluido">Concluído</label>
+                                <div className={styles.taskNascFilho}>
+                                    <label>Data de Nasc.:</label>
+                                    <input type="date"/>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    {/* descrição, o campo de texto */}
-                    <div className={styles.taskDescription}>
-                        <div className={styles.textArea}>
-                            <h2>Descrição</h2>
-                            <textarea
-                                className={styles.taskTextArea}
-                                disabled={!editMode}
-                                value={descricao}
-                                onChange={(e) => setDescricao(e.target.value)}
-                            ></textarea>
-                        </div>
-                        {/* botão editar */}
-                        <div className={styles.btnEdit}>
-                            <button onClick={handleEditarClick}>
-                                <img src={editIcon} alt="editar" />
-                                {editMode ? "Salvar" : "Editar"}
-                            </button>
-                        </div>
-                    </div>
+                    ))}
+                </div>
+                <button className={styles.btnAddFilho} onClick={adicionarFilho}><img className={styles.taskIcon}src={addFilhoIcon} alt="adicionar" />Adicionar Filho</button>
+                <div className={styles.buttons}>
+                    <button onClick={handleSalvar}>Salvar</button>
+                    <button onClick={fecharModal}>Cancelar</button>
                 </div>
             </div>
+        </div>
     );
-}
-export default ModalDashboard;
+} export default ModalDashboard;

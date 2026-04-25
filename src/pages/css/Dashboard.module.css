@@ -4,12 +4,8 @@
 }
 
 .tableWrapper {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    margin: 0 auto;
-    padding: var(--spacing-sm);
+    display: block;
+    flex: 1;
 }
 
 .TaskTitlePage{
@@ -27,7 +23,6 @@
     min-height: auto;
     overflow: auto;
     margin: auto;
-    border-radius: 18px 18px 0 0;
     background-color: var(--background-surface-color);
 }
 
@@ -42,13 +37,14 @@
     background-color: #1D2B50;
     color: var(--font-secondary-color);
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     padding: var(--spacing-sm);
 }
 
 .taskTable tbody td {
     padding: var(--spacing-sm);
     text-align: center;
+    font-size: 12px;
 }
 
 .taskTable td:nth-child(9) img {
@@ -124,25 +120,31 @@
     font-weight: 600;
 }
 
-/* status: linhas, pendente, agendado e concluido */
-.rowConcluido td, 
-.rowConcluido + .rowExpanded td {
-    background-color: var(--status-color-finished) !important;
-}
-
-.rowPendente td, 
-.rowPendente + .rowExpanded td {
+/* status: linhas, aguardando resposta, visita agendada, visita cancelada e processo concluido */
+.rowAguardandoResposta td,
+.rowAguardandoResposta + .rowExpanded td {
     background-color: var(--status-color-pendente) !important;
 }
 
-.rowAgendado td, 
-.rowAgendado + .rowExpanded td {
+.rowVisitaAgendada td,
+.rowVisitaAgendada + .rowExpanded td {
     background-color: var(--status-color-agendado) !important;
 }
 
-.rowConcluido + .rowExpanded td,
-.rowPendente + .rowExpanded td,
-.rowAgendado + .rowExpanded td {
+.rowVisitaCancelada td,
+.rowVisitaCancelada + .rowExpanded td {
+    background-color: var(--status-color-cancelado) !important;
+}
+
+.rowProcessoConcluido td,
+.rowProcessoConcluido + .rowExpanded td {
+    background-color: var(--status-color-finished) !important;
+}
+
+.rowAguardandoResposta + .rowExpanded td,
+.rowVisitaAgendada + .rowExpanded td,
+.rowVisitaCancelada + .rowExpanded td,
+.rowProcessoConcluido + .rowExpanded td {
     border-top: none;
 }
 
@@ -151,18 +153,14 @@
     border-bottom: 1px solid var(--background-primary-color);
 }
 
-.taskTable thead th:first-child,
-.taskTable tbody td:first-child {
-    border-right: 1px solid var(--background-primary-color);
-}
-
 .filhosLista {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     font-weight: 600;
     text-align: left;
-    margin-left: 48px;
+    margin-left: 4px;
+    font-size: 11px;
 }
 
 .agendamentoContainer,
@@ -212,6 +210,7 @@
 .editButtons {
     display: flex;
     justify-content: center;
+    gap: 15px;
     margin-left: -20px;
 }
 

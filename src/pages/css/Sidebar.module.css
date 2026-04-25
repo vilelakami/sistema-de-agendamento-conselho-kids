@@ -69,8 +69,13 @@ main{
     gap: 18px;
 }
 
+.taskContent nav ul li button{
+    background-color: transparent;
+    padding: 0;
+}
 .taskContent nav ul li a,
-.taskUsuario ul li a{
+.taskUsuario ul li a,
+.taskContent nav ul li button{
     color: var(--font-secondary-color);
     font-size: 12px;
     font-weight: 500;

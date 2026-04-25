@@ -7,12 +7,9 @@ import historicoIcon from "../../assets/icons/historico.svg";
 import logoutIcon from "../../assets/icons/logout.svg";
 import { Link, useNavigate } from "react-router-dom";
 import dashboard from "../../pages/Dashboard";
-import modalDashboard from "../../pages/ModalDashboard";
-import historico from "../../pages/Historico";
-import login from "../../pages/auth/Login";
 import settingsIcon from "../../assets/icons/settings.svg";
 
-function Sidebar() {
+function Sidebar({ abrirModal }) {
     const navigate = useNavigate();
     return(
         <div className={styles.container}>
@@ -25,9 +22,9 @@ function Sidebar() {
                     <p>Conteúdo</p>
                     <nav>
                         <ul>
-                            <li> <img className={styles.taskIcon} src={dashboardIcon} alt="dashboard" /><a onClick={() => navigate("/dashboard")} href="">Dashboard</a></li>
-                            <li> <img className={styles.taskIcon} src={addContaIcon} alt="adicionar" /><Link to="/modalDashboard">Adicionar Responsável</Link></li>
-                            <li> <img src={historicoIcon} alt="histórico" /><a onClick={() => navigate("/historico")}href=""> Agendamentos Finalizados</a>
+                            <li> <img className={styles.taskIcon} src={dashboardIcon} alt="dashboard" /><Link to="/dashboard">Dashboard</Link></li>
+                            <li> <img className={styles.taskIcon} src={addContaIcon} alt="adicionar" /><button onClick={abrirModal}>Adicionar Responsável</button></li>
+                            <li> <img src={historicoIcon} alt="histórico" /><Link to="/historico">Agendamentos finalizados</Link>
                             </li>
                         </ul>
                     </nav>
@@ -35,14 +32,12 @@ function Sidebar() {
                 <div className={styles.taskUsuario}>
                     <p>Admin</p>
                     <ul>
-                        <li><img src={settingsIcon} alt="configurações" /><a onClick={() => navigate("/sair")} href="">Configurações</a></li>
+                        <li><img src={settingsIcon} alt="configurações" /><Link to="/login">Configurações</Link></li>
                     </ul>
                 </div>
             </main>
                 <div className={styles.taskLogout}>
-                    <a onClick={() => navigate("/login")} href="">
-                        Logout
-                    </a>
+                    <Link to="/login">Logout</Link>
                 </div>
         </div>
     );

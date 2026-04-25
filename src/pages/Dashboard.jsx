@@ -1,27 +1,25 @@
 import React, { useState, useEffect } from "react";
 import styles from "./css/Dashboard.module.css";
 import { Link, useNavigate } from 'react-router-dom';
-import ModalDashboard from "./ModalDashboard";
 // importando botão reutilizável da pasta dos components
 import Button from "../components/Button/Button";
 import calendarIcon from "../assets/icons/calendar.svg";
-import historicoIcon from "../assets/icons/historico.svg";
-import novoContatoIcon from "../assets/icons/novoContato.svg";
 import Sidebar from "../components/sidebar/Sidebar";
+import ModalDashboard from "./ModalDashboard";
 
 
 function Dashboard() {
     // estados
-    const [linhaExpandida, setLinhaExpandida] = useState(null);
+    const [linhaExpandidaCpf, setLinhaExpandidaCpf] = useState(null);
     const [filtroStatus, setFiltroStatus] = useState("todos");
     const [menuStatusAberto, setMenuStatusAberto] = useState(false);
     const [menuDataAberto, setMenuDataAberto] = useState(false);
-    const [modalAberto, setModalAberto] = useState(false);
     const [itemSelecionado, setItemSelecionado] = useState(null);
+    const [modalAberto, setModalAberto] = useState(false);
     const navigate = useNavigate();
 
     // editando dt e hora do agendamento
-    const [editandoId, setEditandoId] = useState(null);
+    const [editandoCpf, setEditandoCpf] = useState(null);
     const [dataInput, setDataInput] = useState("");
     const [horaInput, setHoraInput] = useState("");
 
@@ -39,38 +37,35 @@ function Dashboard() {
     // dados (exemplo)
     const [agendamentos, setAgendamentos] = useState([
         {
-            id: 1,
             responsavel: "Fernanda",
             cpf: "555.555.555-55",
             cep: "04444-044",
             comoConheceu: "Google",
             dataCriacao: "09/04/2026",
             quantidadeFilhos: 2,
-            status: "agendado",
+            status: "visita_agendada",
             dataAgendamento: "19/04/2026 16:30h",
             filhos: ["João - 10/09/2021", "Ana - 10/09/2021"]
         },
         {
-            id: 2,
             responsavel: "Marcos",
             cpf: "333.333.333-33",
             cep: "04865-050",
             comoConheceu: "Indicação",
             dataCriacao: "23/03/2026",
             quantidadeFilhos: 1,
-            status: "concluido",
+            status: "processo_concluido",
             dataAgendamento: "31/03/2025 11:30h",
             filhos: ["Lucas - 05/05/2020"]
         },
         {
-            id: 3,
             responsavel: "Carlos Oliveira",
             cpf: "111.111.111-11",
             cep: "05555-000",
             comoConheceu: "Indicação",
             dataCriacao: "15/04/2026",
             quantidadeFilhos: 1,
-            status: "pendente",
+            status: "aguardando_resposta",
             dataAgendamento: null,
             filhos: ["Enzo - 12/02/2018"]
         }
@@ -82,34 +77,25 @@ function Dashboard() {
     }, [agendamentos]);
 
     // função que salva a edição da data e hora
-    const salvarEdicao = (id, novoStatus) => {
+    const salvarEdicao = (cpf, novoStatus) => {
         //se nao preencher nada volta o ícone
         if (!dataInput.trim() || !horaInput.trim()) {
-        setEditandoId(null);
-        return;
-    }
-        //arrow function que percorre todos os ids dos responsáveis
+            setEditandoCpf(null);
+            return;
+        }
         const novaLista = agendamentos.map(item => {
-            //o id que eu quero editar a data é o mesmo do responsável?
-            if (item.id === id) {
-                //transf em padrão br, separa em array [2004,03,18], inverter [18,03,2004] e aplica as barras /
+            if (item.cpf === cpf) {
                 const dataFormatada = dataInput.split('-').reverse().join('/');
-                //
-                return { 
-                    //spread operator: pega todas as infos desse item
-                    ...item, 
-                    //modifica o campo e agendamento e os status
+                return {
+                    ...item,
                     dataAgendamento: `${dataFormatada} ${horaInput}`,
                     status: novoStatus
                 };
             }
-            //se o if for falso retorna apenas o ícone de calendário
             return item;
         });
-        //atribuo a nova lista pro Agendamento
         setAgendamentos(novaLista);
-        //limpo os campos
-        setEditandoId(null);
+        setEditandoCpf(null);
         setDataInput("");
         setHoraInput("");
     };
@@ -117,15 +103,12 @@ function Dashboard() {
     // Separar agendamentos: menos de 30 dias no Dashboard, 30+ no Histórico
     const agendamentosAtivos = agendamentos.filter(item => {
         if (!item) return false;
-        // Se for TEMP (novo contato), sempre mostra no Dashboard
-        if (item.id === "TEMP") return true;
-        // Senão, filtra apenas os com menos de 30 dias
         const diasDesdesCriacao = calcularDiasDesdesCriacao(item.dataCriacao);
         return diasDesdesCriacao < 30;
     });
 
     const agendamentosHistorico = agendamentos.filter(item => {
-        if (!item || item.id === "TEMP") return false;
+        if (!item) return false;
         const diasDesdesCriacao = calcularDiasDesdesCriacao(item.dataCriacao);
         return diasDesdesCriacao >= 30;
     });
@@ -143,76 +126,39 @@ function Dashboard() {
     });
 
     //função pra expandir a linha assim que apertar em "alunos>"
-    const toggleLinha = (id) => {
-        //o id do responsavel é o que eu to cliando? se sim, expande, se não mostra apenas a linha do responsável
-        setLinhaExpandida(linhaExpandida === id ? null : id);
+    const toggleLinha = (cpf) => {
+        setLinhaExpandidaCpf(linhaExpandidaCpf === cpf ? null : cpf);
     };
 
-    //altera o estado dos status, "pendente", "agendado" ou "concluido"
     const handleFiltroStatus = (novoStatus) => {
         setFiltroStatus(novoStatus);
         setMenuStatusAberto(false);
     };
 
-    //função que salva novo status do responsavel (caso seja alterado no modal)
-    const atualizarStatusGlobal = (id, novoStatus) => {
-    const novaLista = agendamentos.map(item => 
-        item.id === id ? { ...item, status: novoStatus } : item
-    );
-    setAgendamentos(novaLista);
-    setModalAberto(false); // Fecha o modal após salvar
-    };  
-
-    // função do botão novo contato (digitar manualmente as informações)
-    const adicionarLinha = () =>{
-        const novaLinha = {
-            id: "TEMP",
-            responsavel: "",
-            cpf: "",
-            cep: "",
-            comoConheceu: "",
-            dataCriacao: new Date().toLocaleDateString('pt-BR'),
-            quantidadeFilhos: 0,
-            status: "pendente",
-            dataAgendamento: null,
-            filhos: []
-        };
-
-        // passando pra agendamentos a nova linha
-        setAgendamentos([novaLinha, ...agendamentos]);
+    const statusLabels = {
+        visita_agendada: "Visita Agendada",
+        aguardando_resposta: "Aguardando Resposta",
+        processo_concluido: "Processo Concluído",
+        visita_cancelada: "Visita Cancelada",
+        pendente: "Aguardando Resposta",
+        agendado: "Visita Agendada",
+        concluido: "Processo Concluído"
     };
 
-    // função que atualiza a linha e exibe ela
-    const atualizarLinha = (campo, valor) =>{
-        const novaLista = agendamentos.map(item => {
-            if(!item) return false;
-            if(item.id === "TEMP"){
-                return {...item, [campo]:valor};
-            }
-            return item;
-        });
-        setAgendamentos(novaLista);
-    };
+    const statusOptions = [
+        { value: "todos", label: "Todos" },
+        { value: "visita_agendada", label: "Visita Agendada" },
+        { value: "aguardando_resposta", label: "Aguardando Resposta" },
+        { value: "visita_cancelada", label: "Visita Cancelada" },
+        { value: "processo_concluido", label: "Processo Concluído" }
+    ];
 
-    //função do botão salvar dados
-    const confirmarLinha = () => {
-        const novaLista = agendamentos.map(item => {
-            if(!item) return false;
-            const maiorID = agendamentos.filter(item => item !== undefined && item!== null).reduce((max, item) => (item.id > max ? item.id : max), 0);
-            if(item.id === "TEMP"){
-                if(item.responsavel === "" || item.cpf === "" || item.cep === "" || item.quantidadeFilhos === "" || item.status === ""){
-                    alert("Preencha todos os campos.");
-                    return;
-                }
-                return{
-                    // retornando um novo id
-                    ...item,
-                    id: maiorID + 1
-                };
-            }
-            return item
-        });
-        setAgendamentos(novaLista);
+    const getStatusClass = (status) => {
+        if (status === "visita_agendada" || status === "agendado") return "rowVisitaAgendada";
+        if (status === "aguardando_resposta" || status === "pendente") return "rowAguardandoResposta";
+        if (status === "visita_cancelada") return "rowVisitaCancelada";
+        if (status === "processo_concluido" || status === "concluido") return "rowProcessoConcluido";
+        return "rowAguardandoResposta";
     };
 
     // função pra colocar os pontos e o traço no cpf
@@ -231,35 +177,40 @@ function Dashboard() {
         return `${nums.slice(0,5)}-${nums.slice(5,8)}`;
     };
 
-    //fazendo o sort para exibir primeiro os pendentes, dps agendados, dps concluídos
+    //fazendo o sort para exibir primeiro os status mais importantes
     const pesos = {
-        pendente: 1,
-        agendado: 2,
-        concluido: 3
+        aguardando_resposta: 1,
+        visita_agendada: 2,
+        visita_cancelada: 3,
+        processo_concluido: 4
     };
 
     // .sort
     const listaOrganizada = [...agendamentosFiltrados].sort((a,b) => {
+        const pesoA = pesos[a.status] ?? 99;
+        const pesoB = pesos[b.status] ?? 99;
 
-        if(a.id === "TEMP") return -1;
-        if(b.id === "TEMP") return 1;
+        if (pesoA !== pesoB) {
+            return pesoA - pesoB;
+        }
 
-        const pesoA = pesos[a.status] || 4;
-        const pesoB = pesos[b.status] || 4;
-
-        return pesoA - pesoB;
+        return a.responsavel.localeCompare(b.responsavel);
     });
+
+    const cadastrarPessoa = (dadosModal) => {
+        setAgendamentos([...agendamentos, dadosModal]);
+    };
 
     //desenhando na tela
     return (
         <div className={styles.layout}>
-            <Sidebar />
+            <Sidebar abrirModal={() => setModalAberto(true)}/>
+            {modalAberto && <ModalDashboard fecharModal={() => setModalAberto(false)} aoSalvar={cadastrarPessoa} />}
             <div className={styles.tableWrapper}>
                 <div className={styles.container}>
                     <table className={styles.taskTable}>
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Responsável</th>
                                 <th>CPF</th>
                                 <th>CEP</th>
@@ -270,17 +221,12 @@ function Dashboard() {
                                 {/* onclick: responsável por "apagar" ou "ascender" a combobox */}
                                 <th className={styles.filterHeader} onClick={() => setMenuStatusAberto(!menuStatusAberto)}>
                                     Status <span className={styles.taskArrow}>v</span>
-                                    {/* se menustatus é verdadeiro ele executa os () */}
                                     {menuStatusAberto && (
-                                        // não deixa o onclick se propagar pro > statyus v
                                         <div className={styles.filter} onClick={(e) => e.stopPropagation()}>
-                                            {/* mapeando todos os estados */}
-                                            {["todos", "pendente", "agendado", "concluido"].map((st) => (
-                                                // passando cada estado pra key e aplicando a class e o onclick
-                                                <div key={st} className={styles.filterOption} onClick={() => handleFiltroStatus(st)}>
-                                                    {/* e aqui os inputs que sao os "radios" que checam se o que eu cliquei é um st da lista mapeanda */}
-                                                    <input type="radio" name="status" checked={filtroStatus === st} readOnly />
-                                                    <label>{st.charAt(0).toUpperCase() + st.slice(1)}</label>
+                                            {statusOptions.map((st) => (
+                                                <div key={st.value} className={styles.filterOption} onClick={() => handleFiltroStatus(st.value)}>
+                                                    <input type="radio" name="status" checked={filtroStatus === st.value} readOnly />
+                                                    <label>{st.label}</label>
                                                 </div>
                                             ))}
                                         </div>
@@ -288,7 +234,7 @@ function Dashboard() {
                                 </th>
                                 {/* mesma lógica dos status */}
                                 <th className={styles.filterHeader} onClick={() => setMenuDataAberto(!menuDataAberto)}>
-                                    Agendamento <span className={styles.taskArrow}>v</span>
+                                    Agendamento <span className={styles.taskArrow}></span>
                                     {menuDataAberto && (
                                         <div className={styles.filter} onClick={(e) => e.stopPropagation()}>
                                             <span style={{color: 'white', fontSize: '12px'}}>Data específica:</span>
@@ -299,36 +245,17 @@ function Dashboard() {
                                         </div>
                                     )}
                                 </th>
-                                <th className={styles.taskBtnAtividade}>
-                                    <button onClick={adicionarLinha}>
-                                        <img src={novoContatoIcon} alt="novo contato" />
-                                    </button>
-                                    <button onClick={() => navigate('/Historico', { state: { agendamentosHistorico } })}>
-                                        <img src={historicoIcon} alt="histórico" />
-                                    </button>
-                                </th>
+                                <th></th>
                                 <th></th>
                             </tr>
                         </thead>
                         
                         <tbody>
                             {/* mapeio os status */}
-                            {listaOrganizada.map((item) => (
-                                // passo o id dos tatus pra key
-                                <React.Fragment key={item.id}>
-                                    {/* aqui estou criando classes para os meus 3 tipos de status, estou juntando a palavra row+(pendente, agendado ou concluido) ao invés de criar 3 classes diferentes */}
-                                    <tr className={styles[`row${(item.status || "Pendente").charAt(0).toUpperCase() + (item.status || "Pendente").slice(1)}`]}>
-                                        {/* trazendo as linhas do banco */}
-
-                                        <td>{item.id}</td>
-                                        <td>
-                                            {item.id === "TEMP" ? (
-                                                <input type="text"
-                                                className={styles.inputTable}
-                                                placeholder="Nome"
-                                                onChange={(e) => atualizarLinha("responsavel", e.target.value)}
-                                                />
-                                            ):(
+                            {listaOrganizada.map((item, index) => (
+                                <React.Fragment key={item.cpf || index}>
+                                    <tr className={styles[getStatusClass(item.status)]}>
+                                        <td>{
                                                 <a 
                                                 href="#" 
                                                 className={styles.nomeLink} 
@@ -336,108 +263,45 @@ function Dashboard() {
                                                     e.preventDefault(); 
                                                     e.stopPropagation(); 
                                                     setItemSelecionado(item);
-                                                    setModalAberto(true); 
                                                 }}
                                             >
                                                 {item?.responsavel}
                                             </a>
-                                            )}
+                                            }
                                         </td>
-                                        <td>{item.id === "TEMP" ? (
-                                            <input type="text"
-                                            className={styles.inputTable}
-                                            placeholder="CPF" 
-                                            value={item.cpf}
-                                            onChange={(e) => {
-                                                const formatado = aplicarMascaraCPF(e.target.value);
-                                                atualizarLinha("cpf", formatado)}}
-                                            />
-                                        ): (
-                                            item?.cpf
-                                        )}
+                                        <td>{item.cpf}
                                         </td>
-                                        <td>{item.id === "TEMP" ? (
-                                            <input type="text"
-                                            className={styles.inputTable}
-                                            placeholder="CEP"
-                                            value={item.cep}
-                                            onChange={(e) => {
-                                                const formatado = aplicarMascaraCEP(e.target.value);
-                                                atualizarLinha("cep", formatado)} }
-                                            />
-                                        ) : (
-                                            item?.cep
-                                        )}
+                                        <td>{item.cep}
                                         </td>
-                                        <td>{item.id === "TEMP" ? (
-                                            <select
-                                                className={styles.taskSelectTable} 
-                                                value={item.comoConheceu}
-                                                onChange={(e) => atualizarLinha("comoConheceu", e.target.value)}
-                                            >
-                                                <option value="">Selecione...</option>
-                                                <option value="google">Google</option>
-                                                <option value="instagram">Instagram</option>
-                                                <option value="indicacao">Indicação</option>
-                                                <option value="outros">Outros</option>
-                                            </select>
-                                        ) : (
-                                            item?.comoConheceu
-                                        )}</td>
+                                        <td>{item.comoConheceu}</td>
                                         <td>{item.dataCriacao}</td>
-                                        <td>{item.id === "TEMP" ? (
-                                            <input type="number"
-                                            className={styles.inputTable}
-                                            placeholder="Qtde. filhos"
-                                            onChange={(e) => atualizarLinha("quantidadeFilhos", e.target.value)} 
-                                            />
-                                        ) : (
-                                            item?.quantidadeFilhos
-                                        )}</td>
-                                        <td>{item.id === "TEMP" ?(
-                                            <select
-                                                className={styles.taskSelectTable}
-                                                value={item.status}
-                                                onChange={(e) => atualizarLinha("status", e.target.value)}
-                                            >
-                                                <option value="">Selecione...</option>
-                                                <option value="pendente">pendente</option>
-                                                <option value="agendado">agendado</option>
-                                                <option value="concluido">concluído</option>
-
-                                            </select>
-                                        ) : ( item?.status
-
-                                        )}
+                                        <td>{item.quantidadeFilhos}</td>
+                                        <td>{statusLabels[item.status] || item.status}
                                         </td>
                                         {/* lógica do agendamento */}
                                         <td className={styles.colAgendamento}>
-                                            {/* o id dessa linha é o mesmo q cliquei pra editar? */}
-                                            {editandoId === item.id ? (
-                                                // se sim vem pra cá: nao deixo que o clique do input se propague pro pai
+                                            {/* o CPF dessa linha é o mesmo que cliquei pra editar? */}
+                                            {editandoCpf === item.cpf ? (
                                                 <div className={styles.editAgendamento} onClick={(e) => e.stopPropagation()}>
-                                                    {/* abre a janela pr escolher a data e salvo com onchange */}
                                                     <input 
                                                         type="date" 
                                                         className={styles.inputDatePequeno}
                                                         onChange={(e) => setDataInput(e.target.value)}
                                                     />
-                                                    {/* faço o mesmo com a hora */}
                                                     <input 
                                                         type="text" 
                                                         placeholder="00:00h"
                                                         className={styles.inputHora}
                                                         onChange={(e) => setHoraInput(e.target.value)}
                                                     />
-                                                    {/* botoes pra salvar ou cancelar edição */}
                                                     <div className={styles.editButtons}>
-                                                        <button onClick={() => salvarEdicao(item.id, "agendado")}>✓</button>
-                                                        <button onClick={() => setEditandoId(null)}>✗</button>
-                                                        <button onClick={() => salvarEdicao(item.id, "concluido")}>Done</button>
+                                                        <button onClick={() => salvarEdicao(item.cpf, "visita_agendada")}>✓</button>
+                                                        <button onClick={() => setEditandoCpf(null)}>✗</button>
+                                                        <button onClick={() => salvarEdicao(item.cpf, "processo_concluido")}>Done</button>
                                                     </div>
                                                 </div>
                                             ) : (
-                                                <div className={styles.agendamentoVisual} onClick={() => setEditandoId(item.id)}>
+                                                <div className={styles.agendamentoVisual} onClick={() => setEditandoCpf(item.cpf)}>
                                                     {item.dataAgendamento ? (
                                                         <div className={styles.agendamentoContainer}>
                                                             {item.dataAgendamento.split(' ').map((texto, index) => (
@@ -451,26 +315,21 @@ function Dashboard() {
                                             )}
                                         </td>
                                         {/* função que eu criei em /components do botão */}
-                                        <td>
-                                            {item.id === "TEMP" ? (
-                                                <button onClick={confirmarLinha}>
-                                                    Salvar
-                                                </button>
-                                            ) : (
-                                            <Button onClick={() => toggleLinha(item.id)} className={styles.btnAlunos}>
+                                        <td>{
+                                            <Button onClick={() => toggleLinha(item.cpf)} className={styles.btnAlunos}>
                                                 Crianças {">"}
                                             </Button>
-                                            )}
+                                        }
                                         </td>
                                         <td></td>
                                     </tr>
 
-                                    {/* verifico se a linha que quero expandir é o id que eu cliquei */}
-                                    {linhaExpandida === item.id && (
+                                    {/* verifico se a linha que quero expandir é o cpf que eu cliquei */}
+                                    {linhaExpandidaCpf === item.cpf && (
                                         <tr className={styles.rowExpanded}>
                                             <td colSpan="10">
                                                 <div className={styles.filhosLista}>
-                                                    {/* mapeando a lista de filhos para cada id encontrado */}
+                                                    {/* mapeando a lista de filhos para cada responsável */}
                                                     {item.filhos.map((filho, index) => (
                                                         <p key={index}>• {filho}</p>
                                                     ))}
@@ -483,12 +342,6 @@ function Dashboard() {
                         </tbody>
                     </table>
                 </div>
-                <ModalDashboard
-                    isOpen={modalAberto}
-                    onClose={() => setModalAberto(false)}
-                    user={itemSelecionado}
-                    atualizarStatusGlobal={atualizarStatusGlobal}
-                />
             </div>
         </div>
     );

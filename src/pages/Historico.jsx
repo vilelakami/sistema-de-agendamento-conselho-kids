@@ -87,7 +87,13 @@ function Historico() {
                             {/* mapeando os agendamentos e retornando as linhas */}
                             {agendamentosHistorico.map((item) => (
                                 <React.Fragment key={item.id}>
-                                    <tr className={styles[`row${(item.status || "Pendente").charAt(0).toUpperCase() + (item.status || "Pendente").slice(1)}`]}>
+                                    <tr className={
+                                        item.status === "visita_agendada" || item.status === "agendado" ? styles.rowVisitaAgendada :
+                                        item.status === "aguardando_resposta" || item.status === "pendente" ? styles.rowAguardandoResposta :
+                                        item.status === "visita_cancelada" ? styles.rowVisitaCancelada :
+                                        item.status === "processo_concluido" || item.status === "concluido" ? styles.rowProcessoConcluido :
+                                        styles.rowAguardandoResposta
+                                    }>
                                         <td>{item.id}</td>
                                         <td>{item.responsavel}</td>
                                         <td>{item.cpf}</td>
