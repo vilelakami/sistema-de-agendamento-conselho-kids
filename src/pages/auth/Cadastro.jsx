@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import styles from "../css/Cadastro.module.css";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import userIcon from "../../assets/icons/user.svg";
 import sehnaIcon from "../../assets/icons/lock.svg";
 import criarContaIcon from "../../assets/icons/addConta.svg";
 import emailIcon from "../../assets/icons/email.svg";
-import logotipoIcon from "../../assets/icons/logotipo.svg"
 
 function Cadastro(){
     // useState pra armazenar e escrever os campos de nome, email, usuario, senha e confir de senha
@@ -14,6 +13,7 @@ function Cadastro(){
     const [usuario, setUsuario] = useState("");
     const [senha, setSenha] = useState("");
     const [confirmarSenha, setConfirmarSenha] = useState("");
+    const navigate = useNavigate();
 
     // função pra verificar condições
     function handleCadastro(e) {
@@ -45,6 +45,14 @@ function Cadastro(){
             return;
         }
 
+        const paraSalvar = {
+            nomeCompleto: nomeCompleto,
+            email: email,
+            usuario: usuario,
+            senha: senha
+        };
+        localStorage.setItem("dadosCadastro", JSON.stringify(paraSalvar));  
+
         console.log("Conta criada: ", nomeCompleto);
 
         setNomeCompleto("");
@@ -53,6 +61,7 @@ function Cadastro(){
         setSenha("");
         setConfirmarSenha("");
 
+        navigate("/login");
     }
 
 
@@ -60,8 +69,8 @@ function Cadastro(){
         <div className="page-wrapper">
             <div className={styles.container}>
                 <div className={styles.left}>
-                    <h1>Agenda<br></br>Next</h1>
-                    <img src={logotipoIcon} alt="logotipo NextPoint" />
+                    <h2>AgendaNext</h2>
+                    <p>Powered by NextPoint</p>
                 </div>
                 <div className={styles.right}>
                     <h2 className="task-title">Cadastro</h2>
@@ -118,7 +127,7 @@ function Cadastro(){
 
 
                     {/* botão de entrar */}
-                    <button onClick={handleCadastro}>
+                    <button type="button"onClick={handleCadastro}>
                         <img src={criarContaIcon} alt="Criar Conta" />
                         Criar Conta
                     </button>

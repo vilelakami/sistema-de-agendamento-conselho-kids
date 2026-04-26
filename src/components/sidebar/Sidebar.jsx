@@ -32,7 +32,7 @@ function Sidebar({ abrirModal }) {
                 <div className={styles.taskUsuario}>
                     <p>Admin</p>
                     <ul>
-                        <li><img src={settingsIcon} alt="configurações" /><Link to="/login">Configurações</Link></li>
+                        <li><img src={settingsIcon} alt="configurações" /><Link to="/configuracoes">Configurações</Link></li>
                     </ul>
                 </div>
             </main>

@@ -2,11 +2,9 @@ import { useState } from 'react';
 import styles from "../css/Login.module.css";
 import Esqueci_Senha from "../auth/ModalSenha";
 import { Link, useNavigate } from 'react-router-dom'; 
-import Dashboard from "../Dashboard";
 import userIcon from "../../assets/icons/user.svg";
 import sehnaIcon from "../../assets/icons/lock.svg";
 import enterIcon from "../../assets/icons/enter.svg"
-import logotipoIcon from  "../../assets/icons/logotipo.svg";
 
 function Login() {
     const navigate = useNavigate();
@@ -15,6 +13,7 @@ function Login() {
     const [senha, setSenha] = useState("");
     //pro modal de esqueci senha
     const [modalAberto, setModalAberto] = useState(false);
+
 
     // função pra verificar condições
     function handleLogin(e) {
@@ -37,6 +36,12 @@ function Login() {
             return;
         }
 
+        const paraSalvar = {
+            usuario: usuario,
+            senha: senha
+        };
+        localStorage.setItem("dadosLogin", JSON.stringify(paraSalvar));
+
         //se der certo, imprime no console e limpa os inputs
         console.log("Logado com: ", usuario);
 
@@ -51,8 +56,8 @@ function Login() {
         <div className="page-wrapper">
             <div className={styles.container}>
                 <div className={styles.left}>
-                    <h1>Agenda<br></br>Next</h1>
-                    <img src={logotipoIcon} alt="logotipo NextPoint" />
+                    <h2>AgendaNext</h2>
+                    <p>Powered by NextPoint</p>
                 </div>
                 <div className={styles.right}>
                     <h2 className="task-title">Login</h2>

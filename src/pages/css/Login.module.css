@@ -17,22 +17,26 @@
     min-height: 300px; 
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    background: var(--background-linear-gradient);
+    justify-content: center;
+    align-items: center;
+    background-image: url('../../assets/images/background.png');
+    background-size: cover;
+    background-position: center;
     border-radius: var(--border-radius-default);
 }
 
-.left h1 {
-    font-size: 80px;
-    font-weight: 800;
-    color: white;
-    line-height: 80%;
+.left h2 {
+    font-size: 45px;
+    font-weight: 300;
+    color: var(--font-secondary-color);
     margin-left: 20px;
     text-shadow: 4px 1px 1px #1D2B50;
+    margin: 0;
 }
 
-.left img {
-    width: 200px;
+.left p{
+    color: var(--font-secondary-color);
+    font-weight: 200;
 }
 
 .right {

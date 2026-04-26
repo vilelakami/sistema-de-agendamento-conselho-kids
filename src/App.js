@@ -3,6 +3,7 @@ import Login from "./pages/auth/Login";
 import Cadastro from "./pages/auth/Cadastro";
 import Dashboard from "./pages/Dashboard";
 import Historico from "./pages/Historico";
+import Configuracoes from './pages/auth/Configuracoes';
 
 function App() {
   return(
@@ -12,6 +13,7 @@ function App() {
           <Route path="/Cadastro" element={<Cadastro />} />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/Historico" element={<Historico />} />
+          <Route path="/Configuracoes" element={<Configuracoes />} />
           {/* Rota inicial (quando abrir o site cai no login) */}
           <Route path="/" element={<Login />} />
         </Routes>

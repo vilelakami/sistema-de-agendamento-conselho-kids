@@ -8,12 +8,9 @@
     flex: 1;
 }
 
-.TaskTitlePage{
-    font-size: 48px;
-    font-weight: 700;
-    margin-block: 10px;
-    color: var(--font-color-additional);
-    text-shadow: 2px 1px 1px #000000;
+.taskTitlePage{
+    margin: 0;
+    padding: 10px;
 }
 
 /* container */
@@ -177,7 +174,7 @@
 
 .agendamentoContainer {
     gap: 2px;
-    font-size: 15px;
+    font-size: 12px;
     font-weight: 600;
 }
 

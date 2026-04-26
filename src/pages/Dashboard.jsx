@@ -226,6 +226,7 @@ function Dashboard() {
             <Sidebar abrirModal={() => setModalAberto(true)}/>
             {modalAberto && <ModalDashboard fecharModal={() => setModalAberto(false)} aoSalvar={cadastrarPessoa} />}
             <div className={styles.tableWrapper}>
+                <h2 className={styles.taskTitlePage}>Dashboard</h2>
                 <div className={styles.container}>
                     <table className={styles.taskTable}>
                         <thead>

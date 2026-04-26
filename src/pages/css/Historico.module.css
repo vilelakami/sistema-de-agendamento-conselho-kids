@@ -1,48 +1,28 @@
-/* estilizando histórico */
-.tableWrapper {
+/* Layout e Wrapper */
+.layout {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    margin: 0 auto;
-    padding: var(--spacing-sm);
 }
 
-.TaskTitlePage {
-    font-size: 48px;
-    font-weight: 700;
-    margin-block: 10px;
-    color: var(--font-color-additional);
-    text-shadow: 2px 1px 1px #000000;
+.tableWrapper {
+    display: block;
+    flex: 1;
 }
 
-/* container */
+.taskTitlePage{
+    margin: 0;
+    padding: 10px;
+}
+
+/* Container da Tabela */
 .container {
     width: 100%;
     max-width: 1440px;
-    min-height: 100vh;
-    overflow: auto;
-    border-radius: 18px 18px 0 0;
+    margin: auto;
     background-color: var(--background-surface-color);
+    overflow: hidden;
 }
 
-.container h2 {
-    color: var(--font-primary-color);
-    margin-bottom: var(--spacing-md);
-    font-size: 24px;
-    font-weight: 600;
-}
-
-.mensagemVazia {
-    font-size: 40px;
-    font-weight: 700;
-    margin-block: 10px;
-    color: var(--font-color-additional);
-    text-shadow: 2px 1px 1px #000000;
-}
-
-/* tabela */
+/* Tabela */
 .taskTable {
     width: 100%;
     border-collapse: separate;
@@ -53,34 +33,17 @@
     background-color: #1D2B50;
     color: var(--font-secondary-color);
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     padding: var(--spacing-sm);
 }
 
 .taskTable tbody td {
     padding: var(--spacing-sm);
     text-align: center;
+    font-size: 12px;
 }
 
-.taskBtnAtividade {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.taskBtnAtividade button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-}
-
-.taskBtnAtividade button img {
-    width: 20px;
-    height: 20px;
-}
-
-/* status: linhas, aguardando resposta, visita agendada, visita cancelada e processo concluido */
+/* Status das Linhas */
 .rowAguardandoResposta td,
 .rowAguardandoResposta + .rowExpanded td {
     background-color: var(--status-color-pendente) !important;
@@ -101,21 +64,10 @@
     background-color: var(--status-color-finished) !important;
 }
 
-.rowAguardandoResposta + .rowExpanded td,
-.rowVisitaAgendada + .rowExpanded td,
-.rowVisitaCancelada + .rowExpanded td,
-.rowProcessoConcluido + .rowExpanded td {
+/* Linha Expandida e Filhos */
+.rowExpanded td {
+    padding: 10px 20px !important;
     border-top: none;
-}
-
-/* bordas claras para separar */
-.taskTable tbody tr:not(.rowExpanded) {
-    border-bottom: 1px solid var(--background-primary-color);
-}
-
-.taskTable thead th:first-child,
-.taskTable tbody td:first-child {
-    border-right: 1px solid var(--background-primary-color);
 }
 
 .filhosLista {
@@ -124,15 +76,17 @@
     align-items: flex-start;
     font-weight: 600;
     text-align: left;
-    margin-left: 48px;
+    margin-left: 4px;
+    font-size: 11px;
 }
 
+/* Agendamento */
 .agendamentoContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 2px;
-    font-size: 15px;
+    font-size: 12px;
     font-weight: 600;
 }
 
@@ -140,22 +94,17 @@
     text-align: center;
 }
 
-.btnAlunos {
-    width: 100%;
-    max-width: 300px;
-    padding: var(--spacing-sm);
-    border-radius: 32px;
-    background-color: #1DBC08;
-    color: var(--font-primary-color);
-    font-size: 16px;
-    font-weight: 600;
+/* Mensagens e Títulos */
+.mensagemVazia {
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 50px;
+    color: var(--font-color-additional);
+    text-shadow: 1px 1px 1px #000;
 }
 
-.rowExpanded {
-    display: table-row;
-}
-
-.rowExpanded td {
-    padding: 20px !important;
-    background-color: var(--background-primary-color) !important;
+/* Bordas de separação */
+.taskTable tbody tr:not(.rowExpanded) {
+    border-bottom: 1px solid var(--background-primary-color);
 }
