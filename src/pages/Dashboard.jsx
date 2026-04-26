@@ -6,6 +6,7 @@ import Button from "../components/Button/Button";
 import calendarIcon from "../assets/icons/calendar.svg";
 import Sidebar from "../components/sidebar/Sidebar";
 import ModalDashboard from "./ModalDashboard";
+import ModalResponsavel from "./ModalResponsavel";
 
 
 function Dashboard() {
@@ -16,6 +17,7 @@ function Dashboard() {
     const [menuDataAberto, setMenuDataAberto] = useState(false);
     const [itemSelecionado, setItemSelecionado] = useState(null);
     const [modalAberto, setModalAberto] = useState(false);
+    const [modalResponsavelAberto, setModalResponsavelAberto] = useState(false);
     const navigate = useNavigate();
 
     // editando dt e hora do agendamento
@@ -224,7 +226,8 @@ function Dashboard() {
     return (
         <div className={styles.layout}>
             <Sidebar abrirModal={() => setModalAberto(true)}/>
-            {modalAberto && <ModalDashboard fecharModal={() => setModalAberto(false)} aoSalvar={cadastrarPessoa} />}
+            {modalAberto && (<ModalDashboard fecharModal={() => setModalAberto(false)} aoSalvar={cadastrarPessoa} /> )}
+            {modalResponsavelAberto && (<ModalResponsavel fecharModal={() => setModalResponsavelAberto(false)} dados={itemSelecionado} formatarData={formatarDataParaExibicao}/> )} 
             <div className={styles.tableWrapper}>
                 <h2 className={styles.taskTitlePage}>Dashboard</h2>
                 <div className={styles.container}>
@@ -281,8 +284,9 @@ function Dashboard() {
                                                 className={styles.nomeLink} 
                                                 onClick={(e) => {
                                                     e.preventDefault(); 
-                                                    e.stopPropagation(); 
-                                                    setItemSelecionado(item);
+                                                    e.stopPropagation();
+                                                    setItemSelecionado(item); // Guarda os dados do pai/mãe
+                                                    setModalResponsavelAberto(true);    // Abre a "cortina" do modal
                                                 }}
                                             >
                                                 {item?.responsavel}

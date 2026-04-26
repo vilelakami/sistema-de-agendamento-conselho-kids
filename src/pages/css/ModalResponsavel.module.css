@@ -1,0 +1,104 @@
+.modalOverlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.container{
+    display: flex;
+    background-color: var(--background-surface-color);
+    width: 900px;
+    height: 523px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.relatorio{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-md);
+    border-left: 1px solid #ccc;
+    min-height: 0;
+    align-items: stretch;
+}
+
+.relatorio textarea{
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    max-width: none;
+    resize: none;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+.modalContent{
+    background-color: var(--background-surface-color);
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    max-width: 450px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.dadosResponsavel{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.status select{
+    width: 180px;
+}
+
+.qtdeFilhos input{
+    width: 60px;
+}
+
+.outrosDados{
+    display: flex;
+    justify-content: space-between;
+}
+
+.modalContent label{
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.buttons{
+    display: flex;
+}
+
+.nomeResponsavel,
+.cpfResponsavel,
+.cepResponsavel,
+.comoConheceu,
+.dataCriacao,
+.qtdeFilhos,
+.status,
+.dataAgendamento{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.qtdeFilhos{
+    flex-direction: row;
+    align-items: center;
+}
