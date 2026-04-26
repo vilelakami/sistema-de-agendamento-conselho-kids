@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./css/Dashboard.module.css";
 import { Link, useNavigate } from 'react-router-dom';
 // importando botão reutilizável da pasta dos components
@@ -21,7 +21,7 @@ function Dashboard() {
     // editando dt e hora do agendamento
     const [editandoCpf, setEditandoCpf] = useState(null);
     const [dataInput, setDataInput] = useState("");
-    const [horaInput, setHoraInput] = useState("");
+    const inputDateRefs = useRef({});
 
     // Função para calcular dias desde a criação
     const calcularDiasDesdesCriacao = (dataCriacaoStr) => {
@@ -78,18 +78,16 @@ function Dashboard() {
 
     // função que salva a edição da data e hora
     const salvarEdicao = (cpf, novoStatus) => {
-        //se nao preencher nada volta o ícone
-        if (!dataInput.trim() || !horaInput.trim()) {
+        if(!dataInput){
             setEditandoCpf(null);
             return;
         }
         const novaLista = agendamentos.map(item => {
             if (item.cpf === cpf) {
-                const dataFormatada = dataInput.split('-').reverse().join('/');
                 return {
                     ...item,
-                    dataAgendamento: `${dataFormatada} ${horaInput}`,
-                    status: novoStatus
+                    dataAgendamento: dataInput ? formatarDataParaExibicao(dataInput) : item.dataAgendamento,
+                    status: novoStatus !== null ? novoStatus : item.status
                 };
             }
             return item;
@@ -97,7 +95,6 @@ function Dashboard() {
         setAgendamentos(novaLista);
         setEditandoCpf(null);
         setDataInput("");
-        setHoraInput("");
     };
 
     // Separar agendamentos: menos de 30 dias no Dashboard, 30+ no Histórico
@@ -181,8 +178,8 @@ function Dashboard() {
     const pesos = {
         aguardando_resposta: 1,
         visita_agendada: 2,
-        visita_cancelada: 3,
-        processo_concluido: 4
+        processo_concluido: 3,
+        visita_cancelada: 99
     };
 
     // .sort
@@ -198,9 +195,31 @@ function Dashboard() {
     });
 
     const cadastrarPessoa = (dadosModal) => {
-        setAgendamentos([...agendamentos, dadosModal]);
+        const novoAgendamento = {
+            ...dadosModal,
+            dataAgendamento: formatarDataParaExibicao(dadosModal.agendamento),
+            dataCriacao: new Date().toLocaleDateString('pt-BR'), // Garante data de hoje
+            filhos: dadosModal.filhos || [] 
+    };
+        setAgendamentos([...agendamentos, novoAgendamento]);
+        setModalAberto(false);
     };
 
+    const formatarDataParaExibicao = (dataRaw) => {
+        if (!dataRaw) return null;
+        
+        // Se a data já estiver no formato DD/MM/YYYY HH:mm (como no seu mock), retorna ela
+        if (dataRaw.includes('/') && !dataRaw.includes('T')) return dataRaw;
+
+        try {
+            // Se vier do input datetime-local (YYYY-MM-DDTHH:mm)
+            const [data, hora] = dataRaw.split('T');
+            const [ano, mes, dia] = data.split('-');
+            return `${dia}/${mes}/${ano} ${hora}h`;
+        } catch (e) {
+            return dataRaw;
+        }
+    };
     //desenhando na tela
     return (
         <div className={styles.layout}>
@@ -269,9 +288,9 @@ function Dashboard() {
                                             </a>
                                             }
                                         </td>
-                                        <td>{item.cpf}
+                                        <td>{aplicarMascaraCPF(item.cpf)}
                                         </td>
-                                        <td>{item.cep}
+                                        <td>{aplicarMascaraCEP(item.cep)}
                                         </td>
                                         <td>{item.comoConheceu}</td>
                                         <td>{item.dataCriacao}</td>
@@ -280,22 +299,16 @@ function Dashboard() {
                                         </td>
                                         {/* lógica do agendamento */}
                                         <td className={styles.colAgendamento}>
-                                            {/* o CPF dessa linha é o mesmo que cliquei pra editar? */}
                                             {editandoCpf === item.cpf ? (
                                                 <div className={styles.editAgendamento} onClick={(e) => e.stopPropagation()}>
                                                     <input 
-                                                        type="date" 
-                                                        className={styles.inputDatePequeno}
+                                                        type="datetime-local" 
+                                                        className={styles.taskInputDate}
+                                                        value={dataInput}
                                                         onChange={(e) => setDataInput(e.target.value)}
                                                     />
-                                                    <input 
-                                                        type="text" 
-                                                        placeholder="00:00h"
-                                                        className={styles.inputHora}
-                                                        onChange={(e) => setHoraInput(e.target.value)}
-                                                    />
                                                     <div className={styles.editButtons}>
-                                                        <button onClick={() => salvarEdicao(item.cpf, "visita_agendada")}>✓</button>
+                                                        <button onClick={() => salvarEdicao(item.cpf, null)}>✓</button>
                                                         <button onClick={() => setEditandoCpf(null)}>✗</button>
                                                         <button onClick={() => salvarEdicao(item.cpf, "processo_concluido")}>Done</button>
                                                     </div>

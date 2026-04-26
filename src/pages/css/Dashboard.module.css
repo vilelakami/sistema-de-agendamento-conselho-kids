@@ -170,6 +170,11 @@
     align-items: center;
 }
 
+.editAgendamento input{
+    background-color: var(--background-surface-color) !important;
+    width: 150px;
+}
+
 .agendamentoContainer {
     gap: 2px;
     font-size: 15px;
