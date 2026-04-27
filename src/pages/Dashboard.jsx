@@ -227,7 +227,13 @@ function Dashboard() {
         <div className={styles.layout}>
             <Sidebar abrirModal={() => setModalAberto(true)}/>
             {modalAberto && (<ModalDashboard fecharModal={() => setModalAberto(false)} aoSalvar={cadastrarPessoa} /> )}
-            {modalResponsavelAberto && (<ModalResponsavel fecharModal={() => setModalResponsavelAberto(false)} dados={itemSelecionado} formatarData={formatarDataParaExibicao}/> )} 
+            {modalResponsavelAberto && itemSelecionado && (
+                <ModalResponsavel 
+                    fecharModal={() => setModalResponsavelAberto(false)} 
+                    dados={itemSelecionado} 
+                    formatarData={formatarDataParaExibicao}
+                />
+            )}
             <div className={styles.tableWrapper}>
                 <h2 className={styles.taskTitlePage}>Dashboard</h2>
                 <div className={styles.container}>
@@ -349,7 +355,7 @@ function Dashboard() {
                                                 <div className={styles.filhosLista}>
                                                     {/* mapeando a lista de filhos para cada responsável */}
                                                     {item.filhos.map((filho, index) => (
-                                                        <p key={index}>• {filho}</p>
+                                                        <p key={index}>• {typeof filho === 'string' ? filho : filho?.nome || JSON.stringify(filho)}</p>
                                                     ))}
                                                 </div>
                                             </td>

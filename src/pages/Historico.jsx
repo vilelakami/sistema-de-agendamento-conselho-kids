@@ -132,7 +132,7 @@ function Historico() {
                                                         {item.filhos && item.filhos.length > 0 ? (
                                                             // para cada filho e seu indice, mostra um ponto e o filho
                                                             item.filhos.map((filho, index) => (
-                                                                <p key={index}>• {filho}</p>
+                                                                <p key={index}>• {typeof filho === 'string' ? filho : filho?.nome || JSON.stringify(filho)}</p>
                                                             ))
                                                         ) : (
                                                             <p>Sem filhos registrados</p>
