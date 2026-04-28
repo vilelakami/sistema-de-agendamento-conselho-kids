@@ -231,7 +231,7 @@ function Dashboard() {
     return (
         <div className={styles.layout}>
             <Sidebar abrirModal={() => setModalAberto(true)}/>
-            {modalAberto && (<ModalDashboard fecharModal={() => setModalAberto(false)} aoSalvar={cadastrarPessoa} /> )}
+            {modalAberto && (<ModalDashboard fecharModal={() => setModalAberto(false)} aoSalvar={cadastrarPessoa} formatarData={formatarDataParaExibicao} /> )}
             {modalResponsavelAberto && itemSelecionado && (
                 <ModalResponsavel 
                     fecharModal={() => setModalResponsavelAberto(false)} 
@@ -359,7 +359,12 @@ function Dashboard() {
                                                 <div className={styles.filhosLista}>
                                                     {/* mapeando a lista de filhos para cada responsável */}
                                                     {item.filhos.map((filho, index) => (
-                                                        <p key={index}>• {typeof filho === 'string' ? filho : filho?.nome || JSON.stringify(filho)}</p>
+                                                        <p key={index}>
+                                                            • {typeof filho === 'string' 
+                                                                ? filho 
+                                                                : `${filho?.nome || "Sem nome"} - ${filho?.nascimento ||  ""}`
+                                                            }
+                                                        </p>
                                                     ))}
                                                 </div>
                                             </td>

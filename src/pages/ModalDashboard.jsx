@@ -3,7 +3,7 @@ import styles from "./css/ModalDashboard.module.css";
 import addFilhoIcon from "../assets/icons/addConta.svg";
 import { data } from "react-router-dom";
 
-function ModalDashboard({ fecharModal, aoSalvar }){
+function ModalDashboard({ fecharModal, aoSalvar, formatarData }){
     const [filhos, setFilhos] = React.useState([]);
     const [dados, setDados] = React.useState({
         responsavel: "",
@@ -19,7 +19,7 @@ function ModalDashboard({ fecharModal, aoSalvar }){
     const adicionarFilho = () => {
         setFilhos([
             ...filhos, 
-            { nome: "", idade: "" }
+            { nome: "", nascimento: "" }
         ]);
     };
 
@@ -31,11 +31,31 @@ function ModalDashboard({ fecharModal, aoSalvar }){
         });
     };
 
+    const handleFilho = (index, campo, valor) => {
+        const novaLista = [...filhos];
+        novaLista[index][campo] = valor;
+        setFilhos(novaLista);
+    };
+
     const handleSalvar = (e) => {
+
+        if(!dados.responsavel || dados.responsavel.trim() === "" || !dados.cpf || !dados.cep){
+            alert("Preencha todos os campos obrigatórios.");
+            return;
+        }
+
+        if(filhos.length > 0){
+            const campoVazio = filhos.some(filho => !filho.nome?.trim() || !filho.nascimento);
+            if(campoVazio){
+                alert("Os campos de nome da criança e data de nascimento são obrigatórios.");
+                return;
+            }
+        }
+
         e.preventDefault();
         const cadastroFinal = {
             ...dados,
-            filhos: filhos,
+            filhos: filhos.map(filho => `${filho.nome} - ${formatarData(filho.nascimento)}`),
             quantidadeFilhos: filhos.length,
             dataCriacao: new Date().toLocaleDateString('pt-BR'),
             dataAgendamento: dados.agendamento || null
@@ -50,29 +70,29 @@ function ModalDashboard({ fecharModal, aoSalvar }){
                 <p>Adicionar Responsável</p>
                 <div className={styles.taskDados}>
                     <div className={styles.taskNome}>
-                        <label>Nome do Responsável</label>
+                        <label>Nome do Responsável <span className={styles.span}>*</span></label>
                         <input type="text"
                         name="responsavel"
-                        placeholder="Nome completo *"
+                        placeholder="Nome completo"
                         value={dados.responsavel}
                         onChange={handleInputChange}
                         />
                     </div>
                     <div className={styles.taskDemaisInfo}>
                         <div className={styles.taskCPF}>
-                            <label>CPF do Responsável</label>
+                            <label>CPF do Responsável <span className={styles.span}>*</span></label>
                             <input type="text"
                             name="cpf"
-                            placeholder="CPF *"
+                            placeholder="ex: 55555555555"
                             value={dados.cpf}
                             onChange={handleInputChange}
                             />
                         </div>
                         <div className={styles.taskCEP}>
-                            <label>CEP do Responsável</label>
+                            <label>CEP do Responsável <span className={styles.span}>*</span></label>
                             <input type="text"
                             name="cep"
-                            placeholder="CEP *"
+                            placeholder="ex: 55555555"
                             value={dados.cep}
                             onChange={handleInputChange}
                                 />
@@ -128,13 +148,17 @@ function ModalDashboard({ fecharModal, aoSalvar }){
                     {filhos.map((filho,index)=> (                      
                             <div key={index} className={styles.linhaFilho}>
                                 <div className={styles.taskNomeFilho}>
-                                    <label>Nome da Criança</label>
+                                    <label>Nome da Criança <span className={styles.span}>*</span></label>
                                     <input type="text"
-                                    placeholder="Nome Completo *" />
+                                    placeholder="Nome Completo" 
+                                    value={filho.nome}
+                                    onChange={(e) => handleFilho(index, "nome", e.target.value)}/>
                                 </div>
                                 <div className={styles.taskNascFilho}>
-                                    <label>Data de Nasc.:</label>
-                                    <input type="date"/>
+                                    <label>Data de Nasc.: <span className={styles.span}>*</span></label>
+                                    <input type="date"
+                                    value={filho.nascimento}
+                                    onChange={(e) => handleFilho(index, "nascimento", e.target.value)}/>
                                 </div>
                             </div>
                     ))}
