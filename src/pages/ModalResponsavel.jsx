@@ -1,9 +1,10 @@
-import react from "react";
+import React from "react";
 import { useState, useEffect } from "react";
 import styles from "./css/ModalResponsavel.module.css";
 
-function ModalResponsavel({fecharModal, dados, formatarData}) {
+function ModalResponsavel({fecharModal, dados, atualizarDados}) {
     const [filhos, setFilhos] = useState([]);
+    const [editando, setEditando] = useState(false);
 
     useEffect(() => {
         if (!dados?.filhos || !Array.isArray(dados.filhos)) {
@@ -43,15 +44,7 @@ function ModalResponsavel({fecharModal, dados, formatarData}) {
         setFilhos(novosFilhos);
     };
 
-    const [dadosAtual, setDadosAtual] = useState({
-        responsavel: dados?.responsavel || "",
-        cpf: dados?.cpf || "",
-        cep: dados?.cep || "",
-        dataCriacao: formatarData(dados?.dataCriacao) || "",
-        dataAgendamento: formatarData(dados?.dataAgendamento) || "",
-    });
-
-    const prepararDataParaInput = (dataRaw) => {
+        const prepararDataParaInput = (dataRaw) => {
         if (!dataRaw) return "";
         
         // 1. Pegamos apenas a parte da data (antes do espaço, se houver)
@@ -66,14 +59,90 @@ function ModalResponsavel({fecharModal, dados, formatarData}) {
     };
 
     const prepararDateTime = (dataBr) => {
-        if (!dataBr) return "";
-        // 1. Tira o 'h' do final e separa data e hora
-        const limpa = dataBr.replace('h', ''); 
-        const [data, hora] = limpa.split(' ');
-        const [dia, mes, ano] = data.split('/');
-        
-        // 2. Monta o formato que o input aceita: YYYY-MM-DDTHH:mm
-        return `${ano}-${mes}-${dia}T${hora}`;  
+        if (!dataBr || typeof dataBr !== 'string') return "";
+    
+        try {
+            // Remove o 'h', remove espaços extras e separa data da hora
+            const limpa = dataBr.replace('h', '').trim(); 
+            const [data, hora] = limpa.split(' ');
+            const [dia, mes, ano] = data.split('/');
+            
+            // Garante que a hora tenha o formato HH:mm (ex: 16:30)
+            const horaFormatada = hora.length === 5 ? hora : hora.padStart(5, '0');
+
+            return `${ano}-${mes}-${dia}T${horaFormatada}`;  
+        } catch (e) {
+            console.error("Erro ao formatar data de agendamento:", dataBr);
+            return "";
+        }
+    };
+
+    const formatarParaBr = (dataIso) => {
+        if (!dataIso) return "";
+        if (dataIso.includes('/')) return dataIso; // Já está em BR
+        const [ano, mes, dia] = dataIso.split('-');
+        return `${dia}/${mes}/${ano}`;
+    };
+
+    // Converte YYYY-MM-DDTHH:mm para DD/MM/YYYY HH:mmh
+    const formatarDateTimeParaBr = (dateTimeIso) => {
+        if (!dateTimeIso) return "";
+        if (dateTimeIso.includes('/')) return dateTimeIso; // Já está em BR
+        const [data, hora] = dateTimeIso.split('T');
+        const [ano, mes, dia] = data.split('-');
+        return `${dia}/${mes}/${ano} ${hora}h`;
+    };
+
+    const [dadosAtual, setDadosAtual] = useState({
+        responsavel: dados?.responsavel || "",
+        cpf: dados?.cpf || "",
+        cep: dados?.cep || "",
+        dataCriacao: prepararDataParaInput(dados?.dataCriacao) || "",
+        dataAgendamento: prepararDateTime(dados?.dataAgendamento) || "",
+        status: dados?.status || "",
+        comoConheceu: dados?.comoConheceu || "",
+        quantidadeFilhos: dados?.quantidadeFilhos || 0,
+        relatorio: dados?.relatorio || ""
+    });
+
+    const handleSalvar = () => {
+
+        if(!dadosAtual?.responsavel || !dados.responsavel){
+            alert("Preencha o nome do responsável.");
+            return;
+        }
+        if(!dadosAtual?.cpf || !dados.cpf){
+            alert("Preencha o cpf do responsável.");
+            return;
+        }
+        if(!dadosAtual?.cep || !dados.cep){
+            alert("Preencha o cep do responsável.");
+            return;
+        }
+        if(filhos.length > 0){
+            const camposVazios = filhos.some((filho) => {
+                return !filho.nome || filho.nome.trim() === "" || !filho.nascimento;
+            });
+            if(camposVazios){
+                alert("Os campos nome da criança e data de nascimento são obrigatórios.");
+                return;
+            }
+        }
+        const dadosEditados = {
+            ...dados,
+            ...dadosAtual,
+            dataCriacao: formatarParaBr(dadosAtual.dataCriacao),
+            dataAgendamento: formatarDateTimeParaBr(dadosAtual.dataAgendamento),
+            filhos: filhos.map(filho => `${filho.nome} - ${filho.nascimento}`)
+        };
+
+        if(atualizarDados){
+            atualizarDados(dadosEditados);
+            alert("Dados atualizados com sucesso");
+            fecharModal();
+        } else{
+            alert("Erro ao atualizar os dados.");
+        }
     };
 
     return(
@@ -84,51 +153,60 @@ function ModalResponsavel({fecharModal, dados, formatarData}) {
                         <div className={styles.nomeResponsavel}>
                             <label>Nome do Responsável:</label>
                             <input type="text" 
-                            value={dados?.responsavel || ""}
-                            readOnly/>
+                            placeholder="Nome do Responsável *"
+                            value={dadosAtual?.responsavel || ""}
+                            readOnly={!editando}
+                            onChange={(e) => setDadosAtual({...dadosAtual, responsavel: e.target.value})}/>
                         </div>
                         <div className={styles.outrosDados}>
                             <div className={styles.cpfResponsavel}>
                                 <label>CPF do Responsável:</label>
                                 <input type="text"
-                                value={dados?.cpf || ""}
-                                readOnly />
+                                placeholder="CPF *"
+                                value={dadosAtual?.cpf || ""}
+                                readOnly={!editando} 
+                                onChange={(e) => setDadosAtual({...dadosAtual, cpf: e.target.value})}/>
                             </div>
                             <div className={styles.cepResponsavel}>
                                 <label>CEP do Responsável:</label>
                                 <input type="text" 
-                                value={dados?.cep || ""}
-                                readOnly />
+                                placeholder="CEP *"
+                                value={dadosAtual?.cep || ""}
+                                readOnly={!editando} 
+                                onChange={(e) => setDadosAtual({...dadosAtual, cep: e.target.value})}/>
                             </div>
                         </div>
                         <div className={styles.outrosDados}>
                             <div className={styles.dataCriacao}>
                                 <label>Data de Criação:</label>
                                 <input type="date" 
-                                value={prepararDataParaInput(dados?.dataCriacao) || ""}
-                                readOnly/>
+                                value={prepararDataParaInput(dadosAtual?.dataCriacao) || ""}
+                                readOnly={!editando}
+                                onChange={(e) => setDadosAtual({...dadosAtual, dataCriacao: e.target.value})}/>
                             </div>
                             <div className={styles.dataAgendamento}>
                                 <label>Data de Agendamento:</label>
                                 <input type="datetime-local"
-                                value={prepararDateTime(dados?.dataAgendamento) || ""}
-                                readOnly />
+                                value={dadosAtual?.dataAgendamento}
+                                readOnly={!editando}
+                                onChange={(e) => setDadosAtual({...dadosAtual, dataAgendamento: e.target.value})} />
                             </div>
                         </div>
                             <div className={styles.status}>
                                 <label>Status:</label>
                                 <select
-                                value={dados?.status || ""}
-                                onChange={(e) => setDadosAtual({...dadosAtual, status: e.target.value})}>
+                                value={dadosAtual?.status || ""}
+                                onChange={(e) => setDadosAtual({...dadosAtual, status: e.target.value})}
+                                disabled={!editando}>
                                     <option value="aguardando_resposta">Aguardando Resposta</option>
                                     <option value="visita_agendada">Visita Agendada</option>
                                     <option value="processo_concluido">Processo Concluído</option>
                                     <option value="visita_cancelada">Visita Cancelada</option>
                                 </select>
-                                {(dados.status === "processo_concluido" || dados.status === "visita_cancelada") && (
+                                {(dadosAtual.status === "processo_concluido" || dadosAtual.status === "visita_cancelada") && (
                                     <div className={styles.campoTexto}>
                                         <label>
-                                            {dados.status === "processo_concluido" ? "Resultado da Conclusão:" : "Motivo de Cancelamento:"}
+                                            {dadosAtual.status === "processo_concluido" ? "Resultado da Conclusão:" : "Motivo de Cancelamento:"}
                                         </label>
                                         <textarea
                                             value={dadosAtual.relatorio}
@@ -140,14 +218,15 @@ function ModalResponsavel({fecharModal, dados, formatarData}) {
                             <div className={styles.comoConheceu}>
                                 <label>Como conheceu:</label>
                                 <select
-                                value={dados?.comoConheceu}
-                                onChange={(e) => setDadosAtual({...dadosAtual, comoConheceu: e.target.value})}>
+                                value={dadosAtual?.comoConheceu}
+                                onChange={(e) => setDadosAtual({...dadosAtual, comoConheceu: e.target.value})}
+                                disabled={!editando}>
                                     <option value="google">Google</option>
                                     <option value="instagram">Instagram</option>
                                     <option value="indicacao">Indicação</option>
                                     <option value="outros">Outros</option>
                                 </select>
-                                {dados?.comoConheceu === "outros" && (
+                                {dadosAtual?.comoConheceu === "outros" && (
                                     <div className={styles.campoTexto}>
                                         <label>Especifique:</label>
                                         <textarea
@@ -160,8 +239,9 @@ function ModalResponsavel({fecharModal, dados, formatarData}) {
                         <div className={styles.qtdeFilhos}>
                             <label>Quantidade de Filhos:</label>
                             <input type="number"
-                            value={dados?.quantidadeFilhos || ""}
-                            onChange={(e) => setDadosAtual({...dadosAtual, quantidadeFilhos: e.target.value})} />
+                            value={dadosAtual?.quantidadeFilhos || ""}
+                            onChange={(e) => setDadosAtual({...dadosAtual, quantidadeFilhos: e.target.value})}
+                            readOnly={!editando} />
                         </div>
                         {filhos && filhos.length > 0 && filhos.map((filho, index) => (
                             <div className={styles.filhos} key={index}>
@@ -169,14 +249,18 @@ function ModalResponsavel({fecharModal, dados, formatarData}) {
                                     <div className={styles.nomeFilho}>
                                         <label>Nome da Criança:</label>
                                         <input type="text" 
+                                        placeholder="Nome da Criança *"
                                         value={filho?.nome || ""}
-                                        onChange={(e) => atualizarFilho(index, 'nome', e.target.value)} />
+                                        onChange={(e) => atualizarFilho(index, 'nome', e.target.value)}
+                                        readOnly={!editando} />
                                     </div>
                                     <div className={styles.dataNascFilho}>
                                         <label>Data de Nascimento:</label>
                                         <input type="date"
-                                        value={prepararDataParaInput(filho?.nascimento || "")}
-                                        readOnly />
+                                        placeholder="Data de nascimento *"
+                                        value={prepararDataParaInput(filho?.nascimento || filho?.nasc || "")}
+                                        onChange={(e) => atualizarFilho(index, "nascimento", e.target.value)}
+                                        readOnly={!editando} />
                                     </div>
                                 </div>
                                 <div className={styles.matricula}>
@@ -222,7 +306,13 @@ function ModalResponsavel({fecharModal, dados, formatarData}) {
                         ))}
                     </div>
                     <div className={styles.buttons}>
-                        <button>Editar</button>
+                        <button type="button" onClick={() =>  {
+                            if(editando)
+                                handleSalvar();
+                            else
+                                setEditando(true);
+                        }}>
+                            {editando? "Salvar Alterações" : "Editar"}</button>
                         <button onClick={fecharModal}>Cancelar</button>
                     </div>
                 </div>

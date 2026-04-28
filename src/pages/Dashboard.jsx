@@ -222,6 +222,11 @@ function Dashboard() {
             return dataRaw;
         }
     };
+
+    const atualizarDados = (dadosModalResponsavel) => {
+        const novaLista = agendamentos.map(item => item.cpf === dadosModalResponsavel.cpf ? dadosModalResponsavel : item);
+        setAgendamentos(novaLista);
+    };
     //desenhando na tela
     return (
         <div className={styles.layout}>
@@ -231,7 +236,7 @@ function Dashboard() {
                 <ModalResponsavel 
                     fecharModal={() => setModalResponsavelAberto(false)} 
                     dados={itemSelecionado} 
-                    formatarData={formatarDataParaExibicao}
+                    atualizarDados={atualizarDados}
                 />
             )}
             <div className={styles.tableWrapper}>
@@ -321,7 +326,6 @@ function Dashboard() {
                                                     <div className={styles.editButtons}>
                                                         <button onClick={() => salvarEdicao(item.cpf, null)}>✓</button>
                                                         <button onClick={() => setEditandoCpf(null)}>✗</button>
-                                                        <button onClick={() => salvarEdicao(item.cpf, "processo_concluido")}>Done</button>
                                                     </div>
                                                 </div>
                                             ) : (
