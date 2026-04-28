@@ -86,11 +86,20 @@ function ModalResponsavel({fecharModal, dados, atualizarDados}) {
 
     // Converte YYYY-MM-DDTHH:mm para DD/MM/YYYY HH:mmh
     const formatarDateTimeParaBr = (dateTimeIso) => {
-        if (!dateTimeIso) return "";
-        if (dateTimeIso.includes('/')) return dateTimeIso; // Já está em BR
-        const [data, hora] = dateTimeIso.split('T');
-        const [ano, mes, dia] = data.split('-');
-        return `${dia}/${mes}/${ano} ${hora}h`;
+        if (!dateTimeIso || dateTimeIso === "") return ""; // Retorna vazio se não houver data
+        
+        // Se a data já estiver no formato BR (tiver barras), não faz nada
+        if (dateTimeIso.includes('/')) return dateTimeIso; 
+
+        try {
+            const [data, hora] = dateTimeIso.split('T');
+            const [ano, mes, dia] = data.split('-');
+            
+            // Só adiciona o 'h' se houver hora, senão retorna só a data
+            return hora ? `${dia}/${mes}/${ano} ${hora}h` : `${dia}/${mes}/${ano}`;
+        } catch (error) {
+            return dateTimeIso; // Se der erro, devolve o que veio para não quebrar
+        }
     };
 
     const [dadosAtual, setDadosAtual] = useState({

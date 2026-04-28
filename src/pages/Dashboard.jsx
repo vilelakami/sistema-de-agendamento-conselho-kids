@@ -357,15 +357,23 @@ function Dashboard() {
                                         <tr className={styles.rowExpanded}>
                                             <td colSpan="10">
                                                 <div className={styles.filhosLista}>
-                                                    {/* mapeando a lista de filhos para cada responsável */}
-                                                    {item.filhos.map((filho, index) => (
-                                                        <p key={index}>
-                                                            • {typeof filho === 'string' 
-                                                                ? filho 
-                                                                : `${filho?.nome || "Sem nome"} - ${filho?.nascimento ||  ""}`
-                                                            }
-                                                        </p>
-                                                    ))}
+                                                    {item.filhos && item.filhos.map((filho, index) => {
+                                                        // Se o filho for uma string (ex: "Eva - 17/03/2026")
+                                                        if (typeof filho === 'string') {
+                                                            return <p key={index}>• {filho}</p>;
+                                                        }
+
+                                                        // Se o filho for um objeto (ex: {nome: "Eva", nascimento: "2026-03-17"})
+                                                        if (typeof filho === 'object' && filho !== null) {
+                                                            return (
+                                                                <p key={index}>
+                                                                    • {filho.nome || "Sem nome"} - {filho.nascimento || filho.idade || ""}
+                                                                </p>
+                                                            );
+                                                        }
+
+                                                        return null;
+                                                    })}
                                                 </div>
                                             </td>
                                         </tr>

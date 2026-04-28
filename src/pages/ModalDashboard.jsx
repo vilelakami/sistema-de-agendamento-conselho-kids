@@ -44,14 +44,6 @@ function ModalDashboard({ fecharModal, aoSalvar, formatarData }){
             return;
         }
 
-        if(filhos.length > 0){
-            const campoVazio = filhos.some(filho => !filho.nome?.trim() || !filho.nascimento);
-            if(campoVazio){
-                alert("Os campos de nome da criança e data de nascimento são obrigatórios.");
-                return;
-            }
-        }
-
         e.preventDefault();
         const cadastroFinal = {
             ...dados,
