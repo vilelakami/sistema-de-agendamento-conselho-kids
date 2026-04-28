@@ -2,11 +2,56 @@
     max-width: 250px;
     width: 100%;
     height: 100vh;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
     background-color: #1D2B50;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+}
+
+.container p, 
+.container Link, 
+.container button:not(.botaoToggle),
+.container span {
+    transition: opacity 0.3s ease, visibility 0.3s;
+    opacity: 1;
+    visibility: visible;
+}
+
+.fechada {
+    width: 60px; /* Largura só para os ícones */
+}
+
+/* Esconde o scroll lateral se o texto tentar aparecer */
+.fechada p, .fechada span, .fechada Link, .fechada button:not(.botaoToggle) {
+    display: none;
+}
+
+.fechada p, 
+.fechada Link, 
+.fechada button:not(.botaoToggle),
+.fechada span {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; /* Impede clicar no que está invisível */
+}
+
+.botaoToggle {
+    position: absolute;
+    right: -15px; /* Fica em cima da borda */
+    top: 20px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #1D2B50;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
 }
 
 main{

@@ -8,37 +8,72 @@ import logoutIcon from "../../assets/icons/logout.svg";
 import { Link, useNavigate } from "react-router-dom";
 import dashboard from "../../pages/Dashboard";
 import settingsIcon from "../../assets/icons/settings.svg";
+import setaIcon from "../../assets/icons/arrow.svg";
 
 function Sidebar({ abrirModal }) {
     const navigate = useNavigate();
-    return(
-        <div className={styles.container}>
+    const [expandida, setExpandida] = React.useState(true); // Estado da sidebar
+
+    const toggleSidebar = () => {
+        setExpandida(!expandida);
+    };
+
+    return (
+        <div className={`${styles.container} ${!expandida ? styles.fechada : ""}`}>
+            {/* Botão de Seta para recolher/expandir */}
+            <button className={styles.botaoToggle} onClick={toggleSidebar}>
+                <img 
+                    src={setaIcon} 
+                    alt="Seta" 
+                    className={!expandida ? styles.setaInvertida : ""} 
+                />
+            </button>
+
             <div className={styles.taskHeader}>
                 <img src={logotipo} alt="logotipo da NextPoint" />
-                <p>AgendaNext</p>
+                {expandida && <p>AgendaNext</p>}
             </div>
+
             <main>
                 <div className={styles.taskContent}>
-                    <p>Conteúdo</p>
+                    {/* ✅ Mantendo o texto "Conteúdo" */}
+                    <p>{expandida ? "Conteúdo" : "..."}</p> 
                     <nav>
                         <ul>
-                            <li> <img className={styles.taskIcon} src={dashboardIcon} alt="dashboard" /><Link to="/dashboard">Dashboard</Link></li>
-                            <li> <img className={styles.taskIcon} src={addContaIcon} alt="adicionar" /><button onClick={abrirModal}>Adicionar Responsável</button></li>
-                            <li> <img src={historicoIcon} alt="histórico" /><Link to="/historico">Agendamentos finalizados</Link>
+                            <li> 
+                                <img className={styles.taskIcon} src={dashboardIcon} alt="dashboard" />
+                                {expandida && <Link to="/dashboard">Dashboard</Link>}
+                            </li>
+                            <li> 
+                                <img className={styles.taskIcon} src={addContaIcon} alt="adicionar" />
+                                {expandida && <button onClick={abrirModal}>Adicionar Responsável</button>}
+                            </li>
+                            <li> 
+                                <img className={styles.taskIcon} src={historicoIcon} alt="histórico" />
+                                {expandida && <Link to="/historico">Agendamentos finalizados</Link>}
                             </li>
                         </ul>
                     </nav>
                 </div>
+
                 <div className={styles.taskUsuario}>
-                    <p>Admin</p>
+                    {/* ✅ Mantendo o texto "Admin" e as "Configurações" */}
+                    <p>{expandida ? "Admin" : ""}</p>
                     <ul>
-                        <li><img src={settingsIcon} alt="configurações" /><Link to="/configuracoes">Configurações</Link></li>
+                        <li>
+                            <img className={styles.taskIcon} src={settingsIcon} alt="configurações" />
+                            {expandida && <Link to="/configuracoes">Configurações</Link>}
+                        </li>
                     </ul>
                 </div>
             </main>
-                <div className={styles.taskLogout}>
-                    <Link to="/login">Logout</Link>
-                </div>
+
+            <div className={styles.taskLogout}>
+                <img className={styles.taskIcon} src={logoutIcon} alt="logout" />
+                {expandida && <Link to="/login">Logout</Link>}
+            </div>
         </div>
     );
-} export default Sidebar;
+}
+
+export default Sidebar;
