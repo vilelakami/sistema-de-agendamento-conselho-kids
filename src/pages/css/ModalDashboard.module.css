@@ -77,13 +77,20 @@
     align-items: center;
 }
 
+.taskQtdeFilhos input{
+    max-width: 80px;
+    width: 100%;
+}
+
 .taskCpfECep{
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.taskDemaisInfo{
+.taskDemaisInfo1,
+.taskDemaisInfo2,
+.taskDemaisInfo3{
     display: flex;
     align-items: center;
     justify-content: space-between;

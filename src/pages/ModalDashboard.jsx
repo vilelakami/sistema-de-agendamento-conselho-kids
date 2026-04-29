@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./css/ModalDashboard.module.css";
 import addFilhoIcon from "../assets/icons/addConta.svg";
-import { data } from "react-router-dom";
 
 function ModalDashboard({ fecharModal, aoSalvar, formatarData }){
     const [filhos, setFilhos] = React.useState([]);
@@ -12,10 +11,12 @@ function ModalDashboard({ fecharModal, aoSalvar, formatarData }){
         comoConheceu: "",
         status: "aguardando_resposta",
         agendamento: "",
-        dataCriacao: "",
+        // 1. Definindo a data de hoje no formato YYYY-MM-DD para o input
+        dataCriacao: new Date().toISOString().split('T')[0],
         qtdeFilhos: ""
     });
 
+    // Adiciona um novo objeto de filho à lista
     const adicionarFilho = () => {
         setFilhos([
             ...filhos, 
@@ -23,6 +24,7 @@ function ModalDashboard({ fecharModal, aoSalvar, formatarData }){
         ]);
     };
 
+    // Gerencia as mudanças nos inputs do responsável
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setDados({
@@ -31,6 +33,7 @@ function ModalDashboard({ fecharModal, aoSalvar, formatarData }){
         });
     };
 
+    // Gerencia as mudanças nos inputs de cada filho
     const handleFilho = (index, campo, valor) => {
         const novaLista = [...filhos];
         novaLista[index][campo] = valor;
@@ -38,20 +41,36 @@ function ModalDashboard({ fecharModal, aoSalvar, formatarData }){
     };
 
     const handleSalvar = (e) => {
+        // Previne o reload da página
+        e.preventDefault();
 
+        // Validação dos campos obrigatórios do responsável
         if(!dados.responsavel || dados.responsavel.trim() === "" || !dados.cpf || !dados.cep){
             alert("Preencha todos os campos obrigatórios.");
             return;
         }
 
-        e.preventDefault();
+        // 3. Verificação dos filhos (Validando se nome e data de cada um estão preenchidos)
+        if(filhos.length > 0){
+            const camposVazios = filhos.some((filho) => {
+                return !filho.nome || filho.nome.trim() === "" || !filho.nascimento;
+            });
+            
+            if(camposVazios){
+                alert("Os campos nome da criança e data de nascimento são obrigatórios para todos os filhos adicionados.");
+                return;
+            }
+        }
+
         const cadastroFinal = {
             ...dados,
             filhos: filhos.map(filho => `${filho.nome} - ${formatarData(filho.nascimento)}`),
+            // 1. Enviando a quantidade real de filhos para o Dashboard
             quantidadeFilhos: filhos.length,
             dataCriacao: new Date().toLocaleDateString('pt-BR'),
             dataAgendamento: dados.agendamento || null
         };
+
         aoSalvar(cadastroFinal);
         fecharModal();
     };
@@ -70,9 +89,9 @@ function ModalDashboard({ fecharModal, aoSalvar, formatarData }){
                         onChange={handleInputChange}
                         />
                     </div>
-                    <div className={styles.taskDemaisInfo}>
+                    <div className={styles.taskDemaisInfo1}>
                         <div className={styles.taskCPF}>
-                            <label>CPF do Responsável <span className={styles.span}>*</span></label>
+                            <label>CPF <span className={styles.span}>*</span></label>
                             <input type="text"
                             name="cpf"
                             placeholder="ex: 55555555555"
@@ -81,7 +100,7 @@ function ModalDashboard({ fecharModal, aoSalvar, formatarData }){
                             />
                         </div>
                         <div className={styles.taskCEP}>
-                            <label>CEP do Responsável <span className={styles.span}>*</span></label>
+                            <label>CEP <span className={styles.span}>*</span></label>
                             <input type="text"
                             name="cep"
                             placeholder="ex: 55555555"
@@ -90,7 +109,7 @@ function ModalDashboard({ fecharModal, aoSalvar, formatarData }){
                                 />
                         </div>
                     </div>
-                    <div className={styles.taskDemaisInfo}>
+                    <div className={styles.taskDemaisInfo2}>
                         <div className={styles.taskComoConheceu}>
                             <label>Como conheceu?</label>
                             <select
@@ -107,14 +126,16 @@ function ModalDashboard({ fecharModal, aoSalvar, formatarData }){
                         </div>
                         <div className={styles.taskDataCriacao}>
                             <label>Data de Criação</label>
-                            <input className={styles.taskInput} type="date" name="dataCriacao" value={dados.dataCriacao} onChange={handleInputChange} />
+                            {/* 1. Campo agora é readOnly */}
+                            <input className={styles.taskInput} type="date" name="dataCriacao" value={dados.dataCriacao} readOnly />
                         </div>
                         <div className={styles.taskQtdeFilhos}>
                             <label>Qtde. filhos:</label>
-                            <input className={styles.taskInput} type="number" name="qtdeFilhos" value={dados.qtdeFilhos} onChange={handleInputChange} />
+                            {/* 1. Refletindo a quantidade real de filhos adicionados */}
+                            <input className={styles.taskInput} type="number" name="qtdeFilhos" value={filhos.length} readOnly />
                         </div>
                     </div>
-                    <div className={styles.taskDemaisInfo}>
+                    <div className={styles.taskDemaisInfo3}>
                         <div className={styles.taskStatus}>
                             <label>Status</label>
                             <select
