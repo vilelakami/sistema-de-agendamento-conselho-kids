@@ -36,7 +36,7 @@
     max-width: 400px; 
     display: flex;
     align-items: center;
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm);
     gap: 8px;
 
     background-color: var(--background-primary-color);
@@ -44,7 +44,8 @@
 }
 
 .btn{
-    padding: var(--spacing-md);
+    max-width: 400px;
+    padding: var(--spacing-sm);
 }
 
 /* ============ MEDIA QUERY ============ */
