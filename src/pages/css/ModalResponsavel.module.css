@@ -2,7 +2,6 @@
    ESTRUTURA PRINCIPAL (OVERLAY E CONTAINERS)
    ========================================================================== */
 
-/* Camada escura que cobre a tela atrás do modal */
 .modalOverlay {
     position: fixed;
     top: 0;
@@ -19,49 +18,27 @@
 .container {
     display: flex;
     background-color: var(--background-surface-color);
-    width: 95%; 
-    max-width: 900px;
-    height: auto; 
-    max-height: 90vh; 
+    width: 900px; 
+    height: 523px;
     border-radius: 8px;
-    overflow: hidden;
-    flex-wrap: wrap; 
+    overflow: auto; 
+    max-width: 95vw; 
+    max-height: 95vh;
 }
 
-/* Lado esquerdo do modal (Formulário de cadastro) */
-.modalContent {
-    background-color: var(--background-surface-color);
-    padding: var(--spacing-md);
-    border-radius: 8px;
-    max-width: 450px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    overflow-y: auto; 
-    flex-grow: 1; 
-}
-
-/* ==========================================================================
-   SEÇÃO DE RELATÓRIO (LADO DIREITO)
-   ========================================================================== */
-
-/* Coluna da direita dedicada ao relatório geral */
 .relatorio {
     flex: 1;
     display: flex;
     flex-direction: column;
     padding: var(--spacing-md);
     border-left: 1px solid #ccc;
-    min-height: 250px; 
+    min-height: 0;
     align-items: stretch;
-    min-width: 300px; 
 }
 
-/* Área de texto do relatório */
 .relatorio textarea {
     flex: 1;
-    min-height: 150px; 
+    min-height: 0;
     width: 100%;
     max-width: none;
     resize: none; 
@@ -72,24 +49,53 @@
     box-sizing: border-box;
 }
 
+.modalContent {
+    background-color: var(--background-surface-color);
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    max-width: 450px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto; 
+}
+
 /* ==========================================================================
    CAMPOS DE DADOS E FORMULÁRIO
    ========================================================================== */
 
-/* Agrupamento dos dados do responsável */
 .dadosResponsavel {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-/* Estilização padrão das labels do formulário */
+.status select {
+    width: 180px;
+}
+
+.qtdeFilhos input {
+    width: 60px;
+}
+
+.outrosDados,
+.dadosFilhos {
+    display: flex;
+    justify-content: space-between;
+}
+
 .modalContent label {
     font-size: 14px;
     font-weight: 500;
 }
 
-/* Estrutura comum para agrupar label e input verticalmente */
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
 .nomeResponsavel,
 .cpfResponsavel,
 .cepResponsavel,
@@ -105,49 +111,26 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 5px;
-    width: 100%; 
-}
-
-/* Linhas que contém múltiplos campos (Ex: Data e Qtde) */
-.outrosDados,
-.dadosFilhos {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap; 
-    gap: 10px;
-}
-
-/* Ajustes específicos de largura para selects e inputs numéricos */
-.status select {
-    width: 100%;
-    max-width: 180px;
 }
 
 .qtdeFilhos {
-    flex-direction: row; 
+    flex-direction: row;
     align-items: center;
 }
 
-.qtdeFilhos input {
-    width: 60px;
-}
-
 .nomeFilho input {
-    width: 100%; 
-    max-width: 250px;
+    width: 250px;
 }
 
 /* ==========================================================================
    SEÇÃO DE MATRÍCULA E MOTIVOS
-   ========================================================================== */
+   ========================================================================= */
 
-/* Container de opções de matrícula (Sim/Não) */
 .taskMatricula {
     display: flex;
     align-items: center;
     gap: 10px;
     margin-top: 10px;
-    flex-wrap: wrap; 
 }
 
 .matricula {
@@ -168,11 +151,9 @@
     white-space: nowrap;
 }
 
-/* Campos de texto para motivos ou observações adicionais */
 .campoTexto {
     width: 100%;
 }
-
 .campoTexto textarea,
 .matriculadoMotivo textarea {
     width: 100%;
@@ -180,22 +161,9 @@
 }
 
 .matriculadoMotivo select {
-    width: 100%;
-    max-width: 180px;
+    width: 180px;
 }
 
-/* Remove a borda de destaque ao clicar nos textareas */
 textarea:focus {
     outline: none;
-}
-
-/* ==========================================================================
-   BOTÕES DE AÇÃO
-   ========================================================================== */
-
-.buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    flex-wrap: wrap; 
 }
