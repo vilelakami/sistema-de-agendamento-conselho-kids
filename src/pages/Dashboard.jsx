@@ -253,7 +253,7 @@ function Dashboard() {
                                             )}
                                         </td>
                                         <td>
-                                            {/* ✅ Mantendo seu botão original: Crianças > */}
+                                            {/* Mantendo seu botão original: Crianças > */}
                                             <Button onClick={() => toggleLinha(item.cpf)} className={styles.btnAlunos}>
                                                 Crianças {">"}
                                             </Button>

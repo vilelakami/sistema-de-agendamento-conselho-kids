@@ -108,3 +108,12 @@
 .taskTable tbody tr:not(.rowExpanded) {
     border-bottom: 1px solid var(--background-primary-color);
 }
+
+/* Botões e Links */
+.nomeLink {
+    color: var(--font-primary-color);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.nomeLink:hover { text-decoration: underline; }
