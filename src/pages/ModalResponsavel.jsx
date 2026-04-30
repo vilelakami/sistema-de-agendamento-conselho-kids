@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import styles from "./css/ModalResponsavel.module.css";
 
-function ModalResponsavel({fecharModal, dados, atualizarDados}) {
+function ModalResponsavel({fecharModal, dados, atualizarDados, aplicarMascaraCPF, aplicarMascaraCEP}) {
     const [filhos, setFilhos] = useState([]);
     const [editando, setEditando] = useState(false);
 
@@ -115,19 +115,20 @@ function ModalResponsavel({fecharModal, dados, atualizarDados}) {
     });
 
     const handleSalvar = () => {
-
-        if(!dadosAtual?.responsavel || !dados.responsavel){
+        // Validações de campos vazios
+        if(!dadosAtual?.responsavel){
             alert("Preencha o nome do responsável.");
             return;
         }
-        if(!dadosAtual?.cpf || !dados.cpf){
+        if(!dadosAtual?.cpf){
             alert("Preencha o cpf do responsável.");
             return;
         }
-        if(!dadosAtual?.cep || !dados.cep){
+        if(!dadosAtual?.cep){
             alert("Preencha o cep do responsável.");
             return;
         }
+
         if(filhos.length > 0){
             const camposVazios = filhos.some((filho) => {
                 return !filho.nome || filho.nome.trim() === "" || !filho.nascimento;
@@ -137,19 +138,21 @@ function ModalResponsavel({fecharModal, dados, atualizarDados}) {
                 return;
             }
         }
+
+        // Criando o objeto final para salvar
         const dadosEditados = {
             ...dados,
             ...dadosAtual,
             dataCriacao: formatarParaBr(dadosAtual.dataCriacao),
             dataAgendamento: formatarDateTimeParaBr(dadosAtual.dataAgendamento),
-            filhos: filhos.map(filho => `${filho.nome} - ${filho.nascimento}`)
+            filhos: filhos.map(filho => `${filho.nome} - ${filho.nascimento}`),
         };
 
         if(atualizarDados){
             atualizarDados(dadosEditados);
             alert("Dados atualizados com sucesso");
             fecharModal();
-        } else{
+        } else {
             alert("Erro ao atualizar os dados.");
         }
     };
@@ -165,24 +168,31 @@ function ModalResponsavel({fecharModal, dados, atualizarDados}) {
                             placeholder="Nome do Responsável *"
                             value={dadosAtual?.responsavel || ""}
                             readOnly={!editando}
-                            onChange={(e) => setDadosAtual({...dadosAtual, responsavel: e.target.value})}/>
+                            onChange={(e) => setDadosAtual({...dadosAtual, responsavel: e.target.value})}
+                            required/>
                         </div>
                         <div className={styles.outrosDados}>
                             <div className={styles.cpfResponsavel}>
                                 <label>CPF do Responsável:</label>
                                 <input type="text"
                                 placeholder="CPF *"
+                                maxLength="14"
+                                name="cpf"
                                 value={dadosAtual?.cpf || ""}
                                 readOnly={!editando} 
-                                onChange={(e) => setDadosAtual({...dadosAtual, cpf: e.target.value})}/>
+                                onChange={(e) => setDadosAtual({...dadosAtual, cpf: aplicarMascaraCPF(e.target.value)})}
+                                required/>
                             </div>
                             <div className={styles.cepResponsavel}>
                                 <label>CEP do Responsável:</label>
                                 <input type="text" 
                                 placeholder="CEP *"
+                                maxLength="9"
+                                name="cep"
                                 value={dadosAtual?.cep || ""}
                                 readOnly={!editando} 
-                                onChange={(e) => setDadosAtual({...dadosAtual, cep: e.target.value})}/>
+                                onChange={(e) => setDadosAtual({...dadosAtual, cep: aplicarMascaraCEP(e.target.value)})}
+                                required/>
                             </div>
                         </div>
                         <div className={styles.outrosDados}>
@@ -190,7 +200,7 @@ function ModalResponsavel({fecharModal, dados, atualizarDados}) {
                                 <label>Data de Criação:</label>
                                 <input type="date" 
                                 value={prepararDataParaInput(dadosAtual?.dataCriacao) || ""}
-                                readOnly={!editando}
+                                readOnly
                                 onChange={(e) => setDadosAtual({...dadosAtual, dataCriacao: e.target.value})}/>
                             </div>
                             <div className={styles.dataAgendamento}>

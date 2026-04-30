@@ -103,8 +103,22 @@ function Dashboard() {
     });
 
     // 13. Máscaras visuais para CPF e CEP
-    const aplicarMascaraCPF = (v) => v?.replace(/\D/g, "").replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4") || "";
-    const aplicarMascaraCEP = (v) => v?.replace(/\D/g, "").replace(/(\d{5})(\d{3})/, "$1-$2") || "";
+    const aplicarMascaraCPF = (v) => {
+        if (!v) return "";
+        return v
+            .replace(/\D/g, "") // 1. Remove tudo que não é número
+            .replace(/(\d{3})(\d)/, "$1.$2") // 2. Coloca o primeiro ponto após 3 dígitos
+            .replace(/(\d{3})(\d)/, "$1.$2") // 3. Coloca o segundo ponto após mais 3 dígitos
+            .replace(/(\d{3})(\d{1,2})$/, "$1-$2") // 4. Coloca o traço antes dos últimos 2 dígitos
+            .substring(0, 14); // 5. Limita o tamanho final
+    };
+
+    const aplicarMascaraCEP = (v) => {
+        return v
+            .replace(/\D/g, "")
+            .replace(/(\d{5})(\d)/, "$1-$2")
+            .substring(0, 9);
+    };
 
     // 14. Nomes amigáveis para exibição dos status na tabela
     const statusLabels = {
@@ -168,9 +182,9 @@ function Dashboard() {
             <Sidebar abrirModal={() => setModalAberto(true)}/>
             
             {/* Modais de Cadastro e Edição */}
-            {modalAberto && (<ModalDashboard fecharModal={() => setModalAberto(false)} aoSalvar={cadastrarPessoa} formatarData={formatarDataParaExibicao} /> )}
+            {modalAberto && (<ModalDashboard fecharModal={() => setModalAberto(false)} aoSalvar={cadastrarPessoa} formatarData={formatarDataParaExibicao} aplicarMascaraCEP={aplicarMascaraCEP} aplicarMascaraCPF={aplicarMascaraCPF}/> )}
             {modalResponsavelAberto && itemSelecionado && (
-                <ModalResponsavel fecharModal={() => setModalResponsavelAberto(false)} dados={itemSelecionado} atualizarDados={atualizarDados} />
+                <ModalResponsavel fecharModal={() => setModalResponsavelAberto(false)} dados={itemSelecionado} atualizarDados={atualizarDados} aplicarMascaraCEP={aplicarMascaraCEP} aplicarMascaraCPF={aplicarMascaraCPF}/>
             )}
 
             <div className={styles.tableWrapper}>

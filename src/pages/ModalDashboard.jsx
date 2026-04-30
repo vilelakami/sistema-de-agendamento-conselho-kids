@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./css/ModalDashboard.module.css";
 import addFilhoIcon from "../assets/icons/addConta.svg";
 
-function ModalDashboard({ fecharModal, aoSalvar, formatarData }){
+function ModalDashboard({ fecharModal, aoSalvar, formatarData, aplicarMascaraCPF, aplicarMascaraCEP }){
     const [filhos, setFilhos] = React.useState([]);
     const [dados, setDados] = React.useState({
         responsavel: "",
@@ -27,9 +27,17 @@ function ModalDashboard({ fecharModal, aoSalvar, formatarData }){
     // Gerencia as mudanças nos inputs do responsável
     const handleInputChange = (e) => {
         const { name, value } = e.target;
+        let valorFinal = value;
+
+        if (name === "cpf") {
+            valorFinal = aplicarMascaraCPF(value);
+        } else if (name === "cep") {
+            valorFinal = aplicarMascaraCEP(value);
+        }
+
         setDados({
             ...dados,
-            [name]: value
+            [name]: valorFinal
         });
     };
 
@@ -87,26 +95,32 @@ function ModalDashboard({ fecharModal, aoSalvar, formatarData }){
                         placeholder="Nome completo"
                         value={dados.responsavel}
                         onChange={handleInputChange}
+                        required
                         />
                     </div>
                     <div className={styles.taskDemaisInfo1}>
                         <div className={styles.taskCPF}>
                             <label>CPF <span className={styles.span}>*</span></label>
                             <input type="text"
+                            maxLength="14"
                             name="cpf"
+                            inputMode="numeric"
                             placeholder="ex: 55555555555"
                             value={dados.cpf}
                             onChange={handleInputChange}
+                            required
                             />
                         </div>
                         <div className={styles.taskCEP}>
                             <label>CEP <span className={styles.span}>*</span></label>
                             <input type="text"
                             name="cep"
+                            maxLength="9"
+                            inputMode="numeric"
                             placeholder="ex: 55555555"
                             value={dados.cep}
                             onChange={handleInputChange}
-                                />
+                            required/>
                         </div>
                     </div>
                     <div className={styles.taskDemaisInfo2}>
