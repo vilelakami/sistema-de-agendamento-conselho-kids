@@ -173,7 +173,7 @@ function ModalResponsavel({fecharModal, dados, atualizarDados, aplicarMascaraCPF
                         </div>
                         <div className={styles.outrosDados}>
                             <div className={styles.cpfResponsavel}>
-                                <label>CPF do Responsável:</label>
+                                <label>CPF:</label>
                                 <input type="text"
                                 placeholder="CPF *"
                                 maxLength="14"
@@ -184,7 +184,7 @@ function ModalResponsavel({fecharModal, dados, atualizarDados, aplicarMascaraCPF
                                 required/>
                             </div>
                             <div className={styles.cepResponsavel}>
-                                <label>CEP do Responsável:</label>
+                                <label>CEP:</label>
                                 <input type="text" 
                                 placeholder="CEP *"
                                 maxLength="9"
