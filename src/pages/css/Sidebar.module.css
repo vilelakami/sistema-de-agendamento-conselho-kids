@@ -15,13 +15,13 @@
 .container Link, 
 .container button:not(.botaoToggle),
 .container span {
-    transition: opacity 0.3s ease, visibility 0.3s;
+    transition: opacity 1s ease, visibility 1s;
     opacity: 1;
     visibility: visible;
 }
 
 .fechada {
-    width: 60px; /* Largura só para os ícones */
+    width: 50px; 
 }
 
 /* Esconde o scroll lateral se o texto tentar aparecer */
@@ -35,15 +35,15 @@
 .fechada span {
     opacity: 0;
     visibility: hidden;
-    pointer-events: none; /* Impede clicar no que está invisível */
+    pointer-events: none; 
 }
 
 .botaoToggle {
     position: absolute;
-    right: -15px; /* Fica em cima da borda */
-    top: 20px;
-    width: 30px;
-    height: 30px;
+    right: -8px;
+    top: 50px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     background-color: #1D2B50;
     border: none;
@@ -51,7 +51,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 10;
+    z-index: 100;
 }
 
 main{
@@ -83,7 +83,7 @@ main{
     margin-left: -3px;
 }
 .taskIcon{
-    width: 18px;
+    width: 20px;
 }
 
 .taskContent,
@@ -137,4 +137,9 @@ main{
 .taskLogout a{
     color: var(--font-secondary-color);
     font-size: 12px;
+}
+
+.taskNav:hover{
+    transition: all 0.1s ease;
+    transform: scale(0.95);
 }

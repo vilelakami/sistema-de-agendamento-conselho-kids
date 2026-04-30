@@ -42,27 +42,27 @@ function Sidebar({ abrirModal }) {
                         <ul>
                             <li> 
                                 <img className={styles.taskIcon} src={dashboardIcon} alt="dashboard" />
-                                {expandida && <Link to="/dashboard">Dashboard</Link>}
+                                {expandida && <Link className={styles.taskNav} to="/dashboard">Dashboard</Link>}
                             </li>
                             <li> 
                                 <img className={styles.taskIcon} src={addContaIcon} alt="adicionar" />
-                                {expandida && <button onClick={abrirModal}>Adicionar Responsável</button>}
+                                {expandida && <button className={styles.taskNav} onClick={abrirModal}>Adicionar Responsável</button>}
                             </li>
                             <li> 
                                 <img className={styles.taskIcon} src={historicoIcon} alt="histórico" />
-                                {expandida && <Link to="/historico">Agendamentos finalizados</Link>}
+                                {expandida && <Link className={styles.taskNav} to="/historico">Agendamentos finalizados</Link>}
                             </li>
                         </ul>
                     </nav>
                 </div>
 
                 <div className={styles.taskUsuario}>
-                    {/* ✅ Mantendo o texto "Admin" e as "Configurações" */}
+                    {/* Mantendo o texto "Admin" e as "Configurações" */}
                     <p>{expandida ? "Admin" : ""}</p>
                     <ul>
                         <li>
-                            <img className={styles.taskIcon} src={settingsIcon} alt="configurações" />
-                            {expandida && <Link to="/configuracoes">Configurações</Link>}
+                            <img src={settingsIcon} alt="configurações" />
+                            {expandida && <Link className={styles.taskNav} to="/configuracoes">Configurações</Link>}
                         </li>
                     </ul>
                 </div>
@@ -70,7 +70,7 @@ function Sidebar({ abrirModal }) {
 
             <div className={styles.taskLogout}>
                 <img className={styles.taskIcon} src={logoutIcon} alt="logout" />
-                {expandida && <Link to="/login">Logout</Link>}
+                {expandida && <Link className={styles.taskNav} to="/login">Logout</Link>}
             </div>
         </div>
     );
