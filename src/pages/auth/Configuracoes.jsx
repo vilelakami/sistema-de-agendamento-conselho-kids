@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Para navegar até o cadastro
 import Sidebar from "../../components/sidebar/Sidebar";
-import NovaSenha from "../../pages/auth/NovaSenha";
+import ModalSenha from "../auth/ModalSenha";
 import styles from "../css/Configuracoes.module.css";
 import editIcon from "../../assets/icons/edit_icon.svg";
 import { useSearchParams } from "react-router-dom";
 import deleteIcon from "../../assets/icons/delete.svg";
+import emailjs from '@emailjs/browser';
 
 function Configuracoes({ abrirModal }) {
     const [searchParams] = useSearchParams();
@@ -14,7 +15,8 @@ function Configuracoes({ abrirModal }) {
     const [usuarioAdmin, setUsuarioAdmin] = useState({ nome: "", usuario: "", senha: "", email: "" });
     const [listaUsuarios, setListaUsuarios] = useState([]);
     const [idUsuarioSendoEditado, setIdUsuarioSendoEditado] = useState(null);
-    const [modalAlterarSenhaAberto, setModalAlterarSenhaAberto] = useState(false)
+    const [modalAlterarSenhaAberto, setModalAlterarSenhaAberto] = useState(false);
+    const [modalSolicitarEmailAberto, setModalSolicitarEmailAberto] = useState(false);
 
     useEffect(() => {
         // 1. Carrega dados do Admin
@@ -47,6 +49,32 @@ function Configuracoes({ abrirModal }) {
             navigate("/configuracoes", { replace: true });
         }
     }, [searchParams, navigate]);
+
+    const enviarEmailRecuperacaoAdmin = async (emailUsuario) => {
+        // Log para saber se a função acordou
+        console.log("Chamando EmailJS para:", emailUsuario);
+        
+        try {
+            const templateParams = {
+                email: emailUsuario,
+                link: "http://localhost:3000/?reset=true" 
+            };
+
+            const response = await emailjs.send(
+                'service_vqskpvq', 
+                'template_zbkje5d', 
+                templateParams, 
+                'qmTNkhntxdwkDJjvN'
+            );
+
+            console.log('SUCESSO!', response.status, response.text);
+            alert("E-mail de recuperação enviado!");
+        } catch (err) {
+            console.error('FALHA NO ENVIO:', err);
+            alert("Erro ao enviar e-mail.");
+        }
+    };
+
 
     const excluirUsuario = (index) => {
             // 2. Cria uma nova lista removendo o item da posição 'index'
@@ -111,9 +139,13 @@ function Configuracoes({ abrirModal }) {
     return (
         <div className={styles.layout}>
             <Sidebar abrirModal={() => setModalAberto(true)} />
-                {modalAlterarSenhaAberto && (
-                <NovaSenha fecharModal={() => setModalAlterarSenhaAberto(false)}/>
-            )}
+                {modalSolicitarEmailAberto && (
+                    <ModalSenha 
+                        isOpen={modalSolicitarEmailAberto} 
+                        onClose={() => setModalSolicitarEmailAberto(false)} 
+                        enviarEmail={enviarEmailRecuperacaoAdmin} 
+                    />
+                )}
             <div className={styles.container}>
                 <div className={styles.taskDivisaoUsuario}>
                     
@@ -141,7 +173,7 @@ function Configuracoes({ abrirModal }) {
                                 <label>Senha:</label>
                                 <input type="password" value={usuarioAdmin.senha} disabled />
                             </div>  
-                            <button onClick={() => setModalAlterarSenhaAberto(true)} className={styles.btnAlterarSenhaAdmin}>Alterar Senha</button>
+                            <button onClick={() => setModalSolicitarEmailAberto(true)} className={styles.btnAlterarSenhaAdmin}>Alterar Senha</button>
                         </div>
                         <button className={styles.btnSalvarAdmin}>Salvar Alterações</button>
                     </div>

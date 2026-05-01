@@ -16,13 +16,14 @@
 /* Caixa branca do Modal */
 .modalContent {
     background-color: var(--background-surface-color);
-    padding: var(--spacing-md);
+    padding: var(--spacing-xl);
     border-radius: 8px;
     max-width: 350px;
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 1.25rem; 
+    border-radius: var(--border-radius-default);
     
    
     max-height: 90vh;

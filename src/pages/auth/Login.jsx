@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from "../css/Login.module.css";
 import Esqueci_Senha from "../auth/ModalSenha";
+import NovaSenha from "../auth/NovaSenha";
 import { useNavigate } from 'react-router-dom'; 
 import userIcon from "../../assets/icons/user.svg";
 import sehnaIcon from "../../assets/icons/lock.svg";
 import enterIcon from "../../assets/icons/enter.svg"
+import { useSearchParams } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 
 function Login() {
@@ -12,6 +14,8 @@ function Login() {
     const [usuario, setUsuario] = useState("");
     const [senha, setSenha] = useState("");
     const [modalAberto, setModalAberto] = useState(false);
+    const [searchParams] = useSearchParams();
+    const [modalNovaSenhaAberto, setModalNovaSenhaAberto] = useState(false);
 
     const enviarEmailRecuperacao = async (emailUsuario) => {
         // Log para saber se a função acordou
@@ -20,7 +24,7 @@ function Login() {
         try {
             const templateParams = {
                 email: emailUsuario,
-                link: "http://localhost:3000/configuracoes?reset=true" 
+                link: "http://localhost:3000/?reset=true" 
             };
 
             const response = await emailjs.send(
@@ -38,6 +42,16 @@ function Login() {
         }
     };
 
+    useEffect(() => {
+        // Pega o valor do parâmetro 'reset'
+        const modoReset = searchParams.get("reset");
+        
+        console.log("Valor do parâmetro reset:", modoReset); // Verifique no console (F12)
+
+        if (modoReset === "true") {
+            setModalNovaSenhaAberto(true);
+        }
+    }, [searchParams]); 
     function handleLogin(e) {
         if (e) e.preventDefault();
 
@@ -53,6 +67,9 @@ function Login() {
 
     return (
         <div className="page-wrapper">
+            {modalNovaSenhaAberto && (
+                <NovaSenha fecharModal={() => setModalNovaSenhaAberto(false)} />
+            )}
             <div className={styles.container}>
                 <div className={styles.left}>
                     <h2>AgendaNext</h2>

@@ -93,41 +93,48 @@
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    min-width: 200px;
-    padding: 15px;
+    min-width: 220px; /* Aumentado para garantir que o texto caiba */
+    padding: 10px 0; /* Padding vertical apenas, o horizontal vem das opções */
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 10px;
     background-color: #1D2B50;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    border-radius: 0 0 4px 4px; 
+    border-radius: 4px;
 }
 
+/* Ajuste na opção individual */
 .filterOption {
     display: flex;
     align-items: center; 
-    justify-content: flex-start;
+    gap: 12px; 
+    padding: 8px 20px; 
     color: white;
     font-size: 13px;
     width: 100%;
     cursor: pointer;
-    white-space: nowrap;  
+    transition: background 0.2s;
 }
 
-.filterOption input {
+/* Efeito de hover para facilitar a seleção */
+.filterOption:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Garantir que o rádio e o label não tenham margens estranhas */
+.filterOption input[type="radio"] {
     margin: 0;
-    padding: 0;
     cursor: pointer;
     accent-color: #28a745;
-    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
 }
 
 .filterOption label {
     cursor: pointer;
+    flex: 1; 
     text-align: left;
+    white-space: nowrap; 
 }
 
 /* ==========================================================================
