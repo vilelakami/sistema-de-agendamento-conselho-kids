@@ -89,8 +89,6 @@ function Login() {
                         <img src={enterIcon} alt="entrar" />
                         Entrar
                     </button>
-
-                    <Link to="/Cadastro" className={styles.taskConta}>Não tem uma conta? <span className='task-conta'>Criar Conta</span></Link>
                 </div>
 
                 {/* //mandando os parâmetros pro modal de esqueci_senha */}

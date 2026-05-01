@@ -18,19 +18,22 @@
     gap: 10px;
 }
 
-.taskTitle{
+.taskTitle,
+.taskTitleUsuario{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     padding: 10px;
 }
 
-.taskTitle h2{
+.taskTitle h2,
+.taskTitleUsuario h2{
     margin: 0;
     padding: 0;
 }
 
-.taskTitle p{
+.taskTitle p,
+.taskTitleUsuario p{
     margin-block: 0;
     margin-left: 2px;
 }
@@ -60,14 +63,17 @@
 .nome label,
 .user label,
 .senha label,
-.email label{
+.email label,
+.nomeUsuarioCadastrado label{
     font-size: 14px;
     font-weight: 500;
     max-width: 200px;
     width: 100%;
 }
 
-.editarSenha{
+.editarSenha,
+.editarSenha2,
+.addUsuario{
     background-color: #1D2B50;
     max-width: 120px;
     margin-left: auto;
@@ -76,10 +82,60 @@
     font-size: 12px;
 }
 
+.editarSenha2,
+.addUsuario{
+    margin: 0;
+    padding-inline: var(--spacing-sm);
+    max-width: 140px;
+}
+
+.addUsuario{
+    background-color: var( --background-additional-btn);
+}
+
 .salvarAlteracoes{
     max-width: 150px;
     margin-left: 20px;
     margin-bottom: 20px;
     padding: var(--spacing-xs);
     font-size: 14px;
+}
+
+.taskLogin p{
+    font-size: 14px;
+    font-weight: 700;
+    color: #413f3fd0;
+}
+
+.taskDivisaoUsuario{
+    display: flex;
+}
+
+.nomeUsuarioCadastrado{
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    max-width: 350px;
+    width: 100%;
+    gap: 8px;
+}
+
+.usuario{
+    display: flex;
+    gap: 8px;
+    max-width: 350px;
+    width: 100%;
+
+}
+
+.usuario input{
+    max-width: 250px;
+}
+
+.editarSenha2 img{
+    width: 18px !important;
+}
+
+.usuarios{
+    margin-right: 20px;
 }
