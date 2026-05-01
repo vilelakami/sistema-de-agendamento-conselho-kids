@@ -1,16 +1,31 @@
-.layout{
+/* ==========================================
+   LAYOUT GERAL E CONTAINERS
+   ========================================== */
+
+.layout {
     display: flex;
+    overflow-y: auto; 
+    align-items: stretch;
 }
 
-.container{
+.container {
     background-color: var(--background-surface-color);
     display: flex;
     flex-direction: column;
     max-width: 1440px;
-    width: 100%;
+    width: 100%; 
 }
 
-.taskContent{
+.taskDivisaoUsuario {
+    display: flex;
+}
+
+/* ==========================================
+   COLUNAS E SEÇÕES (ADMIN / USUÁRIOS)
+   ========================================== */
+
+/* Coluna da Esquerda (Admin) */
+.taskContent {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -18,27 +33,16 @@
     gap: 10px;
 }
 
-.taskTitle,
-.taskTitleUsuario{
+/* Coluna da Direita (Lista de Usuários) */
+.usuarios {
+    margin-right: 20px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    padding: 10px;
+    gap: 10px;
 }
 
-.taskTitle h2,
-.taskTitleUsuario h2{
-    margin: 0;
-    padding: 0;
-}
-
-.taskTitle p,
-.taskTitleUsuario p{
-    margin-block: 0;
-    margin-left: 2px;
-}
-
-.taskLogin{
+/* Container interno das informações de login */
+.taskLogin {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -48,10 +52,44 @@
     width: 100%;
 }
 
+/* ==========================================
+   TÍTULOS E TEXTOS
+   ========================================== */
+
+.taskTitle,
+.taskTitleUsuario {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+}
+
+.taskTitle h2,
+.taskTitleUsuario h2 {
+    margin: 0;
+    padding: 0;
+}
+
+.taskTitle p,
+.taskTitleUsuario p {
+    margin-block: 0;
+    margin-left: 2px;
+}
+
+.taskLogin p {
+    font-size: 14px;
+    font-weight: 700;
+    color: #413f3fd0;
+}
+
+/* ==========================================
+   ESTRUTURA DE INPUTS E LABELS (PADRÃO)
+   ========================================== */
+
 .nome,
 .senha,
 .email,
-.user{
+.user {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -64,36 +102,117 @@
 .user label,
 .senha label,
 .email label,
-.nomeUsuarioCadastrado label{
+.nomeUsuarioCadastrado label {
     font-size: 14px;
     font-weight: 500;
     max-width: 200px;
     width: 100%;
+    flex-shrink: 0; 
 }
+
+.nomeUsuarioCadastrado label {
+    font-weight: 600;
+}
+
+/* ==========================================
+   LISTA DE USUÁRIOS CADASTRADOS (CARDS)
+   ========================================== */
+
+.nomeUsuarioCadastrado {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    max-width: 600px;
+    width: 100%;
+    gap: 10px !important; 
+    margin-bottom: 10px;
+}
+
+.linhaUsuario {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.usuario {
+    display: flex;
+    gap: 10px;
+    max-width: 350px;
+    width: 100%;
+    align-items: center;
+}
+
+.usuario input {
+    max-width: 150px;
+}
+
+/* ==========================================
+   CAMPOS DE EDIÇÃO EXPANDIDOS (MODO EDIÇÃO)
+   ========================================== */
+
+.camposEdicaoExpandidos {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.camposEdicaoExpandidos label {
+    font-size: 12px;
+    width: auto;
+    min-width: 120px;
+    flex-shrink: 0;
+}
+
+.nomeEdicaoExpandido,
+.emailEdicaoExpandido,
+.senhaEdicaoExpandido {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+    padding: 0;
+}
+
+.nomeEdicaoExpandido input,
+.emailEdicaoExpandido input,
+.senhaEdicaoExpandido input {
+    max-width: 250px;
+    width: 100%;
+}
+
+/* ==========================================
+   BOTÕES E ÍCONES
+   ========================================== */
 
 .editarSenha,
 .editarSenha2,
-.addUsuario{
+.addUsuario {
     background-color: #1D2B50;
-    max-width: 120px;
+    max-width: fit-content;
+    min-width: 100px;
+    padding: 0 10px !important; 
+    height: 20px; 
     margin-left: auto;
-    margin-right: 110px;
-    padding: var(--spacing-xs);
+    margin-right: 110px; 
+    padding-inline: 0px;
+    padding-block: 0px !important;
     font-size: 12px;
-}
-
-.editarSenha2,
-.addUsuario{
     margin: 0;
-    padding-inline: var(--spacing-sm);
-    max-width: 140px;
+    border: none;
+    color: white;
+    cursor: pointer;
 }
 
-.addUsuario{
-    background-color: var( --background-additional-btn);
+.addUsuario {
+    background-color: var(--background-additional-btn);
+    max-width: 180px;
 }
 
-.salvarAlteracoes{
+.salvarAlteracoes {
     max-width: 150px;
     margin-left: 20px;
     margin-bottom: 20px;
@@ -101,41 +220,59 @@
     font-size: 14px;
 }
 
-.taskLogin p{
+.salvarIndividual {
+    max-width: 150px;
     font-size: 14px;
-    font-weight: 700;
-    color: #413f3fd0;
+    padding-block: 2px;
+    background-color: #1D2B50;
+    align-self: flex-end;
+    margin-right: 22px;
+    border: none;
+    color: white;
+    cursor: pointer;
 }
 
-.taskDivisaoUsuario{
+.editarSenha2 img {
+    width: 12px !important;
+}
+
+.btnAlterarSenhaAdmin {
+    background-color: #1D2B50; 
+    color: white;
+    border: none;
+    padding-block: 2px;
+    font-size: 12px;
+    border-radius: var(--border-radius-default);
+    cursor: pointer;
+    align-self: flex-end; 
+    margin-right: 110px; 
+    margin-top: 5px;
+    max-width: 150px;
+}
+
+.btnSalvarAdmin {
+    background-color: var(--background-additional-btn); 
+    color: white;
+    border: none;
+    padding: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: var(--border-radius-default); 
+    cursor: pointer;
+    margin-top: auto !important; 
+    margin-left: 10px;
+    margin-bottom: 20px;
+    max-width: 150px;
     display: flex;
+    justify-self: end !important;
 }
 
-.nomeUsuarioCadastrado{
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
-    max-width: 350px;
-    width: 100%;
-    gap: 8px;
+.btnAlterarSenhaAdmin:hover, 
+.btnSalvarAdmin:hover {
+    filter: brightness(1.2); /* Efeito de brilho ao passar o mouse */
 }
 
-.usuario{
-    display: flex;
-    gap: 8px;
-    max-width: 350px;
-    width: 100%;
-
-}
-
-.usuario input{
-    max-width: 250px;
-}
-
-.editarSenha2 img{
-    width: 18px !important;
-}
-
-.usuarios{
-    margin-right: 20px;
+.btnDeleteUser{
+    background-color: transparent;
+    width: fit-content;
 }

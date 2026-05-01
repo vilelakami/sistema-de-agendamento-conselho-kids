@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styles from "../css/Cadastro.module.css";
 import { Link, useNavigate } from 'react-router-dom';
 import userIcon from "../../assets/icons/user.svg";
-import sehnaIcon from "../../assets/icons/lock.svg";
+import senhaIcon from "../../assets/icons/lock.svg";
 import criarContaIcon from "../../assets/icons/addConta.svg";
 import emailIcon from "../../assets/icons/email.svg";
 
@@ -15,11 +15,25 @@ function Cadastro(){
     const [confirmarSenha, setConfirmarSenha] = useState("");
     const navigate = useNavigate();
 
+    const aoSubmeterCadastro = (novoUsuario) => {
+        // Busca a lista que já existe ou cria uma vazia
+        const listaAtual = JSON.parse(localStorage.getItem("usuarios_cadastrados")) || [];
+        
+        // Adiciona o novo usuário na lista
+        const novaLista = [...listaAtual, novoUsuario];
+        
+        // Salva a lista atualizada
+        localStorage.setItem("usuarios_cadastrados", JSON.stringify(novaLista));
+        
+        // Volta para a página de configurações
+        navigate("/configuracoes");
+    };
+
     // função pra verificar condições
-    function handleCadastro(e) {
-        //previne de não recarregar a página
+   function handleCadastro(e) {
         if (e) e.preventDefault();
 
+        // 1. Validações 
         if(nomeCompleto === "" || email === "" || usuario === "" || senha === "" || confirmarSenha === ""){
             alert("Preencha todos os campos obrigatórios.");
             return;
@@ -35,6 +49,11 @@ function Cadastro(){
             return;
         }
 
+        if(senha.length < 8){
+            alert("A senha deve conter 8 caracteres");
+            return;
+        }
+
         if(!email.includes("@") || !email.includes(".")){
             alert("Por favor, insira um email válido (exemplo@gmail.com)");
             return;
@@ -45,23 +64,36 @@ function Cadastro(){
             return;
         }
 
-        const paraSalvar = {
+        // 2. Lógica de SALVAR NA LISTA (Para não sobrescrever o Admin)
+        const novoUsuario = {
+            id: Date.now(), // ID único para controle
             nomeCompleto: nomeCompleto,
             email: email,
             usuario: usuario,
             senha: senha
         };
-        localStorage.setItem("dadosCadastro", JSON.stringify(paraSalvar));  
 
-        console.log("Conta criada: ", nomeCompleto);
+        // Busca a lista existente ou cria uma vazia
+        const listaAtual = JSON.parse(localStorage.getItem("usuarios_cadastrados")) || [];
+        
+        // Adiciona o novo usuário na lista
+        const novaLista = [...listaAtual, novoUsuario];
+        
+        // Salva a lista atualizada
+        localStorage.setItem("usuarios_cadastrados", JSON.stringify(novaLista));
 
+        console.log("Usuário cadastrado pelo Admin: ", nomeCompleto);
+
+        // 3. Limpa os campos
         setNomeCompleto("");
         setEmail("");
         setUsuario("");
         setSenha("");
         setConfirmarSenha("");
 
-        navigate("/login");
+        // 4. Volta para Configurações (onde a lista será exibida)
+        alert("Novo usuário cadastrado com sucesso!");
+        navigate("/configuracoes");
     }
 
 
@@ -82,6 +114,7 @@ function Cadastro(){
                             placeholder='Nome completo *'
                             value={nomeCompleto}
                             onChange={(e) => setNomeCompleto(e.target.value)}
+                            required
                         />
                     </div>
                     {/* campo de email */}
@@ -92,6 +125,7 @@ function Cadastro(){
                             placeholder='Email *'
                             value={email}
                             onChange={(e) => setEmail(e.target.value)} 
+                            required
                         />
                     </div>
                     {/* campo de usuario */}
@@ -101,27 +135,31 @@ function Cadastro(){
                             type='text'
                             placeholder='Nome de usuário *'
                             value={usuario}
-                            onChange={(e) => setUsuario(e.target.value)} 
+                            onChange={(e) => setUsuario(e.target.value)}
+                            required 
                         />
                     </div>
                     {/* campo de senha */}
                     <div className={styles.taskInput}>
-                        <img className={styles.taskIcon} src={sehnaIcon} alt="senha" />
+                        <img className={styles.taskIcon} src={senhaIcon} alt="senha" />
                         <input className={styles.inpuSenha}
                             type='password'
                             placeholder='Senha *'
                             value={senha}
                             onChange={(e) => setSenha(e.target.value)} 
+                            maxLength="8"
+                            required
                         />
                     </div>
                     {/* campo de confir de senha */}
                     <div className={styles.taskInput}>
-                        <img className={styles.taskIcon} src={sehnaIcon} alt="senha" />
+                        <img className={styles.taskIcon} src={senhaIcon} alt="senha" />
                         <input 
                             type='password'
                             placeholder='Confirmar senha *'
                             value={confirmarSenha}
                             onChange={(e) => setConfirmarSenha(e.target.value)} 
+                            required
                         />
                     </div>
 
@@ -132,7 +170,6 @@ function Cadastro(){
                         Criar Conta
                     </button>
 
-                    <Link to="/Login" className={styles.taskConta}>Já tem uma conta? <span className='task-conta'>Faça Login</span></Link>
                 </div>
             </div>
         </div>

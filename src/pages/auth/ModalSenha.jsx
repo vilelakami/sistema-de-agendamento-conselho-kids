@@ -1,56 +1,65 @@
 import { useState } from "react";
 import styles from "../css/ModalSenha.module.css";
-import emailIcon from "../../assets/icons/email.svg"
+import emailIcon from "../../assets/icons/email.svg";
 
-//passando os parâmetros de se estar aberto ou fechado o modal
-function Esqueci_Senha({ isOpen, onClose }) {
+function Esqueci_Senha({ isOpen, onClose, enviarEmail }) {
+    // 1. estado para o email
     const [email, setEmail] = useState("");
 
-    // Se o modal não estiver aberto, não renderiza 
     if (!isOpen) return null;
 
-    function handleEsqueciSenha(e) {
-        //previne que a página seja recarregada
-        if(e) e.preventDefault();
-        //se não escrever o email, emite um alert
-
+    // 2. lógica de validação e envio aqui
+    const handleEnviarClick = (e) => {
+        e.preventDefault();
+        
+        // Validação básica
         if (!email) {
             alert("Por favor, digite seu e-mail.");
             return;
         }
 
+        // Validação de formato 
         if(!email.includes("@") || !email.includes(".") || email.includes(" ")){
             alert("Por favor, insira um email válido (exemplo@gmail.com)");
             return;
         }
-        //preciso implementar o envio de emails para confirmação
-        //caso contrário feche o modal
-        alert("Se o e-mail estiver cadastrado, você receberá um link em breve!");
-        onClose(); // Fecha o modal após enviar
-    }
+
+        console.log("Enviando e-mail para:", email);
+        
+        // 3. Chama a função que vem do componente pai (Login)
+        enviarEmail(email); 
+        
+        // Limpa o campo e fecha o modal
+        setEmail(""); 
+        onClose(); 
+    };
 
     return (
-        //se apertar no fundo com sombra fecha o modal
         <div className={styles.overlay} onClick={onClose}>
-            {/* fazendo que o onclick não subra pro overlay */}
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                 <h2 className={styles.taskTitle}>Recuperar Senha</h2>
                 <p>Enviaremos um link de recuperação para o seu e-mail.</p>
 
-                {/* input do email */}
                 <div className={styles.taskInput}>
                     <img src={emailIcon} alt="email" />
                     <input 
                         type='email' 
                         placeholder='Digite seu e-mail *' 
+                        value={email} 
                         onChange={(e) => setEmail(e.target.value)}
+                        required
                     />
                 </div>
 
-                <button className={styles.btn}onClick={handleEsqueciSenha}>Enviar Link</button>
-                <button className={styles.btn} onClick={onClose}>Cancelar</button>
+                <button className={styles.btn} onClick={handleEnviarClick}>
+                    Enviar Link
+                </button>
+                <button className={styles.btn} onClick={onClose}>
+                    Cancelar
+                </button>
             </div>
         </div>
     );
 }
+
 export default Esqueci_Senha;
