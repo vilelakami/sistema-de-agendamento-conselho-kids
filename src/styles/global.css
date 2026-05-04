@@ -54,7 +54,7 @@ input {outline: none; border: none;}
     --status-color-finished: rgba(29,188,8,0.59);
     --status-color-pendente: #F6FF00;
     --status-color-agendado: rgba(255,147,44,0.69);
-    --status-color-cancelado: rgb(255, 0, 0);
+    --status-color-cancelado: rgb(241, 85, 85);
 
     --font-family: "Luckiest Guy", cursive;
     --font-primary-color: #000000;

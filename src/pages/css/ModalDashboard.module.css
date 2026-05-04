@@ -53,6 +53,31 @@
     gap: 5px;
 }
 
+.taskNome{
+    width: 100%;
+}
+
+.taskCPF{
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.taskCPF input{
+    max-width: 130px;
+}
+
+.taskCEP input{
+    max-width: 120px;
+}
+
+.btnSearch{
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    max-width: 20px;
+}
+
 .taskNome label,
 .taskCPF label,
 .taskCEP label,
@@ -68,7 +93,6 @@
 }
 
 .taskCPF,
-.taskCEP,
 .taskComoConheceu,
 .taskAgendamento,
 .taskQtdeFilhos,
@@ -96,6 +120,13 @@
     justify-content: space-between;
 }
 
+.taskDemaisInfo1{
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
+    width: 100%;
+}
 select{
     border: none;
     width: 130px;
@@ -144,6 +175,13 @@ select{
     padding: var(--spacing-xs);
 }
 
+.btnDeletarFilho{
+    background-color: transparent;
+    display: flex;
+    align-self: end;
+    margin: 0;
+}
+
 .container{
     display: flex;
     flex-direction: column;
@@ -154,10 +192,11 @@ select{
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
 }
 
 .taskNomeFilho input{
-    width: 250px;
+    width: 220px;
 }
 
 .span{

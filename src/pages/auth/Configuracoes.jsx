@@ -136,6 +136,20 @@ function Configuracoes({ abrirModal }) {
         }
     };
 
+    const handleNomeAdminChange = (e) => {
+        setUsuarioAdmin({ ...usuarioAdmin, nome: e.target.value });
+    };
+
+    const salvarDadosAdmin = () => {
+        const dadosCadastroExistentes = JSON.parse(localStorage.getItem("dadosCadastro")) || {};
+        const novosDados = {
+            ...dadosCadastroExistentes,
+            nomeCompleto: usuarioAdmin.nome
+        };
+        localStorage.setItem("dadosCadastro", JSON.stringify(novosDados));
+        alert("Nome do administrador atualizado com sucesso!");
+    };
+
     return (
         <div className={styles.layout}>
             <Sidebar abrirModal={() => setModalAberto(true)} />
@@ -159,7 +173,7 @@ function Configuracoes({ abrirModal }) {
                             <p>Admin</p>
                             <div className={styles.nome}>
                                 <label>Nome Completo:</label>
-                                <input type="text" value={usuarioAdmin.nome} readOnly />
+                                <input type="text" value={usuarioAdmin.nome} onChange={handleNomeAdminChange} />
                             </div>
                             <div className={styles.user}>
                                 <label>Nome de usuário:</label>
@@ -175,7 +189,7 @@ function Configuracoes({ abrirModal }) {
                             </div>  
                             <button onClick={() => setModalSolicitarEmailAberto(true)} className={styles.btnAlterarSenhaAdmin}>Alterar Senha</button>
                         </div>
-                        <button className={styles.btnSalvarAdmin}>Salvar Alterações</button>
+                        <button className={styles.btnSalvarAdmin} onClick={salvarDadosAdmin}>Salvar Alterações</button>
                     </div>
 
                     {/* COLUNA DIREITA: LISTAGEM E EDIÇÃO */}

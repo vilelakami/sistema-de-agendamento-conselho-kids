@@ -93,10 +93,11 @@
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    min-width: 220px; /* Aumentado para garantir que o texto caiba */
-    padding: 10px 0; /* Padding vertical apenas, o horizontal vem das opções */
+    min-width: 180px;
+    padding: var(--spacing-sm);
     z-index: 1000;
     display: flex;
+    gap: 5px;
     flex-direction: column;
     background-color: #1D2B50;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
@@ -146,18 +147,18 @@
     background-color: var(--status-color-pendente) !important;
 }
 
-.rowVisitaAgendada, 
-.rowVisitaAgendada + .rowExpanded td {
+.visita_agendada, 
+.visita_aagendada + .rowExpanded td {
     background-color: var(--status-color-agendado) !important;
 }
 
-.rowVisitaCancelada, 
-.rowVisitaCancelada + .rowExpanded td {
+.visita_cancelada, 
+.visita_cancelada + .rowExpanded td {
     background-color: var(--status-color-cancelado) !important;
 }
 
-.rowProcessoConcluido, 
-.rowProcessoConcluido + .rowExpanded td {
+.processo_concluido, 
+.processo_concluido + .rowExpanded td {
     background-color: var(--status-color-finished) !important;
 }
 
