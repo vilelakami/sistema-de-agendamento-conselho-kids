@@ -123,13 +123,15 @@ function ModalDashboard({ fecharModal, aoSalvar, agendamentos}) {
             return;
         }
 
-        if(filhos.some(filho => !filho.nome || !filho.nascimento)){
-            alert("Preencha nome e nascimento de todos os filhos.");
+        const cpfCadastrado = agendamentos.some(item => item.cpf === dados.cpf);
+
+        if(cpfCadastrado){
+            alert("Já existe CPF cadastrado no banco.");
             return;
         }
 
-        if(cpfExistente){
-            alert("Responsável já cadastrado no sistema.");
+        if(filhos.some(filho => !filho.nome || !filho.nascimento)){
+            alert("Preencha nome e nascimento de todos os filhos.");
             return;
         }
 

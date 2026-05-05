@@ -1,10 +1,25 @@
-.taskButton{
-    width: 100%;
-    max-width: 300px;
-    padding: var(--spacing-sm);
+.taskButton {
+    /* Troque width: 100% por fit-content */
+    width: fit-content;
+    
+    /* Remova ou diminua drasticamente o max-width */
+    max-width: 120px; 
+    
+    /* Adicione white-space para evitar que o texto quebre em duas linhas */
+    white-space: nowrap;
+    
+    /* Mantém os outros estilos */
+    padding: var(--spacing-sm) var(--spacing-md); /* Aumentei um pouco o padding lateral */
     border-radius: 32px;
     background-color: #1DBC08;
     color: var(--font-primary-color);
     font-size: 13px;
     font-weight: 600;
+    
+    /* Garante que o conteúdo fique centralizado */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
 }
