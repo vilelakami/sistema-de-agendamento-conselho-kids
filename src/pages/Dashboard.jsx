@@ -96,6 +96,7 @@ function Dashboard() {
                 <ModalDashboard 
                     fecharModal={() => setModalAberto(false)} 
                     aoSalvar={cadastrarPessoa} 
+                    agendamentos={agendamentos}
                 /> 
             )}
             

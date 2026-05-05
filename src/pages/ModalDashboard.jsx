@@ -8,12 +8,16 @@ import {
     aplicarMascaraCPF, 
     aplicarMascaraCEP, 
     formatarParaBr,
-    formatarDateTimeParaBr
+    formatarDateTimeParaBr,
+    prepararDataParaInput,
+    prepararDateTimeParaInput
 } from "../components/utils/formatters";
 
-function ModalDashboard({ fecharModal, aoSalvar }) {
+function ModalDashboard({ fecharModal, aoSalvar, agendamentos}) {
     const [filhos, setFilhos] = React.useState([]);
     const dataHojeISO = new Date().toISOString().split('T')[0];
+    const [cpfExistente, setCpfExistente] = React.useState(false);
+    const [mensagemErro, setMensagemErro] = React.useState("");
 
     const [dados, setDados] = React.useState({
         responsavel: "",
@@ -26,7 +30,62 @@ function ModalDashboard({ fecharModal, aoSalvar }) {
         qtdeFilhos: ""
     });
 
+    const dadosVazios = {
+        responsavel: "",
+        cpf: "", // Manteremos o CPF que o usuário digitou
+        cep: "",
+        comoConheceu: "Google",
+        status: "aguardando_resposta",
+        agendamento: "",
+        dataCriacao: new Date().toISOString().split('T')[0], 
+        qtdeFilhos: ""
+    };
+
     // --- FUNÇÕES DE ESTADO (Devem ficar aqui) ---
+
+    const buscarCpf = () => {
+        setMensagemErro("");
+        setCpfExistente(false);
+
+        if(!dados.cpf){
+            alert("Digite um cpf para buscar.");
+            return;
+        }
+
+        const encontrado = agendamentos.find(item => item.cpf === dados.cpf);
+
+        if(encontrado){
+            setDados({
+                ...encontrado,
+                dataCriacao: prepararDataParaInput(encontrado.dataCriacao),
+                dataAgendamento: prepararDateTimeParaInput(encontrado.dataAgendamento)
+            });
+
+            if(encontrado.filhos && encontrado.filhos.length > 0){
+                const novosFilhos = encontrado.filhos.map(filho => {
+                    if(typeof filho === 'string' && filho.includes('-')){
+                        const [nome, nasc] = filho.split('-');
+                        return {nome: nome.trim(), nascimento: prepararDataParaInput(nasc.trim())};
+                    }
+                    return filho;
+                });
+                setFilhos(novosFilhos);
+            } else {
+                setFilhos([])
+            }
+            setCpfExistente(true);
+            setMensagemErro("Já existe responsável cadastrado!")
+        } else{
+            setDados({
+                ...dadosVazios,
+                cpf: dados.cpf
+            });
+            setFilhos([]);
+            setCpfExistente(false);
+            alert("CPF disponível. Inicie o cadastro!");
+        }
+        
+    };
 
     const adicionarFilho = () => {
         setFilhos([...filhos, { nome: "", nascimento: "" }]);
@@ -69,6 +128,11 @@ function ModalDashboard({ fecharModal, aoSalvar }) {
             return;
         }
 
+        if(cpfExistente){
+            alert("Responsável já cadastrado no sistema.");
+            return;
+        }
+
         // Construção do objeto final usando os formatadores do Utils
         const cadastroFinal = {
             ...dados,
@@ -94,7 +158,8 @@ function ModalDashboard({ fecharModal, aoSalvar }) {
                         <div className={styles.taskCPF}>
                             <label>CPF <span className={styles.span}>*</span></label>
                             <input type="text" placeholder="ex: 55555555555" maxLength="14" name="cpf" value={dados.cpf} onChange={handleInputChange} required />
-                            <button type="button" className={styles.btnSearch}><img src={searchIcon} alt="pesquisar" /></button>
+                            <button type="button" className={styles.btnSearch} onClick={buscarCpf}><img src={searchIcon} alt="pesquisar" /></button>
+                            {mensagemErro && <p style={{color: 'red', fontSize: '8px', margin: '0'}}>{mensagemErro}</p>}
                         </div>
                         <div className={styles.taskNome}>
                             <label>Nome do Responsável <span className={styles.span}>*</span></label>
@@ -155,9 +220,11 @@ function ModalDashboard({ fecharModal, aoSalvar }) {
                                 <label>Data de Nasc.: <span className={styles.span}>*</span></label>
                                 <input type="date" value={filho.nascimento} onChange={(e) => handleFilho(index, "nascimento", e.target.value)}/>
                             </div>
+                            {!cpfExistente && (
                             <button type="button" className={styles.btnDeletarFilho} onClick={() => removerFilho(index)}>
                                 <img src={deleteIcon} alt="deletar filho" />
                             </button>
+                            )}
                         </div>
                     ))}
                 </div>
