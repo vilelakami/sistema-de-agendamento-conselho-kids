@@ -180,6 +180,7 @@ select{
     display: flex;
     align-self: end;
     margin: 0;
+    width: 10px;
 }
 
 .container{
@@ -192,7 +193,7 @@ select{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    gap: 10px;
 }
 
 .taskNomeFilho input{

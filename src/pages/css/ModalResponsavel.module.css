@@ -85,6 +85,10 @@
     justify-content: space-between;
 }
 
+.dadosFilhos{
+    gap: 5px;
+}
+
 .modalContent label {
     font-size: 14px;
     font-weight: 500;
@@ -113,6 +117,25 @@
     gap: 5px;
 }
 
+.quantidadeFilhos{
+    display: flex;
+    align-items: center;
+    padding: 0;
+    gap: 8px;
+}
+
+.quantidadeFilhos label{
+    width: fit-content;
+}
+
+.quantidadeFilhos input{
+    max-width: 50px;
+}
+
+.matriculadoMotivo{
+    width: 100%;
+}
+
 .qtdeFilhos {
     flex-direction: row;
     align-items: center;
@@ -128,14 +151,15 @@
 
 .taskMatricula {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 10px;
     margin-top: 10px;
 }
 
-.matricula {
+.matriculas {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 10px;
     width: 100%;
 }
@@ -166,4 +190,19 @@
 
 textarea:focus {
     outline: none;
+}
+
+/* ========== BOTÕES =========== */
+.btnDeletarFilho{
+    background-color: transparent;
+    align-self: flex-end;
+    width: 10px;
+}
+
+.btnDeletarFilho:disabled{
+    opacity: 50%;
+}
+
+input[readonly]{
+    opacity: 50%;
 }
