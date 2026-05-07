@@ -59,6 +59,13 @@ function ModalResponsavel({ fecharModal, dados, atualizarDados }) {
             return;
         }
 
+        if(dadosAtual.status === "processo_concluido" || dadosAtual.status === "visita_cancelada"){
+            if(!dadosAtual.relatorio){
+                alert("O resultado do processo ou motivo do cancelamento é obrigatório.");
+                return;
+            }
+        }
+
         const dadosEditados = {
             ...dados,
             ...dadosAtual,
@@ -130,7 +137,7 @@ function ModalResponsavel({ fecharModal, dados, atualizarDados }) {
                                         {dadosAtual.status === "processo_concluido" ? "Resultado da Conclusão:" : "Motivo de Cancelamento:"}
                                     </label>
                                     <textarea value={dadosAtual.relatorio} readOnly={!editando}
-                                        onChange={(e) => setDadosAtual({ ...dadosAtual, relatorio: e.target.value })} />
+                                        onChange={(e) => setDadosAtual({ ...dadosAtual, relatorio: e.target.value })} required/>
                                 </div>
                             )}
                         </div>
@@ -196,7 +203,7 @@ function ModalResponsavel({ fecharModal, dados, atualizarDados }) {
                                     {filho.matriculado === "nao" && (
                                         <div className={styles.matriculadoMotivo}>
                                             <select value={filho.motivo} disabled={!editando}
-                                                onChange={(e) => atualizarFilho(index, "motivo", e.target.value)}>
+                                                onChange={(e) => atualizarFilho(index, "motivo", e.target.value)} required>
                                                 <option value="">Selecione o motivo...</option>
                                                 <option value="distancia">Distância</option>
                                                 <option value="financeiro">Questão Financeira</option>
@@ -204,7 +211,7 @@ function ModalResponsavel({ fecharModal, dados, atualizarDados }) {
                                             </select>
                                             {filho.motivo === "outros" && (
                                                 <textarea placeholder="Descreva..." value={filho.outroMotivo} readOnly={!editando}
-                                                    onChange={(e) => atualizarFilho(index, "outroMotivo", e.target.value)} />
+                                                    onChange={(e) => atualizarFilho(index, "outroMotivo", e.target.value)} required/>
                                             )}
                                         </div>
                                     )}

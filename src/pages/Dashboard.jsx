@@ -6,10 +6,9 @@ import Sidebar from "../components/sidebar/Sidebar";
 import ModalDashboard from "./ModalDashboard";
 import ModalResponsavel from "./ModalResponsavel";
 
-// Importações corretas dos utils
 import { 
     calcularDiasDesdesCriacao, 
-    formatarParaBr, 
+    prepararDataParaInput,
     aplicarMascaraCPF, 
     aplicarMascaraCEP,
     formatarDateTimeParaBr,
@@ -29,6 +28,9 @@ function Dashboard() {
     const [editandoCpf, setEditandoCpf] = useState(null);
     const [dataInput, setDataInput] = useState(""); 
     const [agendamentos, setAgendamentos] = useState([]);
+    
+    const [ordemCriacao, setOrdemCriacao] = useState("asc");
+    const [ordemAgendamento, setOrdemAgendamento] = useState("asc");    
 
     useEffect(() => {
         const dadosSalvos = localStorage.getItem('agendamentos');
@@ -38,6 +40,44 @@ function Dashboard() {
     useEffect(() => {
         localStorage.setItem('agendamentos', JSON.stringify(agendamentos));
     }, [agendamentos]);
+
+    //função sort que filtra os agendamentos
+    const filtrarAgendamento = () => {
+        const lista = [...agendamentos];
+        
+        lista.sort((a,b) => {
+            const dataA = a.dataAgendamento ? new Date(prepararDataParaInput(a.dataAgendamento)) : new Date(0);
+            const dataB = b.dataAgendamento ? new Date(prepararDataParaInput(b.dataAgendamento)) : new Date(0);
+
+            if(ordemAgendamento === "asc"){
+                return dataA - dataB;
+            } else{
+                return dataB - dataA;
+            }
+        });
+        setAgendamentos(lista);
+        setOrdemAgendamento(ordemAgendamento === "asc" ? "desc" : "asc");
+    }
+
+    // Função que apenas muda o critério de ordenação
+    const filtrarDataCriacao = () => {
+        const lista = [...agendamentos];
+
+        lista.sort((a,b) => {
+            const dataA = a.dataCriacao ? new Date(prepararDataParaInput(a.dataCriacao)) : new Date(0);
+            const dataB = b.dataCriacao ? new Date(prepararDataParaInput(b.dataCriacao)) : new Date(0);
+
+            if(ordemCriacao === "asc"){
+                return dataA - dataB;
+            } else{
+                return dataB - dataA;
+            }
+
+        });
+
+        setAgendamentos(lista);
+        setOrdemCriacao(ordemCriacao === "asc" ? "desc" : "asc");
+    };
 
     const salvarEdicao = (cpf) => {
         if(!dataInput) { setEditandoCpf(null); return; }
@@ -66,12 +106,7 @@ function Dashboard() {
         return item.status === filtroStatus;
     });
 
-    const listaOrganizada = [...agendamentosFiltrados].sort((a,b) => {
-        const pesoA = pesosStatus[a.status] ?? 99;
-        const pesoB = pesosStatus[b.status] ?? 99;
-        if (pesoA !== pesoB) return pesoA - pesoB;
-        return a.responsavel.localeCompare(b.responsavel);
-    });
+    const listaOrganizada = [...agendamentosFiltrados]; 
 
     const cadastrarPessoa = (dadosModal) => {
         const novoAgendamento = {
@@ -118,7 +153,10 @@ function Dashboard() {
                                 <th>CPF</th>
                                 <th>CEP</th>
                                 <th>Como Conheceu:</th>
-                                <th>Dt. de Criação:</th>
+                                {/* Clique chama a função que altera o critério */}
+                                <th onClick={filtrarDataCriacao} style={{cursor: 'pointer'}}>
+                                    Dt. de Criação: {ordemCriacao === 'asc' ? "↑" : "↓"}
+                                </th>
                                 <th>Qtde. Filhos</th>
                                 <th className={styles.filterHeader} onClick={() => setMenuStatusAberto(!menuStatusAberto)}>
                                     Status <span className={styles.taskArrow}>v</span>
@@ -133,15 +171,8 @@ function Dashboard() {
                                         </div>
                                     )}
                                 </th>
-                                <th className={styles.filterHeader} onClick={() => setMenuDataAberto(!menuDataAberto)}>
-                                    Agendamento <span> v </span>
-                                    {menuDataAberto && (
-                                        <div className={styles.filter} onClick={(e) => e.stopPropagation()}>
-                                            <span style={{color: 'white', fontSize: '12px'}}>Data específica:</span>
-                                            <input type="date" className={styles.inputDate} />
-                                            <Button className={styles.btnFiltrar} onClick={() => setMenuDataAberto(false)}>Aplicar</Button>
-                                        </div>
-                                    )}
+                                <th className={styles.filterHeader} onClick={filtrarAgendamento}>
+                                    Agendamento {ordemAgendamento === "asc" ? "↑" : "↓"}
                                 </th>
                                 <th>Ações</th>
                             </tr>
