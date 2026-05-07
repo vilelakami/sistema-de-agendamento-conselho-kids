@@ -21,7 +21,6 @@ function Dashboard() {
     const [linhaExpandidaCpf, setLinhaExpandidaCpf] = useState(null);
     const [filtroStatus, setFiltroStatus] = useState("todos");
     const [menuStatusAberto, setMenuStatusAberto] = useState(false);
-    const [menuDataAberto, setMenuDataAberto] = useState(false);
     const [itemSelecionado, setItemSelecionado] = useState(null);
     const [modalAberto, setModalAberto] = useState(false);
     const [modalResponsavelAberto, setModalResponsavelAberto] = useState(false);
@@ -97,8 +96,7 @@ function Dashboard() {
     };
 
     const agendamentosAtivos = agendamentos.filter(item => {
-        if (!item?.dataCriacao) return false;
-        return calcularDiasDesdesCriacao(item.dataCriacao) < 30;
+        return item.status !== "processo_concluido" && item.status !== "visita_cancelada";
     });
 
     const agendamentosFiltrados = agendamentosAtivos.filter(item => {

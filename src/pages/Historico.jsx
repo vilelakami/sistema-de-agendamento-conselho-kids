@@ -4,7 +4,14 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Button from "../components/Button/Button";
 import Sidebar from "../components/sidebar/Sidebar";
 import ModalDashboard from "./ModalDashboard";
-import ModalResponsavel from "./ModalResponsavel"; // ✅ Importe o Modal de Edição
+import ModalResponsavel from "./ModalResponsavel"; 
+
+import {
+    aplicarMascaraCPF,
+    aplicarMascaraCEP,
+    getStatusClass,
+    statusLabels
+} from "../components/utils/formatters";
 
 function Historico() {
     const [linhaExpandidaCpf, setLinhaExpandidaCpf] = useState(null);
@@ -18,34 +25,6 @@ function Historico() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const calcularDiasDesdesCriacao = (dataCriacaoStr) => {
-        if(!dataCriacaoStr) return 0;
-        const [dia, mes, ano] = dataCriacaoStr.split('/').map(Number);
-        const dataCriacao = new Date(ano, mes - 1, dia);
-        const hoje = new Date();
-        const diferenca = hoje - dataCriacao;
-        return Math.floor(diferenca / (1000 * 60 * 60 * 24));
-    };
-
-    const aplicarMascaraCPF = (v) => v?.replace(/\D/g, "").replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4") || "";
-    const aplicarMascaraCEP = (v) => v?.replace(/\D/g, "").replace(/(\d{5})(\d{3})/, "$1-$2") || "";
-
-    const statusLabels = {
-        visita_agendada: "Visita Agendada",
-        aguardando_resposta: "Aguardando Resposta",
-        processo_concluido: "Processo Concluído",
-        visita_cancelada: "Visita Cancelada"
-    };
-
-    const getStatusClass = (status) => {
-        const classes = {
-            visita_agendada: "rowVisitaAgendada",
-            aguardando_resposta: "rowAguardandoResposta",
-            visita_cancelada: "rowVisitaCancelada",
-            processo_concluido: "rowProcessoConcluido"
-        };
-        return classes[status] || "rowAguardandoResposta";
-    };
 
     // Função para atualizar os dados após editar no modal
     const atualizarDados = (dadosEditados) => {
@@ -64,10 +43,11 @@ function Historico() {
             const todosAgendamentos = JSON.parse(dadosArmazenados);
             const historico = todosAgendamentos.filter(item => {
                 if (!item || !item.dataCriacao) return false;
-                const diasCriacao = calcularDiasDesdesCriacao(item.dataCriacao);
-                return diasCriacao >= 30;
+                const finalizados = item.status === "processo_concluido" || item.status === "visita_cancelada";
+
+                return finalizados;
             });
-            setAgendamentosHistorico(historico);
+            setAgendamentosHistorico(historico.reverse());
         }
     }, [location.state]);
 

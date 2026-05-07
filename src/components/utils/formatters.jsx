@@ -62,18 +62,6 @@ export const prepararDateTimeParaInput = (dataBr) => {
     }
 };
 
-// --- CÁLCULOS E REGRAS ---
-export const calcularDiasDesdesCriacao = (dataCriacaoStr) => {
-    if (!dataCriacaoStr) return 0;
-    try {
-        const [dia, mes, ano] = dataCriacaoStr.split('/').map(Number);
-        const dataCriacao = new Date(ano, mes - 1, dia);
-        const hoje = new Date();
-        const diferenca = hoje - dataCriacao;
-        return Math.floor(diferenca / (1000 * 60 * 60 * 24));
-    } catch (e) { return 0; }
-};
-
 // --- CONSTANTES ---
 export const statusLabels = {
     visita_agendada: "Visita Agendada",
@@ -96,3 +84,13 @@ export const statusOptions = [
     { value: "visita_cancelada", label: "Visita Cancelada" },
     { value: "processo_concluido", label: "Processo Concluído" }
 ];
+
+export const getStatusClass = (status) => {
+    const classes = {
+        visita_agendada: "rowVisitaAgendada",
+        aguardando_resposta: "rowAguardandoResposta",
+        visita_cancelada: "rowVisitaCancelada",
+        processo_concluido: "rowProcessoConcluido"
+    };
+    return classes[status] || "rowAguardandoResposta";
+};
