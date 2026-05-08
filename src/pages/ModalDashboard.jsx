@@ -32,7 +32,7 @@ function ModalDashboard({ fecharModal, aoSalvar, agendamentos}) {
 
     const dadosVazios = {
         responsavel: "",
-        cpf: "", // Manteremos o CPF que o usuário digitou
+        cpf: "", 
         cep: "",
         comoConheceu: "Google",
         status: "aguardando_resposta",
@@ -135,7 +135,7 @@ function ModalDashboard({ fecharModal, aoSalvar, agendamentos}) {
             return;
         }
 
-        if(dados.status === "visita_agendada" || dados.status === "processo_concluido"){
+        if(dados.status === "visita_agendada"){
             if(!dados.agendamento){
                 alert("A data de agendamento é obrigatório.");
                 return;
@@ -209,8 +209,6 @@ function ModalDashboard({ fecharModal, aoSalvar, agendamentos}) {
                             <select name="status" value={dados.status} onChange={handleInputChange}>
                                 <option value="aguardando_resposta">Aguardando Resposta</option>
                                 <option value="visita_agendada">Visita Agendada</option>
-                                <option value="processo_concluido">Processo Concluído</option>
-                                <option value="visita_cancelada">Visita Cancelada</option>
                             </select>
                         </div>
                         <div className={styles.taskAgendamento}>

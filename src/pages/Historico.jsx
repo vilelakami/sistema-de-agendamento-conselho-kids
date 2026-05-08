@@ -132,7 +132,7 @@ function Historico() {
                                     Status <span className={styles.taskArrow}>v</span>
                                     {menuStatusAberto && (
                                         <div className={styles.filter} onClick={(e) => e.stopPropagation()}>
-                                            {statusOptions.map((st) => (
+                                            {statusOptions.filter(st => st.value === "todos" || st.value === "processo_concluido" || st.value === "visita_cancelada").map((st) => (
                                                 <div key={st.value} className={styles.filterOption} onClick={() => { setFiltroStatus(st.value); setMenuStatusAberto(false); }}>
                                                     <input type="radio" checked={filtroStatus === st.value} readOnly />
                                                     <label>{st.label}</label>

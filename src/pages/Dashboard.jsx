@@ -96,7 +96,7 @@ function Dashboard() {
     };
 
     const agendamentosAtivos = agendamentos.filter(item => {
-        return item.status !== "processo_concluido" && item.status !== "visita_cancelada";
+        return item.status === "aguardando_resposta" || item.status === "visita_agendada";
     });
 
     const agendamentosFiltrados = agendamentosAtivos.filter(item => {
@@ -160,7 +160,7 @@ function Dashboard() {
                                     Status <span className={styles.taskArrow}>v</span>
                                     {menuStatusAberto && (
                                         <div className={styles.filter} onClick={(e) => e.stopPropagation()}>
-                                            {statusOptions.map((st) => (
+                                            {statusOptions.filter(st => st.value === "todos" || st.value === "aguardando_resposta" || st.value === "visita_agendada").map((st) => (
                                                 <div key={st.value} className={styles.filterOption} onClick={() => { setFiltroStatus(st.value); setMenuStatusAberto(false); }}>
                                                     <input type="radio" checked={filtroStatus === st.value} readOnly />
                                                     <label>{st.label}</label>
