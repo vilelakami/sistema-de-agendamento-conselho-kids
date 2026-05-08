@@ -67,6 +67,7 @@
 /* Linha de Alunos/Filhos Expandida */
 .rowExpanded td {
     border-top: none;
+    padding: 0;
 }
 
 .filhosLista {
@@ -76,7 +77,6 @@
     font-weight: 600;
     text-align: left;
     margin-left: 20px;
-    padding: 10px 0;
     font-size: 11px;
 }
 

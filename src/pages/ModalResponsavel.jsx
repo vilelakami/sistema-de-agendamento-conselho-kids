@@ -26,7 +26,8 @@ function ModalResponsavel({ fecharModal, dados, atualizarDados }) {
         comoConheceu: dados?.comoConheceu || "",
         comoConheceuOutros: dados?.comoConheceuOutros || "",
         quantidadeFilhos: dados?.quantidadeFilhos || 0,
-        relatorio: dados?.relatorio || ""
+        relatorio: dados?.relatorio || "",
+        resultado_conclusao: dados?.resultado_conclusao || ""
     });
 
     // Sincroniza os filhos quando o modal abre
@@ -87,134 +88,76 @@ function ModalResponsavel({ fecharModal, dados, atualizarDados }) {
     return (
         <div className={styles.modalOverlay}>
             <div className={styles.container}>
-                <div className={styles.modalContent}>
-                    <div className={styles.dadosResponsavel}>
-                        <div className={styles.nomeResponsavel}>
-                            <label>Nome do Responsável:</label>
-                            <input type="text" value={dadosAtual.responsavel} readOnly={!editando}
-                                onChange={(e) => setDadosAtual({ ...dadosAtual, responsavel: e.target.value })} />
+                <div className={styles.dadosResponsavel}>
+                    <div className={styles.nomeResponsavel}>
+                        <label>Nome do Responsável:</label>
+                        <input type="text" value={dadosAtual.responsavel} readOnly={!editando}
+                        onChange={(e) => setDadosAtual({ ...dadosAtual, responsavel: e.target.value })} />
+                    </div>
+
+                    <div className={styles.outrosDados}>
+                        <div className={styles.cpfResponsavel}>
+                            <label>CPF:</label>
+                            <input type="text" value={dadosAtual.cpf} readOnly />
                         </div>
-
-                        <div className={styles.outrosDados}>
-                            <div className={styles.cpfResponsavel}>
-                                <label>CPF:</label>
-                                <input type="text" value={dadosAtual.cpf} readOnly
-                                    onChange={(e) => setDadosAtual({ ...dadosAtual, cpf: aplicarMascaraCPF(e.target.value) })} />
-                            </div>
-                            <div className={styles.cepResponsavel}>
-                                <label>CEP:</label>
-                                <input type="text" value={dadosAtual.cep} readOnly={!editando}
-                                    onChange={(e) => setDadosAtual({ ...dadosAtual, cep: aplicarMascaraCEP(e.target.value) })} />
-                            </div>
+                        <div className={styles.cepResponsavel}>
+                            <label>CEP:</label>
+                            <input type="text" value={dadosAtual.cep} readOnly={!editando}
+                            onChange={(e) => setDadosAtual({ ...dadosAtual, cep: aplicarMascaraCEP(e.target.value) })} />
                         </div>
+                    </div>
 
-                        <div className={styles.outrosDados}>
-                            <div className={styles.dataCriacao}>
-                                <label>Data de Criação:</label>
-                                <input type="date" value={dadosAtual.dataCriacao} readOnly />
-                            </div>
-                            <div className={styles.dataAgendamento}>
-                                <label>Agendamento:</label>
-                                <input type="datetime-local" value={dadosAtual.dataAgendamento} readOnly={!editando}
-                                    onChange={(e) => setDadosAtual({ ...dadosAtual, dataAgendamento: e.target.value })} />
-                            </div>
+                    <div className={styles.outrosDados}>
+                         <div className={styles.dataCriacao}>
+                            <label>Data de Criação:</label>
+                            <input type="date" value={dadosAtual.dataCriacao} readOnly />
                         </div>
-
-                        <div className={styles.status}>
-                            <label>Status:</label>
-                            <select value={dadosAtual.status} disabled={!editando}
-                                onChange={(e) => setDadosAtual({ ...dadosAtual, status: e.target.value })}>
-                                <option value="aguardando_resposta">Aguardando Resposta</option>
-                                <option value="visita_agendada">Visita Agendada</option>
-                                <option value="processo_concluido">Processo Concluído</option>
-                                <option value="visita_cancelada">Visita Cancelada</option>
-                            </select>
-
-                            {/* TEXTAREA DINÂMICA PARA STATUS CONCLUÍDO OU CANCELADO */}
-                            {(dadosAtual.status === "processo_concluido" || dadosAtual.status === "visita_cancelada") && (
-                                <div className={styles.campoTexto}>
-                                    <label>
-                                        {dadosAtual.status === "processo_concluido" ? "Resultado da Conclusão:" : "Motivo de Cancelamento:"}
-                                    </label>
-                                    <textarea value={dadosAtual.relatorio} readOnly={!editando}
-                                        onChange={(e) => setDadosAtual({ ...dadosAtual, relatorio: e.target.value })} required/>
-                                </div>
-                            )}
+                        <div className={styles.dataAgendamento}>
+                            <label>Agendamento:</label>
+                            <input type="datetime-local" value={dadosAtual.dataAgendamento} readOnly={!editando}
+                            onChange={(e) => setDadosAtual({ ...dadosAtual, dataAgendamento: e.target.value })} />
                         </div>
+                    </div>
 
-                        <div className={styles.comoConheceu}>
-                            <label>Como conheceu:</label>
-                            <select value={dadosAtual.comoConheceu} disabled={!editando}
-                                onChange={(e) => setDadosAtual({ ...dadosAtual, comoConheceu: e.target.value })}>
-                                <option value="google">Google</option>
-                                <option value="instagram">Instagram</option>
-                                <option value="indicacao">Indicação</option>
-                                <option value="outros">Outros</option>
-                            </select>
+                    <div className={styles.status}>
+                        <label>Status:</label>
+                        <select value={dadosAtual.status} disabled={!editando}
+                        onChange={(e) => setDadosAtual({ ...dadosAtual, status: e.target.value })}>
+                            <option value="aguardando_resposta">Aguardando Resposta</option>
+                            <option value="visita_agendada">Visita Agendada</option>
+                            <option value="processo_concluido">Processo Concluído</option>
+                            <option value="visita_cancelada">Visita Cancelada</option>
+                        </select>
+                    </div>
 
-                            {/* ESPECIFICAÇÃO PARA "OUTROS" */}
-                            {dadosAtual.comoConheceu === "outros" && (
-                                <div className={styles.campoTexto}>
-                                    <label>Especifique:</label>
-                                    <textarea value={dadosAtual.comoConheceuOutros} readOnly={!editando}
-                                        onChange={(e) => setDadosAtual({ ...dadosAtual, comoConheceuOutros: e.target.value })} />
-                                </div>
-                            )}
-                        </div>
-                        <div className={styles.quantidadeFilhos}>
-                            <label>Quantidade de filhos:</label>
-                            <input type="number" value={dadosAtual.quantidadeFilhos} readOnly onChange={(e) => setDadosAtual({...dadosAtual, quantidadeFilhos: e.target.value})} />
-                        </div>
+                    <div className={styles.comoConheceu}>
+                        <label>Como conheceu:</label>
+                        <select value={dadosAtual.comoConheceu} disabled={!editando}
+                        onChange={(e) => setDadosAtual({ ...dadosAtual, comoConheceu: e.target.value })}>
+                            <option value="google">Google</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="indicacao">Indicação</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                    </div>
 
+                    <div className={styles.listaFilhosContainer}>
                         {filhos.map((filho, index) => (
                             <div className={styles.filhos} key={index}>
                                 <div className={styles.dadosFilhos}>
                                     <div className={styles.nomeFilho}>
                                         <label>Criança {index + 1}:</label>
                                         <input type="text" value={filho.nome} readOnly={!editando}
-                                            onChange={(e) => atualizarFilho(index, 'nome', e.target.value)} />
+                                        onChange={(e) => atualizarFilho(index, 'nome', e.target.value)} />
                                     </div>
                                     <div className={styles.dataNascFilho}>
                                         <label>Nascimento:</label>
                                         <input type="date" value={prepararDataParaInput(filho.nascimento)} readOnly={!editando}
-                                            onChange={(e) => atualizarFilho(index, "nascimento", e.target.value)} />
+                                        onChange={(e) => atualizarFilho(index, "nascimento", e.target.value)} />
                                     </div>
-                                    <button type="button" className={styles.btnDeletarFilho} onClick={() => removerFilho(index)} disabled={!editando}><img src={deleteIcon} alt="deletar filho" /></button>
-                                </div>
-
-                                <div className={styles.taskMatricula}>
-                                    {dadosAtual.status === "processo_concluido" && (
-                                    <>
-                                    <div className={styles.matriculas}>
-                                        <div className={styles.matriculado}>
-                                            <input type="radio" name={`mat-${index}`} checked={filho.matriculado === "sim"} disabled={!editando}
-                                                 onChange={() => atualizarFilho(index, "matriculado", "sim")} /> 
-                                            <label>Matriculado</label>
-                                        </div>
-                                        <div className={styles.naoMatriculado}>
-                                            <input type="radio" name={`mat-${index}`} checked={filho.matriculado === "nao"} disabled={!editando}
-                                                onChange={() => atualizarFilho(index, "matriculado", "nao")} /> 
-                                            <label>Não Matriculado</label>
-                                        </div>
-                                    </div>
-                                    </>
-                                    )}
-
-                                    {filho.matriculado === "nao" && (
-                                        <div className={styles.matriculadoMotivo}>
-                                            <select value={filho.motivo} disabled={!editando}
-                                                onChange={(e) => atualizarFilho(index, "motivo", e.target.value)} required>
-                                                <option value="">Selecione o motivo...</option>
-                                                <option value="distancia">Distância</option>
-                                                <option value="financeiro">Questão Financeira</option>
-                                                <option value="outros">Outros</option>
-                                            </select>
-                                            {filho.motivo === "outros" && (
-                                                <textarea placeholder="Descreva..." value={filho.outroMotivo} readOnly={!editando}
-                                                    onChange={(e) => atualizarFilho(index, "outroMotivo", e.target.value)} required/>
-                                            )}
-                                        </div>
-                                    )}
+                                    <button type="button" className={styles.btnDeletarFilho} onClick={() => removerFilho(index)} disabled={!editando}>
+                                        <img src={deleteIcon} alt="deletar filho" />
+                                    </button>
                                 </div>
                             </div>
                         ))}
@@ -226,6 +169,17 @@ function ModalResponsavel({ fecharModal, dados, atualizarDados }) {
                         </button>
                         <button type="button" onClick={fecharModal}>Cancelar</button>
                     </div>
+                </div>
+
+                {/* COLUNA DA DIREITA: RELATÓRIO*/}
+                <div className={styles.colunaRelatorio}>
+                    <label>Relatório:</label>
+                    <textarea 
+                    placeholder="Escreva o relatório aqui..."
+                    value={dadosAtual.relatorio} 
+                    readOnly={!editando}
+                    onChange={(e) => setDadosAtual({ ...dadosAtual, relatorio: e.target.value })}
+                    />
                 </div>
             </div>
         </div>
