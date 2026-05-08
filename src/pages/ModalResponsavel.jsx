@@ -27,7 +27,7 @@ function ModalResponsavel({ fecharModal, dados, atualizarDados, excluirResponsav
         comoConheceuOutros: dados?.comoConheceuOutros || "",
         quantidadeFilhos: dados?.quantidadeFilhos || 0,
         relatorio: dados?.relatorio || "",
-        resultado_conclusao: dados?.resultado_conclusao || ""
+        resultado_conclusao: dados?.resultado_conclusao || "",
     });
 
     // Sincroniza os filhos quando o modal abre
@@ -153,6 +153,7 @@ function ModalResponsavel({ fecharModal, dados, atualizarDados, excluirResponsav
                             readOnly={!editando}
                             value={dadosAtual.resultado_conclusao}
                             onChange={(e) => setDadosAtual({...dadosAtual, resultado_conclusao: e.target.value})}
+                            required
                             >
                             </textarea>
                         </div>
@@ -198,6 +199,59 @@ function ModalResponsavel({ fecharModal, dados, atualizarDados, excluirResponsav
                                         <img src={deleteIcon} alt="deletar filho" />
                                     </button>
                                 </div>
+                                {dadosAtual.status === "processo_concluido" && (
+                                    <div className={styles.taskMatricula}>
+                                        <div className={styles.matriculas}>
+                                            <div className={styles.matriculado}>
+                                                <input type="radio"
+                                                name={`mat-${index}`}
+                                                checked={filho.matriculado == "sim"}
+                                                disabled={!editando}
+                                                onChange={() => atualizarFilho(index, "matriculado", "sim")}
+                                                />
+                                                <label>Matriculado</label>
+                                            </div>
+                                            <div className={styles.naoMatriculado}>
+                                                <input type="radio"
+                                                name={`mat-${index}`}
+                                                checked={filho.matriculado === "nao"}
+                                                disabled={!editando}
+                                                onChange={() => atualizarFilho(index, "matriculado", "nao")} />
+                                                <label>Não Matriculado</label>
+                                            </div>
+                                        </div>
+                                        {filho.matriculado === "nao" && (
+                                            <div className={styles.matriculadoMotivo}>
+                                                <div className={styles.motivoSelect}>
+                                                    <label>Motivo:</label>
+                                                    <select
+                                                    value={filho.motivo}
+                                                    disabled={!editando}
+                                                    onChange={(e) => atualizarFilho(index, "motivo", e.target.value)}
+                                                    required
+                                                    >
+                                                        <option value="">Selecione...</option>
+                                                        <option value="distancia">Distância</option>
+                                                        <option value="financeiro">Questão financeira</option>
+                                                        <option value="outros">Outros</option>
+                                                    </select>
+                                                </div>
+
+                                                {filho.motivo === "outros" && (
+                                                    <div className={styles.motivo}>
+                                                        <label>Especifique o motivo:</label>
+                                                        <textarea
+                                                        value={filho.outroMotivo}
+                                                        readOnly={!editando}
+                                                        onChange={(e) => atualizarFilho(index, "outroMotivo", e.target.value)}
+                                                        required
+                                                        ></textarea>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>
