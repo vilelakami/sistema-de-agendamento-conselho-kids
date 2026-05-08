@@ -121,6 +121,12 @@ function Dashboard() {
         setAgendamentos(novaLista);
     };
 
+    const excluirResponsavel = (cpf) => {
+        const novaLista = agendamentos.filter(item => item.cpf !== cpf);
+        setAgendamentos(novaLista);
+        localStorage.setItem('agendamentos', JSON.stringify(novaLista));
+    };
+
     return (
         <div className={styles.layout}>
             <Sidebar abrirModal={() => setModalAberto(true)}/>
@@ -138,6 +144,7 @@ function Dashboard() {
                     fecharModal={() => setModalResponsavelAberto(false)} 
                     dados={itemSelecionado} 
                     atualizarDados={atualizarDados}
+                    excluirResponsavel={excluirResponsavel}
                 />
             )}
 

@@ -100,6 +100,16 @@ function Historico() {
         return item.status === filtroStatus;
     });
 
+    const removerResponsavel = (cpf) =>{
+        const dadosSalvos = JSON.parse(localStorage.getItem('agendamentos') || "[]");
+        const novaLista = dadosSalvos.filter(item => item.cpf !== cpf);
+
+        localStorage.setItem('agendamentos', JSON.stringify(novaLista));
+
+        const novaListaHistorico = agendamentosHistorico.filter(item => item.cpf !== cpf);
+        setAgendamentosHistorico(novaListaHistorico);
+    };
+
     return (
         <div className={styles.layout}>
             <Sidebar abrirModal={() => setModalAberto(true)}/>
@@ -110,6 +120,7 @@ function Historico() {
                     fecharModal={() => setModalResponsavelAberto(false)} 
                     dados={itemSelecionado} 
                     atualizarDados={atualizarDados} 
+                    excluirResponsavel={removerResponsavel}
                 />
             )}
 

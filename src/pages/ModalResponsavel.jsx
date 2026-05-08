@@ -12,7 +12,7 @@ import {
     aplicarMascaraCEP
 } from "../components/utils/formatters";
 
-function ModalResponsavel({ fecharModal, dados, atualizarDados }) {
+function ModalResponsavel({ fecharModal, dados, atualizarDados, excluirResponsavel }) {
     const [filhos, setFilhos] = useState([]);
     const [editando, setEditando] = useState(false);
 
@@ -48,10 +48,14 @@ function ModalResponsavel({ fecharModal, dados, atualizarDados }) {
         }));
     }, [dados]);
 
-    const removerResponsavel = (indexParaRemover) => {
-        const novaLista = dadosAtual.filter((_, indexAtual) => indexAtual !== indexParaRemover);
-        setDadosAtual(novaLista);
-        fecharModal();
+    const removerResponsavel = () => {
+        const confirmar = window.confirm(`Tem certeza que deseja excluir o responsável ${dadosAtual.responsavel} da lista de agendamentos?`);
+
+        if(confirmar) {
+            excluirResponsavel(dadosAtual.cpf);
+            alert("Responsável excluido com sucesso.");
+            fecharModal();
+        }
     };
 
     const atualizarFilho = (index, campo, valor) => {
