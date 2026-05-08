@@ -93,8 +93,8 @@ function ModalResponsavel({ fecharModal, dados, atualizarDados }) {
     };
 
     return (
-        <div className={styles.modalOverlay}>
-            <div className={styles.container}>
+        <div className={styles.modalOverlay} onClick={fecharModal}>
+            <div className={styles.container} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.dadosResponsavel}>
                     <div className={styles.nomeResponsavel}>
                         <label>Nome do Responsável:</label>

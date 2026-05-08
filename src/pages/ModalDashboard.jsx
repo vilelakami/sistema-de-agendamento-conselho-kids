@@ -159,8 +159,8 @@ function ModalDashboard({ fecharModal, aoSalvar, agendamentos}) {
     };
 
     return (
-        <div className={styles.modalOverlay}>
-            <div className={styles.modalContainer}>
+        <div className={styles.modalOverlay} onClick={fecharModal}>
+            <div className={styles.modalContainer} onClick={(e) => e.stopPropagation()}>
                 <p>Adicionar Responsável</p>
                 <div className={styles.taskDados}>
                     <div className={styles.taskDemaisInfo1}>
