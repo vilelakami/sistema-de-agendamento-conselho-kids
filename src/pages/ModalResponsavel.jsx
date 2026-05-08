@@ -84,6 +84,19 @@ function ModalResponsavel({ fecharModal, dados, atualizarDados, excluirResponsav
             }
         }
 
+        if(dadosAtual.status === "processo_concluido"){
+            const filhoSemMatricula = filhos.some(filho => !filho.matriculado);
+            if(filhoSemMatricula){
+                alert("Para concluir o processo, informe se o filho foi matriculado ou não.");
+                return;
+            }
+
+            const filhoSemMotivo = filhos.some(filho => filho.matriculado === "nao" && !filho.motivo);
+            if(filhoSemMotivo){
+                alert("Especifique o motivo do filho não matriculado.");
+                return;
+            }
+        }
         const dadosEditados = {
             ...dados,
             ...dadosAtual,
