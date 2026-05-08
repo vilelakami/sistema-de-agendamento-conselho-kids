@@ -135,6 +135,13 @@ function ModalDashboard({ fecharModal, aoSalvar, agendamentos}) {
             return;
         }
 
+        if(dados.status === "visita_agendada" || dados.status === "processo_concluido"){
+            if(!dados.agendamento){
+                alert("A data de agendamento é obrigatório.");
+                return;
+            }
+        }
+
         // Construção do objeto final usando os formatadores do Utils
         const cadastroFinal = {
             ...dados,

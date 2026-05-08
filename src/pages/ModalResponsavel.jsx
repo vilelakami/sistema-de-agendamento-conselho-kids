@@ -61,8 +61,15 @@ function ModalResponsavel({ fecharModal, dados, atualizarDados }) {
         }
 
         if(dadosAtual.status === "processo_concluido" || dadosAtual.status === "visita_cancelada"){
-            if(!dadosAtual.relatorio){
+            if(!dadosAtual.resultado_conclusao){
                 alert("O resultado do processo ou motivo do cancelamento é obrigatório.");
+                return;
+            }
+        }
+
+        if(dadosAtual.status === "visita_agendada" || dadosAtual.status === "processo_concluido"){
+            if(!dadosAtual.dataAgendamento){
+                alert("A data de agendamento é obrigatório.");
                 return;
             }
         }
@@ -129,6 +136,17 @@ function ModalResponsavel({ fecharModal, dados, atualizarDados }) {
                             <option value="visita_cancelada">Visita Cancelada</option>
                         </select>
                     </div>
+                    {(dadosAtual.status === "processo_concluido" || dadosAtual.status === "visita_cancelada") && (
+                        <div className={styles.campoTexto}>
+                            <label>{dadosAtual.status === "processo_concluido" ? "Resultado da conclusão:" : "Motivo do cancelamento:"}</label>
+                            <textarea
+                            readOnly={!editando}
+                            value={dadosAtual.resultado_conclusao}
+                            onChange={(e) => setDadosAtual({...dadosAtual, resultado_conclusao: e.target.value})}
+                            >
+                            </textarea>
+                        </div>
+                    )}
 
                     <div className={styles.comoConheceu}>
                         <label>Como conheceu:</label>
@@ -140,6 +158,17 @@ function ModalResponsavel({ fecharModal, dados, atualizarDados }) {
                             <option value="outros">Outros</option>
                         </select>
                     </div>
+
+                    {(dadosAtual.comoConheceu === "outros") && (
+                        <div className={styles.campoTexto}>
+                            <label>Especifique:</label>
+                            <textarea
+                            readOnly={!editando}
+                            value={dadosAtual.comoConheceuOutros}
+                            onChange={(e) => setDadosAtual({...dadosAtual, comoConheceuOutros: e.target.value})}
+                            ></textarea>
+                        </div>
+                    )}
 
                     <div className={styles.listaFilhosContainer}>
                         {filhos.map((filho, index) => (
