@@ -48,6 +48,12 @@ function ModalResponsavel({ fecharModal, dados, atualizarDados }) {
         }));
     }, [dados]);
 
+    const removerResponsavel = (indexParaRemover) => {
+        const novaLista = dadosAtual.filter((_, indexAtual) => indexAtual !== indexParaRemover);
+        setDadosAtual(novaLista);
+        fecharModal();
+    };
+
     const atualizarFilho = (index, campo, valor) => {
         const novosFilhos = [...filhos];
         novosFilhos[index][campo] = valor;
@@ -197,6 +203,10 @@ function ModalResponsavel({ fecharModal, dados, atualizarDados }) {
                             {editando ? "Salvar Alterações" : "Editar"}
                         </button>
                         <button type="button" onClick={fecharModal}>Cancelar</button>
+                    </div>
+
+                    <div className={styles.btnDeletarResponsavel}>
+                        <button type="button" onClick={removerResponsavel}>Excluir responsável</button>
                     </div>
                 </div>
 

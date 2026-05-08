@@ -28,8 +28,8 @@ function Dashboard() {
     const [dataInput, setDataInput] = useState(""); 
     const [agendamentos, setAgendamentos] = useState([]);
     
-    const [ordemCriacao, setOrdemCriacao] = useState("asc");
-    const [ordemAgendamento, setOrdemAgendamento] = useState("asc");    
+    const [ordemCriacao, setOrdemCriacao] = useState("desc");
+    const [ordemAgendamento, setOrdemAgendamento] = useState("desc");    
 
     useEffect(() => {
         const dadosSalvos = localStorage.getItem('agendamentos');
@@ -55,7 +55,7 @@ function Dashboard() {
             }
         });
         setAgendamentos(lista);
-        setOrdemAgendamento(ordemAgendamento === "asc" ? "desc" : "asc");
+        setOrdemAgendamento(ordemAgendamento === "desc" ? "asc" : "desc");
     }
 
     // Função que apenas muda o critério de ordenação
@@ -75,7 +75,7 @@ function Dashboard() {
         });
 
         setAgendamentos(lista);
-        setOrdemCriacao(ordemCriacao === "asc" ? "desc" : "asc");
+        setOrdemCriacao(ordemCriacao === "desc" ? "asc" : "desc");
     };
 
     const salvarEdicao = (cpf) => {

@@ -1,13 +1,10 @@
 /* ==========================================================================
-   ESTRUTURA PRINCIPAL (OVERLAY E CONTAINERS)
+   ESTRUTURA PRINCIPAL
    ========================================================================== */
-
 .modalOverlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
@@ -22,41 +19,22 @@
     width: 950px; 
     height: 600px;
     border-radius: 8px;
-    overflow: auto; 
     max-width: 95vw; 
     max-height: 95vh;
 }
 
 /* ==========================================================================
-   CAMPOS DE DADOS E FORMULÁRIO
+   COLUNA DA ESQUERDA (DADOS)
    ========================================================================== */
-
 .dadosResponsavel {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    flex: 1; /* Ocupa metade do modal */
     gap: 15px;
-    padding-right: 10px;
+    padding-right: 15px;
     overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.status select {
-    width: 180px;
-}
-
-.qtdeFilhos input {
-    width: 60px;
-}
-
-.outrosDados,
-.dadosFilhos {
-    display: flex;
-    justify-content: space-between;
-}
-
-.dadosFilhos{
-    gap: 10px;
+    border-right: 1px solid #eee; 
 }
 
 .dadosResponsavel label {
@@ -64,132 +42,87 @@
     font-weight: 500;
 }
 
-.buttons {
+.nomeResponsavel, .cpfResponsavel, .cepResponsavel, 
+.comoConheceu, .dataCriacao, .status, .dataAgendamento, 
+.nomeFilho, .dataNascFilho {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.outrosDados, .dadosFilhos {
     display: flex;
     justify-content: space-between;
     gap: 10px;
 }
 
-.nomeResponsavel,
-.cpfResponsavel,
-.cepResponsavel,
-.comoConheceu,
-.dataCriacao,
-.qtdeFilhos,
-.status,
-.dataAgendamento,
-.nomeFilho,
-.dataNascFilho,
-.matriculadoMotivo {
+.nomeFilho input { width: 250px; }
+.status select { width: 180px; }
+
+/* ==========================================================================
+   COLUNA DA DIREITA (RELATÓRIO)
+   ========================================================================== */
+.colunaRelatorio {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    flex: 1; /* Ocupa a outra metade */
     gap: 5px;
+    margin-left: 15px;
 }
 
-.quantidadeFilhos{
-    display: flex;
-    align-items: center;
-    padding: 0;
-    gap: 8px;
-}
-
-.quantidadeFilhos label{
-    width: fit-content;
-}
-
-.quantidadeFilhos input{
-    max-width: 50px;
-}
-
-.matriculadoMotivo{
+.colunaRelatorio textarea {
     width: 100%;
-}
-
-.qtdeFilhos {
-    flex-direction: row;
-    align-items: center;
-}
-
-.nomeFilho input {
-    width: 250px;
+    flex-grow: 1; 
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none;
 }
 
 /* ==========================================================================
-   SEÇÃO DE MATRÍCULA E MOTIVOS
-   ========================================================================= */
-
-.taskMatricula {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.matriculas {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    width: 100%;
-}
-
-.matriculado,
-.naoMatriculado {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.naoMatriculado {
-    white-space: nowrap;
-}
-
+   ELEMENTOS DINÂMICOS E BOTÕES
+   ========================================================================== */
 .campoTexto {
     width: 100%;
 }
-.campoTexto textarea,
-.matriculadoMotivo textarea {
+
+.campoTexto textarea {
     width: 100%;
-    height: 100px;
+    height: 80px;
 }
 
-.matriculadoMotivo select {
-    width: 180px;
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 10px; 
+}
+
+.btnDeletarFilho {
+    background-color: transparent;
+    align-self: flex-end;
+    width: 24px;
+}
+
+input[readonly], textarea[readonly], select:disabled {
+    opacity: 50%;
+    cursor: not-allowed;
 }
 
 textarea:focus {
     outline: none;
 }
 
-/* ========== BOTÕES =========== */
-.btnDeletarFilho{
+.btnDeletarResponsavel button{
     background-color: transparent;
-    align-self: flex-end;
-    width: 10px;
-}
-
-.btnDeletarFilho:disabled{
-    opacity: 50%;
-}
-
-input[readonly]{
-    opacity: 50%;
-}
-
-.colunaRelatorio {
+    color: red;
+    font-weight: 600;
+    font-size: 14px;
     display: flex;
-    flex-direction: column;
-    flex: 1;
-    gap: 5px;
-    margin-left: 10px;
+    justify-self: center;
 }
 
-.colunaRelatorio textarea {
-    width: 100%;
-    height: 100%;
-}
-
-textarea[readonly] {
-    opacity: 50%;
+.btnDeletarResponsavel button:hover{
+    text-decoration: underline;
 }

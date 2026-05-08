@@ -148,7 +148,7 @@
 }
 
 .visita_agendada, 
-.visita_aagendada + .rowExpanded td {
+.visita_agendada + .rowExpanded td {
     background-color: var(--status-color-agendado) !important;
 }
 
