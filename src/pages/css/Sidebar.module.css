@@ -1,14 +1,19 @@
+
 .container{
     max-width: 250px;
     width: 100%;
     height: 100vh;
-    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.4, 0.4);
+    position: fixed;
+    top: 0;
+    left: 0;
     background-color: #1D2B50;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    z-index: 1000;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.07);
 }
 
 .container p, 
@@ -52,6 +57,7 @@
     align-items: center;
     justify-content: center;
     z-index: 100;
+    transition: padding-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 main{

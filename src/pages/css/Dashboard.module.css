@@ -2,9 +2,15 @@
    ESTRUTURA DE LAYOUT PRINCIPAL 
    ========================================================================== */
 .layout {
-    display: flex;
-    min-height: 100vh; 
-    align-items: stretch;
+    transition: padding-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 100vh;
+    background-color: var(--background-primary-color);
+    flex: 1;
+    padding-left: 250px; /* Quando aberta */
+}
+
+.sidebarFechada {
+    padding-left: 50px !important;
 }
 
 .tableWrapper {

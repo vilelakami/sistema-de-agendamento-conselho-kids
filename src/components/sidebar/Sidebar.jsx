@@ -9,14 +9,26 @@ import { Link, useNavigate } from "react-router-dom";
 import dashboard from "../../pages/Dashboard";
 import settingsIcon from "../../assets/icons/settings.svg";
 import setaIcon from "../../assets/icons/arrow.svg";
+import cronogramaIcon from "../../assets/icons/timeline.svg";
 
-function Sidebar({ abrirModal }) {
+function Sidebar({ abrirModal, onToggle, expandida: expandidaProp }) {
     const navigate = useNavigate();
-    const [expandida, setExpandida] = React.useState(true); // Estado da sidebar
+    const [expandida, setExpandida] = React.useState(expandidaProp ?? true); // Estado da sidebar
 
     const toggleSidebar = () => {
-        setExpandida(!expandida);
+        setExpandida((prev) => {
+            const novo = !prev;
+            if (onToggle) onToggle(novo);
+            return novo;
+        });
     };
+
+    React.useEffect(() => {
+        if (typeof expandidaProp === "boolean" && expandida !== expandidaProp) {
+            setExpandida(expandidaProp);
+        }
+        // eslint-disable-next-line
+    }, [expandidaProp]);
 
     return (
         <div className={`${styles.container} ${!expandida ? styles.fechada : ""}`}>
@@ -51,6 +63,10 @@ function Sidebar({ abrirModal }) {
                             <li> 
                                 <img className={styles.taskIcon} src={historicoIcon} alt="histórico" />
                                 {expandida && <Link className={styles.taskNav} to="/historico">Agendamentos finalizados</Link>}
+                            </li>
+                            <li> 
+                                <img className={styles.taskIcon} src={cronogramaIcon} alt="cronograma" />
+                                {expandida && <Link className={styles.taskNav} to="/cronograma">Cronograma</Link>}
                             </li>
                         </ul>
                     </nav>

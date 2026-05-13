@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import Historico from "./pages/Historico";
 import Configuracoes from './pages/auth/Configuracoes';
 import ModalResponsavel from './pages/ModalResponsavel';
+import Cronograma from './pages/Cronograma';
 
 function App() {
   return(
@@ -16,6 +17,7 @@ function App() {
           <Route path="/Historico" element={<Historico />} />
           <Route path="/Configuracoes" element={<Configuracoes />} />
           <Route path="/ModalResponsavel" element={<ModalResponsavel />} />
+          <Route path="/Cronograma" element={<Cronograma />} />
           {/* Rota inicial (quando abrir o site cai no login) */}
           <Route path="/" element={<Login />} />
         </Routes>

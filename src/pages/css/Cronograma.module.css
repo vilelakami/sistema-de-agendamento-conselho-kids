@@ -1,0 +1,54 @@
+.layout {
+    transition: padding-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 100vh;
+    background-color: var(--background-primary-color);
+    flex: 1;
+    padding-left: 250px; /* Quando aberta */
+}
+
+/* Esta classe será aplicada JUNTO com a .layout */
+.sidebarFechada {
+    padding-left: 50px !important;
+}
+
+.cronogramaContainer {
+    display: flex;
+    margin: 0;
+    width: 100%;
+}
+
+.taskTitlePage {
+    margin: 0;
+    padding: 15px;
+    font-size: 1.5rem;
+}
+
+.cronogramaGrade {
+    display: grid;
+    grid-template-columns: 100px repeat(5, 1fr);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.celulaHeader {
+    background-color: #1D2B50;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    border: 0.5px solid #ffffff22;
+}
+
+.colunaHora {
+    background-color: #f8f9fa;
+    padding: 15px;
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 1px solid #eee;
+}
+
+.celulaSlot {
+    border: 0.5px solid #eee;
+    min-height: 60px;
+    background-color: white;
+}

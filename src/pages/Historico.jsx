@@ -21,12 +21,15 @@ function Historico() {
     const [modalAberto, setModalAberto] = useState(false);
     const [menuStatusAberto, setMenuStatusAberto] = useState(false);
     const [filtroStatus, setFiltroStatus] = useState("todos");
-    
+
     // Novos estados para edição
     const [modalResponsavelAberto, setModalResponsavelAberto] = useState(false);
     const [itemSelecionado, setItemSelecionado] = useState(null);
     const [ordemCriacao, setOrdemCriacao] = useState("desc");
     const [ordemAgendamento, setOrdemAgendamento] = useState("desc");
+
+    // Estado global da sidebar
+    const [sidebarExpandida, setSidebarExpandida] = useState(true);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -111,8 +114,8 @@ function Historico() {
     };
 
     return (
-        <div className={styles.layout}>
-            <Sidebar abrirModal={() => setModalAberto(true)}/>
+        <div className={`${styles.layout} ${!sidebarExpandida ? styles.sidebarFechada : ""}`}>
+            <Sidebar abrirModal={() => setModalAberto(true)} onToggle={setSidebarExpandida} expandida={sidebarExpandida}/>
             
             {/* Modal de Edição (ModalResponsavel) */}
             {modalResponsavelAberto && itemSelecionado && (

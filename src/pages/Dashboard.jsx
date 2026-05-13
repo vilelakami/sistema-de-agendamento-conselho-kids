@@ -27,7 +27,10 @@ function Dashboard() {
     const [editandoCpf, setEditandoCpf] = useState(null);
     const [dataInput, setDataInput] = useState(""); 
     const [agendamentos, setAgendamentos] = useState([]);
-    
+
+    // Estado global da sidebar
+    const [sidebarExpandida, setSidebarExpandida] = useState(true);
+
     const [ordemCriacao, setOrdemCriacao] = useState("desc");
     const [ordemAgendamento, setOrdemAgendamento] = useState("desc");    
 
@@ -128,8 +131,8 @@ function Dashboard() {
     };
 
     return (
-        <div className={styles.layout}>
-            <Sidebar abrirModal={() => setModalAberto(true)}/>
+        <div className={`${styles.layout} ${!sidebarExpandida ? styles.sidebarFechada : ""}`}>
+            <Sidebar abrirModal={() => setModalAberto(true)} onToggle={setSidebarExpandida} expandida={sidebarExpandida}/>
             
             {modalAberto && (
                 <ModalDashboard 
