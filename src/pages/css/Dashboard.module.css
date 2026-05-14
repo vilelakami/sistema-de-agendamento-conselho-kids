@@ -9,6 +9,7 @@
     padding-left: 250px; /* Quando aberta */
 }
 
+/* sidebar fechada */
 .sidebarFechada {
     padding-left: 50px !important;
 }
@@ -27,7 +28,7 @@
     font-size: 1.5rem;
 }
 
-/* Container da Tabela (O fundo branco que deve ir até o fim) */
+/* Container da Tabela */
 .container {
     width: 100%;
     max-width: 1440px;
@@ -148,15 +149,6 @@
    CORES DE STATUS (LINHAS DINÂMICAS)
    ========================================================================== */
 
-.rowAguardandoResposta, 
-.rowAguardandoResposta + .rowExpanded td {
-    background-color: var(--status-color-pendente) !important;
-}
-
-.visita_agendada, 
-.visita_agendada + .rowExpanded td {
-    background-color: var(--status-color-agendado) !important;
-}
 
 .visita_cancelada, 
 .visita_cancelada + .rowExpanded td {

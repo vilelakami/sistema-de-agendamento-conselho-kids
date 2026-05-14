@@ -7,6 +7,7 @@
     padding-left: 250px; /* Quando aberta */
 }
 
+/* sidebar fechada */
 .sidebarFechada {
     padding-left: 50px !important;
 }
@@ -75,16 +76,6 @@
 .rowVisitaAgendada td,
 .rowVisitaAgendada + .rowExpanded td {
     background-color: var(--status-color-agendado) !important;
-}
-
-.rowVisitaCancelada td,
-.rowVisitaCancelada + .rowExpanded td {
-    background-color: var(--status-color-cancelado) !important;
-}
-
-.rowProcessoConcluido td,
-.rowProcessoConcluido + .rowExpanded td {
-    background-color: var(--status-color-finished) !important;
 }
 
 /* Linha Expandida e Filhos */

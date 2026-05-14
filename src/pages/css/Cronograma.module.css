@@ -1,3 +1,4 @@
+/* ESTILIZAÇÃO DO CALENDÁRIO SEMANAL */
 .layout {
     transition: padding-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     min-height: 100vh;
@@ -6,11 +7,12 @@
     padding-left: 250px; /* Quando aberta */
 }
 
-/* Esta classe será aplicada JUNTO com a .layout */
+/* sidebar fechada */
 .sidebarFechada {
     padding-left: 50px !important;
 }
 
+/* conteúdo do calendário */
 .cronogramaContainer {
     display: flex;
     margin: 0;
@@ -53,6 +55,7 @@
     background-color: white;
 }
 
+/* conteúdo da grade */
 .cardAgendamento{
     font-size: 14px;
     font-weight: 500;
