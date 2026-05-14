@@ -1,6 +1,6 @@
 import React, { useState } from "react"; // Adicionado useState
 import { useNavigate } from "react-router-dom"; // Adicionado useNavigate
-import styles from "../css/NovaSenha.module.css";
+import styles from "../css/modais/NovaSenha.module.css";
 
 function NovaSenha({ fecharModal }) {
     const navigate = useNavigate(); // Inicializa o navigate

@@ -3,7 +3,7 @@ import Login from "./pages/auth/Login";
 import Cadastro from "./pages/auth/Cadastro";
 import Dashboard from "./pages/Dashboard";
 import Historico from "./pages/Historico";
-import Configuracoes from './pages/auth/Configuracoes';
+import Configuracoes from './pages/Configuracoes';
 import ModalResponsavel from './pages/ModalResponsavel';
 import Cronograma from './pages/Cronograma';
 

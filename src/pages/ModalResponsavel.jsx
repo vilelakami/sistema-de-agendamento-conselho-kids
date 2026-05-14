@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from "./css/ModalResponsavel.module.css";
+import styles from "./css/modais/ModalResponsavel.module.css";
 import deleteIcon from "./../assets/icons/delete.svg";
 
 // IMPORTAÇÕES DO UTILS

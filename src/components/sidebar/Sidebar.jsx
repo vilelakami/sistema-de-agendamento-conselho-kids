@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../pages/css/Sidebar.module.css";
+import styles from "./Sidebar.module.css";
 import logotipo from  "../../assets/icons/logotipo.svg";
 import dashboardIcon from "../../assets/icons/dashboard.svg";
 import addContaIcon from "../../assets/icons/addConta.svg";

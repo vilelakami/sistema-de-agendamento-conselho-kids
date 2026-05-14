@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styles from "../css/Cadastro.module.css";
+import styles from "../css/auth/Cadastro.module.css";
 import { Link, useNavigate } from 'react-router-dom';
 import userIcon from "../../assets/icons/user.svg";
 import senhaIcon from "../../assets/icons/lock.svg";

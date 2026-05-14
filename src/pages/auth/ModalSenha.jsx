@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "../css/ModalSenha.module.css";
+import styles from "../css/modais/ModalSenha.module.css";
 import emailIcon from "../../assets/icons/email.svg";
 
 function Esqueci_Senha({ isOpen, onClose, enviarEmail }) {

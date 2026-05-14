@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Para navegar até o cadastro
-import Sidebar from "../../components/sidebar/Sidebar";
-import ModalSenha from "../auth/ModalSenha";
-import styles from "../css/Configuracoes.module.css";
-import editIcon from "../../assets/icons/edit_icon.svg";
+import Sidebar from "../components/sidebar/Sidebar";
+import ModalSenha from "./auth/ModalSenha";
+import styles from "../pages/css/Configuracoes.module.css";
+import editIcon from "../assets/icons/edit_icon.svg";
 import { useSearchParams } from "react-router-dom";
-import deleteIcon from "../../assets/icons/delete.svg";
+import deleteIcon from "../assets/icons/delete.svg";
 import emailjs from '@emailjs/browser';
 
 function Configuracoes({ abrirModal }) {

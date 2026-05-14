@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./css/ModalDashboard.module.css";
+import styles from "./css/modais/ModalDashboard.module.css";
 import addFilhoIcon from "../assets/icons/addConta.svg";
 import deleteIcon from "../assets/icons/delete.svg";
 import searchIcon from "../assets/icons/search.svg";

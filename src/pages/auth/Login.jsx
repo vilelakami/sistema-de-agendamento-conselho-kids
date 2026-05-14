@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import styles from "../css/Login.module.css";
+import styles from "../css/auth/Login.module.css";
 import Esqueci_Senha from "../auth/ModalSenha";
 import NovaSenha from "../auth/NovaSenha";
 import { useNavigate } from 'react-router-dom'; 
