@@ -40,11 +40,29 @@ function Cronograma() {
         setDiasDaSemana(semana);
     }, []);
 
+    const getAgendamento = (dia, hora) => {
+        const dataFormatada = dia.toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+
+        return agendamentos.find(item => {
+            if(!item.dataAgendamento) return false;
+
+            const partes = item.dataAgendamento.split(' ');
+            const dataBanco = partes[0].trim();
+            const horaBanco = partes[1].replace('h', '').trim();
+
+            return dataBanco === dataFormatada && horaBanco === hora;
+        });
+    }
+
     return(
         <div className={styles.cronogramaContainer}> 
             <Sidebar abrirModal={() => setModalAberto(true)} onToggle={setSidebarExpandida} expandida={sidebarExpandida} />    
             <div className={`${styles.layout} ${!sidebarExpandida ? styles.sidebarFechada : ""}`}>              
-                <h1 className={styles.taskTitlePage}>Cronograma Semanal</h1>
+                <h1 className={styles.taskTitlePage}>Calendário Semanal</h1>
 
                 <div className={styles.cronogramaGrade}>
                     <div className={styles.celulaHeader}>Horário</div>
@@ -53,7 +71,7 @@ function Cronograma() {
                         <div key={index} className={styles.celulaHeader}>
                             <strong>{dia.toLocaleDateString('pt-BR', {weekday: 'short'})}</strong>
                             <br />
-                            <span>{dia.getDay()}/{dia.getMonth() + 1}</span>
+                            <span>{dia.getDate()}/{dia.getMonth() + 1}</span>
                         </div>
                     ))}
 
@@ -61,9 +79,18 @@ function Cronograma() {
                         <React.Fragment key={hora}>
                             <div className={styles.colunaHora}>{hora}</div>
 
-                            {diasDaSemana.map((dia, index) => (
-                                <div key={index} className={styles.celulaSlot}></div>
-                            ))}
+                            {diasDaSemana.map((dia, index) => {
+                                const agendado = getAgendamento(dia, hora);
+                                return ( 
+                                    <div key={index} className={styles.celulaSlot}>
+                                        {agendado && (
+                                            <div className={styles.cardAgendamento}>
+                                                {agendado.responsavel}
+                                            </div>  
+                                        )}
+                                    </div>
+                                );
+                            })}
                         </React.Fragment>
 
                     ))}
