@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Para navegar até o cadastro
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import emailjs from '@emailjs/browser';
+// IMPORTAÇÃO DE COMPONENTES
 import Sidebar from '../components/sidebar/Sidebar';
+// IMPORTAÇÃO DO MODAL 
 import ModalSenha from './auth/ModalSenha';
 import styles from '../pages/css/Configuracoes.module.css';
+// IMPORTAÇÃO DE ICONS
 import editIcon from '../assets/icons/edit_icon.svg';
-import { useSearchParams } from 'react-router-dom';
 import deleteIcon from '../assets/icons/delete.svg';
-import emailjs from '@emailjs/browser';
 
 function Configuracoes({ abrirModal }) {
   const [searchParams] = useSearchParams();
@@ -48,11 +50,11 @@ function Configuracoes({ abrirModal }) {
       JSON.parse(localStorage.getItem('usuarios_cadastrados')) || [];
     setListaUsuarios(usuarios);
 
-    // ✅ 3. Lógica do Reset de Senha via URL (Corrigida)
+    // 3. Lógica do Reset de Senha via URL (Corrigida)
     if (searchParams.get('reset') === 'true') {
       setModalAlterarSenhaAberto(true);
 
-      // Opcional: Limpa a URL após abrir para não reabrir ao dar F5
+      // limpa a URL após abrir para não reabrir ao dar F5
       navigate('/configuracoes', { replace: true });
     }
   }, [searchParams, navigate]);

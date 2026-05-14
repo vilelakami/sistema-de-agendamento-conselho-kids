@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import styles from './css/Historico.module.css';
 import { useNavigate, useLocation } from 'react-router-dom';
+import styles from './css/Historico.module.css';
+// IMPORTAÇÃO DE COMPONENTES
 import Button from '../components/Button/Button';
 import Sidebar from '../components/sidebar/Sidebar';
+// IMPORTAÇÃO DE MODAIS
 import ModalDashboard from './ModalDashboard';
 import ModalResponsavel from './ModalResponsavel';
 
+// importando as funções de formatação
 import {
   aplicarMascaraCPF,
   aplicarMascaraCEP,
@@ -38,6 +41,7 @@ function Historico() {
   const filtrarAgendamento = () => {
     const lista = [...agendamentosHistorico];
 
+    // função para ordenar por data de agendamento, tratando casos sem data como mais antigos
     lista.sort((a, b) => {
       const dataA = a.dataAgendamento
         ? new Date(prepararDataParaInput(a.dataAgendamento))
@@ -96,6 +100,7 @@ function Historico() {
     setAgendamentosHistorico(historicoAtualizado);
   };
 
+  // assim que a página é carregada, busca os dados do localStorage e filtra apenas os agendamentos finalizados
   useEffect(() => {
     const dadosArmazenados = localStorage.getItem('agendamentos');
     if (dadosArmazenados) {
@@ -112,11 +117,13 @@ function Historico() {
     }
   }, [location.state]);
 
+  // filtra os agendamentos de acordo com o status selecionado no filtro
   const agendamentosFiltrados = agendamentosHistorico.filter((item) => {
     if (filtroStatus === 'todos') return true;
     return item.status === filtroStatus;
   });
 
+  // função para remover um responsável (usada na exclusão dentro do modal)
   const removerResponsavel = (cpf) => {
     const dadosSalvos = JSON.parse(
       localStorage.getItem('agendamentos') || '[]',

@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import styles from './css/Dashboard.module.css';
+// IMPORTAÇÃO DE COMPONENTES
 import Button from '../components/Button/Button';
-import calendarIcon from '../assets/icons/calendar.svg';
 import Sidebar from '../components/sidebar/Sidebar';
+// IMPORTAÇÃO DOS MODAIS
 import ModalDashboard from './ModalDashboard';
 import ModalResponsavel from './ModalResponsavel';
+// IMPORTAÇÃO DE ÍCONS
+import calendarIcon from '../assets/icons/calendar.svg';
 
+// importando as funções de formatação
 import {
   calcularDiasDesdesCriacao,
   prepararDataParaInput,
@@ -34,11 +38,13 @@ function Dashboard() {
   const [ordemCriacao, setOrdemCriacao] = useState('desc');
   const [ordemAgendamento, setOrdemAgendamento] = useState('desc');
 
+  // Assim que a página é carregada, busca os dados do localStorage para popular a tabela
   useEffect(() => {
     const dadosSalvos = localStorage.getItem('agendamentos');
     if (dadosSalvos) setAgendamentos(JSON.parse(dadosSalvos));
   }, []);
 
+  // Sempre que os agendamentos forem atualizados, salva a nova lista no localStorage para persistência dos dados
   useEffect(() => {
     localStorage.setItem('agendamentos', JSON.stringify(agendamentos));
   }, [agendamentos]);
@@ -88,6 +94,7 @@ function Dashboard() {
     setOrdemCriacao(ordemCriacao === 'desc' ? 'asc' : 'desc');
   };
 
+  // função para salvar a data de agendamento editada diretamente na tabela, atualizando o status para "visita_agendada" e fechando o modo de edição
   const salvarEdicao = (cpf) => {
     if (!dataInput) {
       setEditandoCpf(null);
@@ -108,19 +115,23 @@ function Dashboard() {
     setDataInput('');
   };
 
+  // filtra apenas os agendamentos que estão com status "aguardando_resposta" ou "visita_agendada", para exibir na tabela do dashboard
   const agendamentosAtivos = agendamentos.filter((item) => {
     return (
       item.status === 'aguardando_resposta' || item.status === 'visita_agendada'
     );
   });
 
+  // aplica o filtro de status selecionado no menu suspenso, ou exibe todos se "todos" estiver selecionado
   const agendamentosFiltrados = agendamentosAtivos.filter((item) => {
     if (filtroStatus === 'todos') return true;
     return item.status === filtroStatus;
   });
 
+  // cria uma nova lista para exibição, mantendo a ordem original dos agendamentos mas aplicando os filtros e ordenações selecionados, para evitar que a tabela "embarace" ao aplicar múltiplos filtros/ordenações
   const listaOrganizada = [...agendamentosFiltrados];
 
+  // função para cadastrar um novo responsável, recebendo os dados do modal, formatando a data de agendamento e adicionando à lista de agendamentos
   const cadastrarPessoa = (dadosModal) => {
     const novoAgendamento = {
       ...dadosModal,
@@ -133,6 +144,7 @@ function Dashboard() {
     setModalAberto(false);
   };
 
+  // função para atualizar os dados de um responsável, recebendo os dados atualizados do modal de responsável e substituindo o item correspondente na lista de agendamentos
   const atualizarDados = (dadosModalResponsavel) => {
     const novaLista = agendamentos.map((item) =>
       item.cpf === dadosModalResponsavel.cpf ? dadosModalResponsavel : item,
@@ -140,6 +152,7 @@ function Dashboard() {
     setAgendamentos(novaLista);
   };
 
+  // função para excluir um responsável, recebendo o CPF do responsável a ser excluído, removendo-o da lista de agendamentos e atualizando o localStorage
   const excluirResponsavel = (cpf) => {
     const novaLista = agendamentos.filter((item) => item.cpf !== cpf);
     setAgendamentos(novaLista);

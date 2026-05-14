@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './css/Cronograma.module.css';
+// IMPORTAÇÃO DE COMPONENTES
 import Sidebar from '../components/sidebar/Sidebar';
 
 function Cronograma() {
@@ -63,6 +64,7 @@ function Cronograma() {
     setDiasDaSemana(semana);
   }, []);
 
+  // função para encontrar um agendamento específico para um dia e hora, comparando a data formatada com a data armazenada no localStorage
   const getAgendamento = (dia, hora) => {
     const dataFormatada = dia.toLocaleDateString('pt-BR', {
       day: '2-digit',

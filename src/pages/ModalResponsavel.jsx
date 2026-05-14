@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './css/modais/ModalResponsavel.module.css';
+// importação de ícones
 import deleteIcon from './../assets/icons/delete.svg';
 
 // IMPORTAÇÕES DO UTILS
@@ -12,6 +13,7 @@ import {
   aplicarMascaraCEP,
 } from '../components/utils/formatters';
 
+// importando as funções do dashboard via props para atualizar os dados e excluir o responsável
 function ModalResponsavel({
   fecharModal,
   dados,
@@ -37,11 +39,13 @@ function ModalResponsavel({
 
   // Sincroniza os filhos quando o modal abre
   useEffect(() => {
+    // se não houver filhos ou se filhos não for um array, inicializa como array vazio
     if (!dados?.filhos || !Array.isArray(dados.filhos)) {
       setFilhos([]);
       return;
     }
 
+    // caso contrário, mapeia os filhos para o formato esperado, tratando tanto strings quanto objetos
     setFilhos(
       dados.filhos.map((filho) => {
         if (typeof filho === 'object' && filho !== null) return filho;
@@ -67,6 +71,7 @@ function ModalResponsavel({
     );
   }, [dados]);
 
+  // função para remover o responsável com confirmação
   const removerResponsavel = () => {
     const confirmar = window.confirm(
       `Tem certeza que deseja excluir o responsável ${dadosAtual.responsavel} da lista de agendamentos?`,
@@ -79,13 +84,16 @@ function ModalResponsavel({
     }
   };
 
+  // função que atualiza os dados de um filho no array de filhos
   const atualizarFilho = (index, campo, valor) => {
     const novosFilhos = [...filhos];
     novosFilhos[index][campo] = valor;
     setFilhos(novosFilhos);
   };
 
+  // função que salva os dados editados, direto no dashboard
   const handleSalvar = () => {
+    // verificações de segurança
     if (!dadosAtual.responsavel || !dadosAtual.cpf) {
       alert('Campos obrigatórios faltando.');
       return;
@@ -113,6 +121,7 @@ function ModalResponsavel({
       }
     }
 
+    // verificação dos campos opcionais relacionados aos filhos apenas se o processo estiver concluído
     if (dadosAtual.status === 'processo_concluido') {
       const filhoSemMatricula = filhos.some((filho) => !filho.matriculado);
       if (filhoSemMatricula) {
@@ -130,9 +139,11 @@ function ModalResponsavel({
         return;
       }
     }
+    // passando todos os dados editados para o dashboard
     const dadosEditados = {
       ...dados,
       ...dadosAtual,
+      // formatando as datas para BR antes de enviar para o dashboard
       dataCriacao: formatarParaBr(dadosAtual.dataCriacao),
       dataAgendamento: formatarDateTimeParaBr(dadosAtual.dataAgendamento),
       filhos: filhos.map(
@@ -146,6 +157,7 @@ function ModalResponsavel({
     fecharModal();
   };
 
+  // função que remove o filho do array através de um index
   const removerFilho = (indexParaRemover) => {
     const novaLista = filhos.filter(
       (_, indexAtual) => indexAtual !== indexParaRemover,
@@ -154,6 +166,7 @@ function ModalResponsavel({
   };
 
   return (
+    // botão para fechar o modal ao clicar fora da caixq
     <div className={styles.modalOverlay} onClick={fecharModal}>
       <div className={styles.container} onClick={(e) => e.stopPropagation()}>
         <div className={styles.dadosResponsavel}>
@@ -162,7 +175,7 @@ function ModalResponsavel({
             <input
               type="text"
               value={dadosAtual.responsavel}
-              readOnly={!editando}
+              readOnly={!editando} //verificando se o campo deve ser editável ou não
               onChange={(e) =>
                 setDadosAtual({ ...dadosAtual, responsavel: e.target.value })
               }
@@ -281,6 +294,7 @@ function ModalResponsavel({
           )}
 
           <div className={styles.listaFilhosContainer}>
+            {/* para cada filho adiciono uma linha de filho e um botão de exclusão */}
             {filhos.map((filho, index) => (
               <div className={styles.filhos} key={index}>
                 <div className={styles.dadosFilhos}>

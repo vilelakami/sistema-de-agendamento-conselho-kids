@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './css/modais/ModalDashboard.module.css';
+// IMPORTAÇÃO DE ÍCONES
 import addFilhoIcon from '../assets/icons/addConta.svg';
 import deleteIcon from '../assets/icons/delete.svg';
 import searchIcon from '../assets/icons/search.svg';
@@ -41,8 +42,9 @@ function ModalDashboard({ fecharModal, aoSalvar, agendamentos }) {
     qtdeFilhos: '',
   };
 
-  // --- FUNÇÕES DE ESTADO (Devem ficar aqui) ---
+  // --- FUNÇÕES DE ESTADO 
 
+  // função que busca o cpf digitado no banco de dados e me retorna se ja tem cadastrado ou nao
   const buscarCpf = () => {
     setMensagemErro('');
     setCpfExistente(false);
@@ -89,18 +91,21 @@ function ModalDashboard({ fecharModal, aoSalvar, agendamentos }) {
     }
   };
 
+  // botão que adiciona um novo filho e incrementa na quantidade de filhos
   const adicionarFilho = () => {
     setFilhos([...filhos, { nome: '', nascimento: '' }]);
   };
 
+  // função que remove o filho do array através de um index e decrementa a quantidade de filhos
   const removerFilho = (indexParaRemover) => {
-    // Lógica que você aprendeu: filtra a lista removendo o índice clicado
+    // filtra a lista removendo pelo index
     const novaLista = filhos.filter(
       (_, indexAtual) => indexAtual !== indexParaRemover,
     );
     setFilhos(novaLista);
   };
 
+  // função que aplica as máscaras de cpf e cep conforme o usuário digita, utilizando as funções importadas do Utils
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     let valorFinal = value;
@@ -112,12 +117,14 @@ function ModalDashboard({ fecharModal, aoSalvar, agendamentos }) {
     setDados({ ...dados, [name]: valorFinal });
   };
 
+  // função que atualiza os dados dos filhos conforme o usuário digita, utilizando o index para identificar qual filho está sendo editado e o campo para identificar se é nome ou nascimento
   const handleFilho = (index, campo, valor) => {
     const novaLista = [...filhos];
     novaLista[index][campo] = valor;
     setFilhos(novaLista);
   };
 
+  // função que valida os campos obrigatórios, verifica se o cpf já existe no banco, formata os dados para o formato do dashboard e chama a função de salvar do dashboard passando os dados formatados
   const handleSalvar = (e) => {
     e.preventDefault();
 
