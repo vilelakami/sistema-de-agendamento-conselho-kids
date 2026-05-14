@@ -4,6 +4,13 @@ import styles from './css/modais/ModalDashboard.module.css';
 import addFilhoIcon from '../assets/icons/addConta.svg';
 import deleteIcon from '../assets/icons/delete.svg';
 import searchIcon from '../assets/icons/search.svg';
+// Importação de bibliotecas:
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { registerLocale } from  "react-datepicker";
+import ptBR from 'date-fns/locale/pt-BR';
+import { set, setHours, setMinutes } from "date-fns";
+
 
 import {
   aplicarMascaraCPF,
@@ -14,11 +21,26 @@ import {
   prepararDateTimeParaInput,
 } from '../components/utils/formatters';
 
+registerLocale('pt-BR', ptBR);
+
 function ModalDashboard({ fecharModal, aoSalvar, agendamentos }) {
   const [filhos, setFilhos] = React.useState([]);
   const dataHojeISO = new Date().toISOString().split('T')[0];
   const [cpfExistente, setCpfExistente] = React.useState(false);
   const [mensagemErro, setMensagemErro] = React.useState('');
+
+
+  // função dos feriados:
+  const feriados = [
+    {dia: 1, mes: 0}, // 1 de Janeiro - Confraternização Universal
+    {dia: 21, mes: 3}, // 21 de Abril - Tiradentes
+    {dia: 1, mes: 4}, // 1 de Maio - Dia do Trabalho
+    {dia: 7, mes: 8}, // 7 de Setembro - Independência do Brasil
+    {dia: 12, mes: 9}, // 12 de Outubro - Nossa Senhora Aparecida
+    {dia: 2, mes: 10}, // 2 de Novembro - Finados
+    {dia: 15, mes: 10}, // 15 de Novembro - Proclamação da República
+    {dia: 25, mes: 11}, // 25 de Dezembro - Natal
+  ];
 
   const [dados, setDados] = React.useState({
     responsavel: '',
@@ -26,7 +48,7 @@ function ModalDashboard({ fecharModal, aoSalvar, agendamentos }) {
     cep: '',
     comoConheceu: 'Google',
     status: 'aguardando_resposta',
-    agendamento: '',
+    agendamento: null,
     dataCriacao: dataHojeISO,
     qtdeFilhos: '',
   });
@@ -37,12 +59,12 @@ function ModalDashboard({ fecharModal, aoSalvar, agendamentos }) {
     cep: '',
     comoConheceu: 'Google',
     status: 'aguardando_resposta',
-    agendamento: '',
+    agendamento: null,
     dataCriacao: new Date().toISOString().split('T')[0],
     qtdeFilhos: '',
   };
 
-  // --- FUNÇÕES DE ESTADO 
+  // --- FUNÇÕES DE ESTADO
 
   // função que busca o cpf digitado no banco de dados e me retorna se ja tem cadastrado ou nao
   const buscarCpf = () => {
@@ -156,6 +178,7 @@ function ModalDashboard({ fecharModal, aoSalvar, agendamentos }) {
     // Construção do objeto final usando os formatadores do Utils
     const cadastroFinal = {
       ...dados,
+      status: dados.agendamento ? 'visita_agendada' : dados.status, // Se tiver data de agendamento, já define como visita_agendada
       // Formata a data de cada filho para o Dashboard
       filhos: filhos.map(
         (filho) => `${filho.nome} - ${formatarParaBr(filho.nascimento)}`,
@@ -179,7 +202,7 @@ function ModalDashboard({ fecharModal, aoSalvar, agendamentos }) {
         className={styles.modalContainer}
         onClick={(e) => e.stopPropagation()}
       >
-        <p>Adicionar Responsável</p>
+        <p>Novo Agendamento</p>
         <div className={styles.taskDados}>
           <div className={styles.taskDemaisInfo1}>
             <div className={styles.taskCPF}>
@@ -289,12 +312,58 @@ function ModalDashboard({ fecharModal, aoSalvar, agendamentos }) {
             </div>
             <div className={styles.taskAgendamento}>
               <label>Agendamento</label>
-              <input
-                type="datetime-local"
-                name="agendamento"
-                value={dados.agendamento}
-                onChange={handleInputChange}
-              />
+              <DatePicker
+              className={styles.datePicker}
+              selected={dados.agendamento ? new Date(dados.agendamento) : null}
+              onChange={(date) => setDados({...dados, agendamento: date})}
+              showTimeSelect
+              locale="pt-BR"
+              timeFormat="HH:mm"
+              timeIntervals={30} // Pula de 30 em 30 min como no seu cronograma
+              timeCaption="Hora"
+              dateFormat="dd/MM/yyyy HH:mm"
+              placeholderText='Selecione data e hora'
+              // limitando horarios
+              includeTimes={
+                [
+                  // manhã das 09 as 11h
+                  setHours(setMinutes(dados.agendamento, 0), 9),
+                  setHours(setMinutes(dados.agendamento, 30), 9),
+                  setHours(setMinutes(dados.agendamento, 0), 10),
+                  setHours(setMinutes(dados.agendamento, 30), 10),
+
+                  // tarde das 14h as 17h
+                  setHours(setMinutes(dados.agendamento, 0), 14),
+                  setHours(setMinutes(dados.agendamento, 30), 14),
+                  setHours(setMinutes(dados.agendamento, 0), 15),
+                  setHours(setMinutes(dados.agendamento, 30), 15),
+                  setHours(setMinutes(dados.agendamento, 0), 16),
+                  setHours(setMinutes(dados.agendamento, 30), 16)
+                ]
+              }
+              // bloquear feriados
+              excludeDates={feriados}
+
+              filterDate={(date) => {
+                const dia = date.getDate();
+                const mes = date.getMonth();
+                const diaSemana = date.getDay();
+                const ehFeriado = feriados.some(f => f.dia === dia && f.mes === mes);
+
+                return diaSemana !== 0 && diaSemana !== 6 && !ehFeriado;
+              }}
+              minDate={new Date()} // Bloqueia datas passadas
+              
+              // Para pintar de vermelho todos os anos:
+              dayClassName={(date) => {
+                const dia = date.getDate();
+                const mes = date.getMonth();
+
+                const ehFeriado = feriados.some(f => f.dia === dia && f.mes === mes);
+                
+                return ehFeriado ? styles.feriado : undefined;
+              }}
+            />
             </div>
           </div>
 

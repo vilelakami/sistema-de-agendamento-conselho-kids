@@ -204,6 +204,11 @@ select{
     color: red;
 }
 
+.feriado{
+    color: red !important;
+}
+
+
 
 
 

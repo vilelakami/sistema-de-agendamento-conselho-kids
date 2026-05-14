@@ -150,14 +150,14 @@
    ========================================================================== */
 
 
-.visita_cancelada, 
-.visita_cancelada + .rowExpanded td {
-    background-color: var(--status-color-cancelado) !important;
+.visita_agendada, 
+.visita_agendada + .rowExpanded td {
+    background-color: var(--status-color-agendado) !important;
 }
 
-.processo_concluido, 
-.processo_concluido + .rowExpanded td {
-    background-color: var(--status-color-finished) !important;
+.aguardando_resposta, 
+.aguardando_resposta + .rowExpanded td {
+    background-color: var(--status-color-pendente) !important;
 }
 
 /* ==========================================================================

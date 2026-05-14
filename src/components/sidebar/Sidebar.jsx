@@ -72,7 +72,7 @@ function Sidebar({ abrirModal, onToggle, expandida: expandidaProp }) {
                 />
                 {expandida && (
                   <button className={styles.taskNav} onClick={abrirModal}>
-                    Adicionar Responsável
+                    Novo Agendamento
                   </button>
                 )}
               </li>
@@ -96,7 +96,7 @@ function Sidebar({ abrirModal, onToggle, expandida: expandidaProp }) {
                 />
                 {expandida && (
                   <Link className={styles.taskNav} to="/cronograma">
-                    Cronograma
+                    Calendário
                   </Link>
                 )}
               </li>

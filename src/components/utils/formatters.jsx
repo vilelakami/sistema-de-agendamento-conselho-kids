@@ -24,17 +24,29 @@ export const formatarParaBr = (dataIso) => {
 };
 
 // Transforma YYYY-MM-DDTHH:mm em DD/MM/YYYY HH:mmh
-export const formatarDateTimeParaBr = (dateTimeIso) => {
-    if (!dateTimeIso) return "";
-    if (dateTimeIso.includes('/')) return dateTimeIso; 
+export const formatarDateTimeParaBr = (data) => {
+    if (!data) return "";
 
-    try {
-        const [data, hora] = dateTimeIso.split('T');
-        const [ano, mes, dia] = data.split('-');
-        return hora ? `${dia}/${mes}/${ano} ${hora}h` : `${dia}/${mes}/${ano}`;
-    } catch (error) {
-        return dateTimeIso; 
+    // Se já for um objeto Date (como o DatePicker envia)
+    if (data instanceof Date) {
+        const dia = String(data.getDate()).padStart(2, '0');
+        const mes = String(data.getMonth() + 1).padStart(2, '0');
+        const ano = data.getFullYear();
+        const hora = String(data.getHours()).padStart(2, '0');
+        const minuto = String(data.getMinutes()).padStart(2, '0');
+        
+        return `${dia}/${mes}/${ano} ${hora}:${minuto}h`;
     }
+
+    // Caso ainda receba uma string (como o input antigo)
+    if (typeof data === 'string' && data.includes('T')) {
+        const [dataParte, horaParte] = data.split('T');
+        const [ano, mes, dia] = dataParte.split('-');
+        const [hora, minuto] = horaParte.split(':');
+        return `${dia}/${mes}/${ano} ${hora}:${minuto}h`;
+    }
+
+    return data;
 };
 
 // --- PREPARADORES (Para colocar dados de volta nos inputs do Modal) ---
