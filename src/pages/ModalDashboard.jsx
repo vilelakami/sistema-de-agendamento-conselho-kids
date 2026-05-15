@@ -271,8 +271,7 @@ function ModalDashboard({ fecharModal, aoSalvar, agendamentos }) {
                 type="date"
                 name="dataCriacao"
                 value={dados.dataCriacao}
-                onChange={handleInputChange}
-                required
+                readOnly
               />
             </div>
 
