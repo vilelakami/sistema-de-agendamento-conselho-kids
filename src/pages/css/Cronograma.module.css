@@ -97,3 +97,18 @@
   color: #999;
   font-style: italic;
 }
+
+.cabecalhoTitulo{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cabecalhoTitulo button{
+    background-color: #1DBC08;
+    padding: var(--spacing-xs);
+    max-width: 200px;
+    font-size: 14px;
+    color: black;
+    font-weight: 500;
+}

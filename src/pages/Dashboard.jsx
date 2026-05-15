@@ -39,7 +39,10 @@ function Dashboard() {
   const [modalResponsavelAberto, setModalResponsavelAberto] = useState(false);
   const [editandoCpf, setEditandoCpf] = useState(null);
   const [dataInput, setDataInput] = useState('');
-  const [agendamentos, setAgendamentos] = useState([]);
+  const [agendamentos, setAgendamentos] = useState(() => {
+    const dadosLocais = localStorage.getItem('agendamentos');
+    return dadosLocais ? JSON.parse(dadosLocais) : [];
+  });
 
   // função dos feriados:
 

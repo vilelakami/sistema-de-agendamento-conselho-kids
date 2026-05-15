@@ -2,38 +2,22 @@ import React, { useState, useEffect } from 'react';
 import styles from './css/Cronograma.module.css';
 // IMPORTAÇÃO DE COMPONENTES
 import Sidebar from '../components/sidebar/Sidebar';
+// importação do modal de agendamento
+import ModalDashboard from './ModalDashboard';
 
 function Cronograma() {
   const [agendamentos, setAgendamentos] = useState([]);
   const [diasDaSemana, setDiasDaSemana] = useState([]);
   const horarios = [
-    '09:00',
-    '09:30',
-    '10:00',
-    '10:30',
-    '11:00',
-    '11:30',
-    '12:00',
-    '12:30',
-    '13:00',
-    '13:30',
-    '14:00',
-    '14:30',
-    '15:00',
-    '15:30',
-    '16:00',
-    '16:30',
-    '17:00',
+    '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', 
+    '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', 
+    '16:00', '16:30', '17:00',
   ];
   const horariosBloqueadosPadrao = [
-    '11:00',
-    '11:30',
-    '12:00',
-    '12:30',
-    '13:00',
-    '13:30',
-    '17:00',
+    '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '17:00',
   ];
+  
+  // Usaremos apenas este estado para abrir e fechar o modal
   const [modalAberto, setModalAberto] = useState(false);
   const [sidebarExpandida, setSidebarExpandida] = useState(true);
 
@@ -72,14 +56,14 @@ function Cronograma() {
     });
   };
 
+  // Carrega agendamentos e monta a semana atual
   useEffect(() => {
     const dados = JSON.parse(localStorage.getItem('agendamentos')) || [];
     setAgendamentos(dados);
 
     const hoje = new Date();
     const diaDaSemanaAtual = hoje.getDay();
-    const distanciaAteSegunda =
-      diaDaSemanaAtual === 0 ? -6 : 1 - diaDaSemanaAtual;
+    const distanciaAteSegunda = diaDaSemanaAtual === 0 ? -6 : 1 - diaDaSemanaAtual;
 
     const segundaFeira = new Date(hoje);
     segundaFeira.setDate(hoje.getDate() + distanciaAteSegunda);
@@ -109,22 +93,45 @@ function Cronograma() {
     });
   };
 
+  // FUNÇÃO DE SALVAMENTO 
+  const salvarDoCronograma = (novoAgendamento) => {
+    const listaAtual = JSON.parse(localStorage.getItem('agendamentos')) || [];
+    const novaLista = [...listaAtual, novoAgendamento];
+    
+    localStorage.setItem('agendamentos', JSON.stringify(novaLista));
+    setAgendamentos(novaLista); // Atualiza o grid do calendário imediatamente
+    setModalAberto(false);      // Fecha o modal com segurança
+  };
+
   return (
     <div className={styles.cronogramaContainer}>
+      
+      {modalAberto && (
+        <ModalDashboard
+          aoSalvar={salvarDoCronograma}
+          fecharModal={() => setModalAberto(false)}
+          agendamentos={agendamentos}
+        />
+      )}
+
       <Sidebar
         abrirModal={() => setModalAberto(true)}
         onToggle={setSidebarExpandida}
         expandida={sidebarExpandida}
       />
-      <div
-        className={`${styles.layout} ${!sidebarExpandida ? styles.sidebarFechada : ''}`}
-      >
-        <h1 className={styles.taskTitlePage}>Calendário Semanal</h1>
+      
+      <div className={`${styles.layout} ${!sidebarExpandida ? styles.sidebarFechada : ''}`}>
+        <div className={styles.cabecalhoTitulo}>
+          <h1 className={styles.taskTitlePage}>Calendário Semanal</h1>
+          <button onClick={() => setModalAberto(true)}>
+            + Novo Agendamento
+          </button>
+        </div>
 
         <div className={styles.cronogramaGrade}>
           <div className={styles.celulaHeader}>Horário</div>
 
-          {/* CABEÇALHO: Dias da Semana + Botão de Bloquear Dia */}
+          {/* CABEÇALHO */}
           {diasDaSemana.map((dia, index) => {
             const dataStr = dia.toLocaleDateString('pt-BR');
             const diaBloqueado = bloqueios.dias.includes(dataStr);
@@ -148,7 +155,7 @@ function Cronograma() {
             );
           })}
 
-          {/* LINHAS: Horários e Slots */}
+          {/* LINHAS */}
           {horarios.map((hora) => (
             <React.Fragment key={hora}>
               <div className={styles.colunaHora}>{hora}</div>
@@ -158,8 +165,7 @@ function Cronograma() {
                 const dataStr = dia.toLocaleDateString('pt-BR');
                 const chaveHorario = `${dataStr}-${hora}`;
 
-                const ehHorarioProibido =
-                  horariosBloqueadosPadrao.includes(hora);
+                const ehHorarioProibido = horariosBloqueadosPadrao.includes(hora);
                 const estaBloqueado =
                   bloqueios.dias.includes(dataStr) ||
                   bloqueios.horarios.includes(chaveHorario) ||
