@@ -8,6 +8,12 @@ import ModalDashboard from './ModalDashboard';
 import ModalResponsavel from './ModalResponsavel';
 // IMPORTAÇÃO DE ÍCONS
 import calendarIcon from '../assets/icons/calendar.svg';
+// Importação de bibliotecas:
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { registerLocale } from 'react-datepicker';
+import ptBR from 'date-fns/locale/pt-BR';
+import { set, setHours, setMinutes } from 'date-fns';
 
 // importando as funções de formatação
 import {
@@ -19,7 +25,10 @@ import {
   statusLabels,
   pesosStatus,
   statusOptions,
+  feriados
 } from '../components/utils/formatters';
+
+registerLocale('pt-BR', ptBR);
 
 function Dashboard() {
   const [linhaExpandidaCpf, setLinhaExpandidaCpf] = useState(null);
@@ -31,6 +40,9 @@ function Dashboard() {
   const [editandoCpf, setEditandoCpf] = useState(null);
   const [dataInput, setDataInput] = useState('');
   const [agendamentos, setAgendamentos] = useState([]);
+
+  // função dos feriados:
+
 
   // Estado global da sidebar
   const [sidebarExpandida, setSidebarExpandida] = useState(true);
@@ -278,11 +290,65 @@ function Dashboard() {
                     <td className={styles.colAgendamento}>
                       {editandoCpf === item.cpf ? (
                         <div className={styles.editAgendamento}>
-                          <input
-                            type="datetime-local"
-                            className={styles.taskInputDate}
-                            value={dataInput}
-                            onChange={(e) => setDataInput(e.target.value)}
+                          <DatePicker
+                            className={styles.datePicker}
+                            selected={
+                              item.agendamento
+                                ? new Date(item.agendamento)
+                                : null
+                            }
+                            onChange={(date) =>
+                              setAgendamentos({ ...agendamentos, dataAgendamento: date })
+                            }
+                            showTimeSelect
+                            locale="pt-BR"
+                            timeFormat="HH:mm"
+                            timeIntervals={30} // Pula de 30 em 30 min como no seu cronograma
+                            timeCaption="Hora"
+                            dateFormat="dd/MM/yyyy HH:mm"
+                            placeholderText="Selecione data e hora"
+                            // limitando horarios
+                            includeTimes={[
+                              // manhã das 09 as 11h
+                              setHours(setMinutes(item.agendamento, 0), 9),
+                              setHours(setMinutes(item.agendamento, 30), 9),
+                              setHours(setMinutes(item.agendamento, 0), 10),
+                              setHours(setMinutes(item.agendamento, 30), 10),
+
+                              // tarde das 14h as 17h
+                              setHours(setMinutes(item.agendamento, 0), 14),
+                              setHours(setMinutes(item.agendamento, 30), 14),
+                              setHours(setMinutes(item.agendamento, 0), 15),
+                              setHours(setMinutes(item.agendamento, 30), 15),
+                              setHours(setMinutes(item.agendamento, 0), 16),
+                              setHours(setMinutes(item.agendamento, 30), 16),
+                            ]}
+                            // bloquear feriados
+                            excludeDates={feriados}
+                            filterDate={(date) => {
+                              const dia = date.getDate();
+                              const mes = date.getMonth();
+                              const diaSemana = date.getDay();
+                              const ehFeriado = feriados.some(
+                                (f) => f.dia === dia && f.mes === mes,
+                              );
+
+                              return (
+                                diaSemana !== 0 && diaSemana !== 6 && !ehFeriado
+                              );
+                            }}
+                            minDate={new Date()} // Bloqueia datas passadas
+                            // Para pintar de vermelho todos os anos:
+                            dayClassName={(date) => {
+                              const dia = date.getDate();
+                              const mes = date.getMonth();
+
+                              const ehFeriado = feriados.some(
+                                (f) => f.dia === dia && f.mes === mes,
+                              );
+
+                              return ehFeriado ? styles.feriado : undefined;
+                            }}
                           />
                           <div className={styles.editButtons}>
                             <button onClick={() => salvarEdicao(item.cpf)}>

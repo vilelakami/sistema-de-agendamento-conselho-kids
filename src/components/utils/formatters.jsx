@@ -106,3 +106,14 @@ export const getStatusClass = (status) => {
     };
     return classes[status] || "rowAguardandoResposta";
 };
+
+export const feriados = [
+    { dia: 1, mes: 0 }, // 1 de Janeiro - Confraternização Universal
+    { dia: 21, mes: 3 }, // 21 de Abril - Tiradentes
+    { dia: 1, mes: 4 }, // 1 de Maio - Dia do Trabalho
+    { dia: 7, mes: 8 }, // 7 de Setembro - Independência do Brasil
+    { dia: 12, mes: 9 }, // 12 de Outubro - Nossa Senhora Aparecida
+    { dia: 2, mes: 10 }, // 2 de Novembro - Finados
+    { dia: 15, mes: 10 }, // 15 de Novembro - Proclamação da República
+    { dia: 25, mes: 11 }, // 25 de Dezembro - Natal
+  ];

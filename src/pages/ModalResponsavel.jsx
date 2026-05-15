@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styles from './css/modais/ModalResponsavel.module.css';
 // importação de ícones
 import deleteIcon from './../assets/icons/delete.svg';
+// Importação de bibliotecas:
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { registerLocale } from 'react-datepicker';
+import ptBR from 'date-fns/locale/pt-BR';
+import { set, setHours, setMinutes } from 'date-fns';
 
 // IMPORTAÇÕES DO UTILS
 import {
@@ -11,7 +17,10 @@ import {
   formatarDateTimeParaBr,
   aplicarMascaraCPF,
   aplicarMascaraCEP,
+  feriados
 } from '../components/utils/formatters';
+
+registerLocale('pt-BR', ptBR);
 
 // importando as funções do dashboard via props para atualizar os dados e excluir o responsável
 function ModalResponsavel({
@@ -210,17 +219,58 @@ function ModalResponsavel({
             </div>
             <div className={styles.dataAgendamento}>
               <label>Agendamento:</label>
-              <input
-                type="datetime-local"
-                value={dadosAtual.dataAgendamento}
-                readOnly={!editando}
-                onChange={(e) =>
-                  setDadosAtual({
-                    ...dadosAtual,
-                    dataAgendamento: e.target.value,
-                  })
-                }
-              />
+              <DatePicker
+              className={styles.datePicker}
+              selected={dadosAtual.agendamento ? new Date(dadosAtual.agendamento) : null}
+              onChange={(date) => setDadosAtual({...dados, agendamento: date})}
+              showTimeSelect
+              locale="pt-BR"
+              timeFormat="HH:mm"
+              timeIntervals={30} // Pula de 30 em 30 min como no seu cronograma
+              timeCaption="Hora"
+              dateFormat="dd/MM/yyyy HH:mm"
+              placeholderText='Selecione data e hora'
+              // limitando horarios
+              includeTimes={
+                [
+                  // manhã das 09 as 11h
+                  setHours(setMinutes(dadosAtual.agendamento, 0), 9),
+                  setHours(setMinutes(dadosAtual.agendamento, 30), 9),
+                  setHours(setMinutes(dadosAtual.agendamento, 0), 10),
+                  setHours(setMinutes(dadosAtual.agendamento, 30), 10),
+
+                  // tarde das 14h as 17h
+                  setHours(setMinutes(dadosAtual.agendamento, 0), 14),
+                  setHours(setMinutes(dadosAtual.agendamento, 30), 14),
+                  setHours(setMinutes(dadosAtual.agendamento, 0), 15),
+                  setHours(setMinutes(dadosAtual.agendamento, 30), 15),
+                  setHours(setMinutes(dadosAtual.agendamento, 0), 16),
+                  setHours(setMinutes(dadosAtual.agendamento, 30), 16)
+                ]
+              }
+              // bloquear feriados
+              excludeDates={feriados}
+
+              filterDate={(date) => {
+                const dia = date.getDate();
+                const mes = date.getMonth();
+                const diaSemana = date.getDay();
+                const ehFeriado = feriados.some(f => f.dia === dia && f.mes === mes);
+
+                return diaSemana !== 0 && diaSemana !== 6 && !ehFeriado;
+              }}
+              minDate={new Date()} // Bloqueia datas passadas
+              
+              // Para pintar de vermelho todos os anos:
+              dayClassName={(date) => {
+                const dia = date.getDate();
+                const mes = date.getMonth();
+
+                const ehFeriado = feriados.some(f => f.dia === dia && f.mes === mes);
+                
+                return ehFeriado ? styles.feriado : undefined;
+              }}
+            />
             </div>
           </div>
 

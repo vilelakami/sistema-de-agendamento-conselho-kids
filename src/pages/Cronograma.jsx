@@ -4,16 +4,9 @@ import styles from './css/Cronograma.module.css';
 import Sidebar from '../components/sidebar/Sidebar';
 
 function Cronograma() {
-  // agendamentos que já existem no localStorage
   const [agendamentos, setAgendamentos] = useState([]);
-  // guardando os 5 dias da semana atual
   const [diasDaSemana, setDiasDaSemana] = useState([]);
-  // guardando os horários
   const horarios = [
-    '07:00',
-    '07:30',
-    '08:00',
-    '08:30',
     '09:00',
     '09:30',
     '10:00',
@@ -32,39 +25,74 @@ function Cronograma() {
     '16:30',
     '17:00',
   ];
+  const horariosBloqueadosPadrao = [
+    '11:00',
+    '11:30',
+    '12:00',
+    '12:30',
+    '13:00',
+    '13:30',
+    '17:00',
+  ];
   const [modalAberto, setModalAberto] = useState(false);
-  // Estado global da sidebar
   const [sidebarExpandida, setSidebarExpandida] = useState(true);
 
+  // Estado de bloqueios (Lê do localStorage ao iniciar)
+  const [bloqueios, setBloqueios] = useState(() => {
+    return (
+      JSON.parse(localStorage.getItem('bloqueios')) || {
+        dias: [],
+        horarios: [],
+      }
+    );
+  });
+
+  // Salva bloqueios no localStorage sempre que mudar
   useEffect(() => {
-    // pegando os agendamentos do localStorage
+    localStorage.setItem('bloqueios', JSON.stringify(bloqueios));
+  }, [bloqueios]);
+
+  const toggleBloqueioDia = (data) => {
+    const dataStr = data.toLocaleDateString('pt-BR');
+    setBloqueios((prev) => {
+      const dias = prev.dias.includes(dataStr)
+        ? prev.dias.filter((d) => d !== dataStr)
+        : [...prev.dias, dataStr];
+      return { ...prev, dias };
+    });
+  };
+
+  const toggleBloqueioHorario = (data, hora) => {
+    const chave = `${data.toLocaleDateString('pt-BR')}-${hora}`;
+    setBloqueios((prev) => {
+      const horarios = prev.horarios.includes(chave)
+        ? prev.horarios.filter((h) => h !== chave)
+        : [...prev.horarios, chave];
+      return { ...prev, horarios };
+    });
+  };
+
+  useEffect(() => {
     const dados = JSON.parse(localStorage.getItem('agendamentos')) || [];
     setAgendamentos(dados);
 
-    // calculando a semana
     const hoje = new Date();
-    // dia da semana por numeros, ex: segund 1, terça 2 etc...
     const diaDaSemanaAtual = hoje.getDay();
-    // calculando a distancia até segunda feira
     const distanciaAteSegunda =
       diaDaSemanaAtual === 0 ? -6 : 1 - diaDaSemanaAtual;
 
-    // calculando a data da segunda
     const segundaFeira = new Date(hoje);
     segundaFeira.setDate(hoje.getDate() + distanciaAteSegunda);
 
-    // criando o array da semana
     const semana = [];
     for (let i = 0; i < 5; i++) {
       const dia = new Date(segundaFeira);
       dia.setDate(segundaFeira.getDate() + i);
       semana.push(dia);
     }
-
     setDiasDaSemana(semana);
   }, []);
 
-  // função para encontrar um agendamento específico para um dia e hora, comparando a data formatada com a data armazenada no localStorage
   const getAgendamento = (dia, hora) => {
     const dataFormatada = dia.toLocaleDateString('pt-BR', {
       day: '2-digit',
@@ -74,11 +102,9 @@ function Cronograma() {
 
     return agendamentos.find((item) => {
       if (!item.dataAgendamento) return false;
-
       const partes = item.dataAgendamento.split(' ');
       const dataBanco = partes[0].trim();
       const horaBanco = partes[1].replace('h', '').trim();
-
       return dataBanco === dataFormatada && horaBanco === hora;
     });
   };
@@ -98,31 +124,68 @@ function Cronograma() {
         <div className={styles.cronogramaGrade}>
           <div className={styles.celulaHeader}>Horário</div>
 
-          {diasDaSemana.map((dia, index) => (
-            <div key={index} className={styles.celulaHeader}>
-              <strong>
-                {dia.toLocaleDateString('pt-BR', { weekday: 'short' })}
-              </strong>
-              <br />
-              <span>
-                {dia.getDate()}/{dia.getMonth() + 1}
-              </span>
-            </div>
-          ))}
+          {/* CABEÇALHO: Dias da Semana + Botão de Bloquear Dia */}
+          {diasDaSemana.map((dia, index) => {
+            const dataStr = dia.toLocaleDateString('pt-BR');
+            const diaBloqueado = bloqueios.dias.includes(dataStr);
 
+            return (
+              <div key={index} className={styles.celulaHeader}>
+                <strong>
+                  {dia.toLocaleDateString('pt-BR', { weekday: 'short' })}
+                </strong>
+                <br />
+                <span>
+                  {dia.getDate()}/{dia.getMonth() + 1}
+                </span>
+                <button
+                  className={styles.btnLockDia}
+                  onClick={() => toggleBloqueioDia(dia)}
+                >
+                  {diaBloqueado ? '🔒' : '🔓'}
+                </button>
+              </div>
+            );
+          })}
+
+          {/* LINHAS: Horários e Slots */}
           {horarios.map((hora) => (
             <React.Fragment key={hora}>
               <div className={styles.colunaHora}>{hora}</div>
 
               {diasDaSemana.map((dia, index) => {
                 const agendado = getAgendamento(dia, hora);
+                const dataStr = dia.toLocaleDateString('pt-BR');
+                const chaveHorario = `${dataStr}-${hora}`;
+
+                const ehHorarioProibido =
+                  horariosBloqueadosPadrao.includes(hora);
+                const estaBloqueado =
+                  bloqueios.dias.includes(dataStr) ||
+                  bloqueios.horarios.includes(chaveHorario) ||
+                  ehHorarioProibido;
+
                 return (
-                  <div key={index} className={styles.celulaSlot}>
-                    {agendado && (
+                  <div
+                    key={index}
+                    className={`${styles.celulaSlot} ${estaBloqueado ? styles.bloqueado : ''}`}
+                  >
+                    {!agendado && !ehHorarioProibido && (
+                      <button
+                        className={styles.btnLockMini}
+                        onClick={() => toggleBloqueioHorario(dia, hora)}
+                      >
+                        {estaBloqueado ? '🔒' : '🔓'}
+                      </button>
+                    )}
+
+                    {agendado ? (
                       <div className={styles.cardAgendamento}>
                         {agendado.responsavel}
                       </div>
-                    )}
+                    ) : estaBloqueado ? (
+                      <span className={styles.txtBloqueado}>Indisponível</span>
+                    ) : null}
                   </div>
                 );
               })}
@@ -133,4 +196,5 @@ function Cronograma() {
     </div>
   );
 }
+
 export default Cronograma;
