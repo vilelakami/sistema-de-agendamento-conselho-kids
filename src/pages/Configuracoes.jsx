@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 // IMPORTAÇÃO DE COMPONENTES
 import Sidebar from '../components/sidebar/Sidebar';
-// IMPORTAÇÃO DO MODAL 
+// IMPORTAÇÃO DO MODAL
 import ModalSenha from './auth/ModalSenha';
 import styles from '../pages/css/Configuracoes.module.css';
 // IMPORTAÇÃO DE ICONS
@@ -25,6 +25,7 @@ function Configuracoes({ abrirModal }) {
   const [modalAlterarSenhaAberto, setModalAlterarSenhaAberto] = useState(false);
   const [modalSolicitarEmailAberto, setModalSolicitarEmailAberto] =
     useState(false);
+  const [sidebarExpandida, setSidebarExpandida] = useState(true);
 
   useEffect(() => {
     // 1. Carrega dados do Admin
@@ -165,13 +166,20 @@ function Configuracoes({ abrirModal }) {
   };
 
   return (
-    <div className={styles.layout}>
-      <Sidebar abrirModal={() => setModalAberto(true)} />
+    <div
+      className={`${styles.layout} ${!sidebarExpandida ? styles.sidebarFechada : ''}`}
+    >
+      <Sidebar 
+        abrirModal={() => setModalAberto(true)} 
+        onToggle={setSidebarExpandida} 
+        expandida={sidebarExpandida}
+      />
       {modalSolicitarEmailAberto && (
         <ModalSenha
           isOpen={modalSolicitarEmailAberto}
           onClose={() => setModalSolicitarEmailAberto(false)}
           enviarEmail={enviarEmailRecuperacaoAdmin}
+          
         />
       )}
       <div className={styles.container}>

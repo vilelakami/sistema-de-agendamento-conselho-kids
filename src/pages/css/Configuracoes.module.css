@@ -3,9 +3,16 @@
    ========================================== */
 
 .layout {
-    display: flex;
-    overflow-y: auto; 
-    align-items: stretch;
+    transition: padding-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 100vh;
+    background-color: var(--background-primary-color);
+    flex: 1;
+    padding-left: 250px; /* Quando aberta */
+}
+
+/* sidebar fechada */
+.sidebarFechada {
+    padding-left: 50px !important;
 }
 
 .container {
@@ -14,6 +21,7 @@
     flex-direction: column;
     max-width: 1440px;
     width: 100%; 
+    min-height: 100vh;
 }
 
 .taskDivisaoUsuario {
